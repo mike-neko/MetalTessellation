@@ -1,7 +1,10 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="11134" systemVersion="15F34" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="B8D-0N-5wS">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="16E144f" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="B8D-0N-5wS">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="11134"/>
+        <deployment identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="11762"/>
+        <capability name="box content view" minToolsVersion="7.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
         <!--Application-->
@@ -653,7 +656,7 @@
                         <outlet property="delegate" destination="Voe-Tx-rLC" id="PrD-fu-P6m"/>
                     </connections>
                 </application>
-                <customObject id="Voe-Tx-rLC" customClass="AppDelegate" customModuleProvider="target"/>
+                <customObject id="Voe-Tx-rLC" customClass="AppDelegate" customModule="MetalTessellation" customModuleProvider="target"/>
                 <customObject id="Ady-hI-5gd" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="75" y="0.0"/>
@@ -679,15 +682,139 @@
         <!--View Controller-->
         <scene sceneID="hIz-AP-VOD">
             <objects>
-                <viewController id="XfG-lQ-9wD" customClass="ViewController" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="XfG-lQ-9wD" customClass="ViewController" customModule="MetalTessellation" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" wantsLayer="YES" id="m2S-Jp-Qdl">
-                        <rect key="frame" x="0.0" y="0.0" width="480" height="270"/>
+                        <rect key="frame" x="0.0" y="0.0" width="798" height="447"/>
                         <autoresizingMask key="autoresizingMask"/>
+                        <subviews>
+                            <customView translatesAutoresizingMaskIntoConstraints="NO" id="yAh-37-gi9" customClass="MTKView">
+                                <rect key="frame" x="0.0" y="0.0" width="508" height="447"/>
+                            </customView>
+                            <box title="Tessellation" translatesAutoresizingMaskIntoConstraints="NO" id="dNA-w4-oHJ">
+                                <rect key="frame" x="525" y="307" width="256" height="120"/>
+                                <view key="contentView" id="OWG-7I-Uaz">
+                                    <rect key="frame" x="2" y="2" width="252" height="103"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                    <subviews>
+                                        <segmentedControl verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="fdL-bo-vtY">
+                                            <rect key="frame" x="18" y="60" width="71" height="24"/>
+                                            <segmentedCell key="cell" borderStyle="border" alignment="left" style="rounded" trackingMode="selectOne" id="Ao6-wG-Yyf">
+                                                <font key="font" metaFont="system"/>
+                                                <segments>
+                                                    <segment label="On" width="32"/>
+                                                    <segment label="Off" width="32" selected="YES" tag="1"/>
+                                                </segments>
+                                            </segmentedCell>
+                                        </segmentedControl>
+                                        <slider verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="BoB-DH-zJb">
+                                            <rect key="frame" x="18" y="18" width="216" height="24"/>
+                                            <sliderCell key="cell" state="on" alignment="left" minValue="1" maxValue="16" doubleValue="1" tickMarkPosition="above" numberOfTickMarks="4" sliderType="linear" id="Bjt-oZ-Scw"/>
+                                        </slider>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstItem="BoB-DH-zJb" firstAttribute="top" secondItem="fdL-bo-vtY" secondAttribute="bottom" constant="20" id="M9P-9L-jeE"/>
+                                        <constraint firstAttribute="bottom" secondItem="BoB-DH-zJb" secondAttribute="bottom" constant="20" id="a2B-H0-Dv2"/>
+                                        <constraint firstItem="fdL-bo-vtY" firstAttribute="leading" secondItem="OWG-7I-Uaz" secondAttribute="leading" constant="20" id="etc-ia-eoF"/>
+                                        <constraint firstItem="BoB-DH-zJb" firstAttribute="leading" secondItem="OWG-7I-Uaz" secondAttribute="leading" constant="20" id="g4J-Ef-xGC"/>
+                                        <constraint firstItem="fdL-bo-vtY" firstAttribute="top" secondItem="OWG-7I-Uaz" secondAttribute="top" constant="20" id="p3H-x8-Nfc"/>
+                                        <constraint firstAttribute="trailing" secondItem="BoB-DH-zJb" secondAttribute="trailing" constant="20" id="yhx-Eg-4YU"/>
+                                    </constraints>
+                                </view>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="250" id="Ugw-YG-UA8"/>
+                                </constraints>
+                            </box>
+                            <box title="Phong Tessellation" translatesAutoresizingMaskIntoConstraints="NO" id="8yG-ef-Ecg">
+                                <rect key="frame" x="525" y="171" width="256" height="120"/>
+                                <view key="contentView" id="27J-UJ-p9Q">
+                                    <rect key="frame" x="2" y="2" width="252" height="103"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                    <subviews>
+                                        <segmentedControl verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="azC-WE-SA6">
+                                            <rect key="frame" x="18" y="60" width="71" height="24"/>
+                                            <segmentedCell key="cell" borderStyle="border" alignment="left" style="rounded" trackingMode="selectOne" id="XEl-Nn-Ps9">
+                                                <font key="font" metaFont="system"/>
+                                                <segments>
+                                                    <segment label="On" width="32"/>
+                                                    <segment label="Off" width="32" selected="YES" tag="1"/>
+                                                </segments>
+                                            </segmentedCell>
+                                        </segmentedControl>
+                                        <slider verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="z0I-tX-Zp5">
+                                            <rect key="frame" x="18" y="18" width="216" height="24"/>
+                                            <sliderCell key="cell" state="on" alignment="left" minValue="1" maxValue="16" doubleValue="1" tickMarkPosition="above" numberOfTickMarks="4" sliderType="linear" id="3Qm-gr-Suv"/>
+                                        </slider>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstAttribute="trailing" secondItem="z0I-tX-Zp5" secondAttribute="trailing" constant="20" id="2CY-pA-C3q"/>
+                                        <constraint firstItem="z0I-tX-Zp5" firstAttribute="top" secondItem="azC-WE-SA6" secondAttribute="bottom" constant="20" id="Dnv-vo-pvP"/>
+                                        <constraint firstAttribute="bottom" secondItem="z0I-tX-Zp5" secondAttribute="bottom" constant="20" id="RqW-ke-QgU"/>
+                                        <constraint firstItem="z0I-tX-Zp5" firstAttribute="leading" secondItem="27J-UJ-p9Q" secondAttribute="leading" constant="20" id="TNS-Kc-bai"/>
+                                        <constraint firstItem="azC-WE-SA6" firstAttribute="top" secondItem="27J-UJ-p9Q" secondAttribute="top" constant="20" id="smv-mc-rZJ"/>
+                                        <constraint firstItem="azC-WE-SA6" firstAttribute="leading" secondItem="27J-UJ-p9Q" secondAttribute="leading" constant="20" id="ycj-bc-kaP"/>
+                                    </constraints>
+                                </view>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="250" id="vHY-Nb-igr"/>
+                                </constraints>
+                            </box>
+                            <box title="Displacement Map" translatesAutoresizingMaskIntoConstraints="NO" id="yAi-VX-cnr">
+                                <rect key="frame" x="525" y="35" width="256" height="120"/>
+                                <view key="contentView" id="mI5-zX-rmz">
+                                    <rect key="frame" x="2" y="2" width="252" height="103"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                    <subviews>
+                                        <segmentedControl verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="64H-4k-0Vp">
+                                            <rect key="frame" x="18" y="60" width="71" height="24"/>
+                                            <segmentedCell key="cell" borderStyle="border" alignment="left" style="rounded" trackingMode="selectOne" id="dss-0a-qER">
+                                                <font key="font" metaFont="system"/>
+                                                <segments>
+                                                    <segment label="On" width="32"/>
+                                                    <segment label="Off" width="32" selected="YES" tag="1"/>
+                                                </segments>
+                                            </segmentedCell>
+                                        </segmentedControl>
+                                        <slider verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="ESU-qE-YyA">
+                                            <rect key="frame" x="18" y="18" width="216" height="24"/>
+                                            <sliderCell key="cell" state="on" alignment="left" minValue="1" maxValue="16" doubleValue="1" tickMarkPosition="above" numberOfTickMarks="4" sliderType="linear" id="h8x-Cq-6TO"/>
+                                        </slider>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstItem="64H-4k-0Vp" firstAttribute="leading" secondItem="mI5-zX-rmz" secondAttribute="leading" constant="20" id="GcE-jL-hh8"/>
+                                        <constraint firstItem="ESU-qE-YyA" firstAttribute="top" secondItem="64H-4k-0Vp" secondAttribute="bottom" constant="20" id="Mx2-Ob-Chn"/>
+                                        <constraint firstItem="64H-4k-0Vp" firstAttribute="top" secondItem="mI5-zX-rmz" secondAttribute="top" constant="20" id="dRg-jk-1LD"/>
+                                        <constraint firstAttribute="bottom" secondItem="ESU-qE-YyA" secondAttribute="bottom" constant="20" id="ne0-Hh-oqd"/>
+                                        <constraint firstItem="ESU-qE-YyA" firstAttribute="leading" secondItem="mI5-zX-rmz" secondAttribute="leading" constant="20" id="rYJ-3f-ar2"/>
+                                        <constraint firstAttribute="trailing" secondItem="ESU-qE-YyA" secondAttribute="trailing" constant="20" id="skR-H8-IVY"/>
+                                    </constraints>
+                                </view>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="250" id="Ke9-fY-ldq"/>
+                                </constraints>
+                            </box>
+                        </subviews>
+                        <constraints>
+                            <constraint firstItem="yAi-VX-cnr" firstAttribute="top" secondItem="8yG-ef-Ecg" secondAttribute="bottom" constant="20" id="4kw-LH-xyv"/>
+                            <constraint firstAttribute="trailing" secondItem="yAi-VX-cnr" secondAttribute="trailing" constant="20" id="8yU-B8-rid"/>
+                            <constraint firstItem="dNA-w4-oHJ" firstAttribute="leading" secondItem="yAh-37-gi9" secondAttribute="trailing" constant="20" id="IAD-ti-8gn"/>
+                            <constraint firstItem="yAh-37-gi9" firstAttribute="leading" secondItem="m2S-Jp-Qdl" secondAttribute="leading" id="Kcj-at-yFc"/>
+                            <constraint firstItem="yAi-VX-cnr" firstAttribute="leading" secondItem="yAh-37-gi9" secondAttribute="trailing" constant="20" id="Rw8-lD-Id4"/>
+                            <constraint firstAttribute="bottom" secondItem="yAh-37-gi9" secondAttribute="bottom" id="dji-Tl-F7R"/>
+                            <constraint firstItem="dNA-w4-oHJ" firstAttribute="top" secondItem="m2S-Jp-Qdl" secondAttribute="top" constant="20" id="qsg-E6-sAy"/>
+                            <constraint firstAttribute="trailing" secondItem="dNA-w4-oHJ" secondAttribute="trailing" constant="20" id="u7g-s4-3ZS"/>
+                            <constraint firstAttribute="trailing" secondItem="8yG-ef-Ecg" secondAttribute="trailing" constant="20" id="vJ4-NH-BCX"/>
+                            <constraint firstItem="8yG-ef-Ecg" firstAttribute="leading" secondItem="yAh-37-gi9" secondAttribute="trailing" constant="20" id="vaj-gc-HyX"/>
+                            <constraint firstItem="yAh-37-gi9" firstAttribute="top" secondItem="m2S-Jp-Qdl" secondAttribute="top" id="wYR-MM-9Zp"/>
+                            <constraint firstItem="8yG-ef-Ecg" firstAttribute="top" secondItem="dNA-w4-oHJ" secondAttribute="bottom" constant="20" id="y7g-UJ-pvF"/>
+                        </constraints>
                     </view>
+                    <connections>
+                        <outlet property="mtkView" destination="yAh-37-gi9" id="mVy-WG-Ddn"/>
+                    </connections>
                 </viewController>
                 <customObject id="rPt-NT-nkU" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="75" y="655"/>
+            <point key="canvasLocation" x="234" y="743.5"/>
         </scene>
     </scenes>
 </document>

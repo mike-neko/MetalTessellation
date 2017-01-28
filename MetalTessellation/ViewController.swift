@@ -7,13 +7,21 @@
 //
 
 import Cocoa
+import MetalKit
 
 class ViewController: NSViewController {
+    
+    @IBOutlet private weak var mtkView: MTKView!
+
+    private var renderer: Renderer!
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
+        setupMetal()
+        setupAsset()
+        mtkView.draw()
     }
 
     override var representedObject: Any? {
@@ -22,6 +30,20 @@ class ViewController: NSViewController {
         }
     }
 
+    // MARK: -
+    private func setupMetal() {
+        mtkView.sampleCount = 4
+        mtkView.depthStencilPixelFormat = .depth32Float_stencil8
+        
+        mtkView.colorPixelFormat = .bgra8Unorm
+        mtkView.clearColor = MTLClearColorMake(0.5, 0.5, 0.5, 1)
+        
+        renderer = Renderer(view: mtkView)
+    }
 
+    private func setupAsset() {
+        let obj = MeshRenderer(renderer: renderer)
+        renderer.targets.append(obj)
+    }
 }
 

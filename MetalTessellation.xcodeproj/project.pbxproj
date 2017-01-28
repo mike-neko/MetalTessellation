@@ -11,6 +11,10 @@
 		0E45AB501E3CAF09000AA11D /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E45AB4F1E3CAF09000AA11D /* ViewController.swift */; };
 		0E45AB521E3CAF09000AA11D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0E45AB511E3CAF09000AA11D /* Assets.xcassets */; };
 		0E45AB551E3CAF09000AA11D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0E45AB531E3CAF09000AA11D /* Main.storyboard */; };
+		0E45AB5D1E3CD5A2000AA11D /* Renderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E45AB5C1E3CD5A2000AA11D /* Renderer.swift */; };
+		0E45AB5F1E3CD716000AA11D /* Matrix.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E45AB5E1E3CD716000AA11D /* Matrix.swift */; };
+		0E45AB611E3CF3BE000AA11D /* MeshRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E45AB601E3CF3BE000AA11D /* MeshRenderer.swift */; };
+		0E45AB631E3CF936000AA11D /* Shaders.metal in Sources */ = {isa = PBXBuildFile; fileRef = 0E45AB621E3CF936000AA11D /* Shaders.metal */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -20,6 +24,10 @@
 		0E45AB511E3CAF09000AA11D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		0E45AB541E3CAF09000AA11D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		0E45AB561E3CAF09000AA11D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		0E45AB5C1E3CD5A2000AA11D /* Renderer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Renderer.swift; sourceTree = "<group>"; };
+		0E45AB5E1E3CD716000AA11D /* Matrix.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Matrix.swift; sourceTree = "<group>"; };
+		0E45AB601E3CF3BE000AA11D /* MeshRenderer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MeshRenderer.swift; sourceTree = "<group>"; };
+		0E45AB621E3CF936000AA11D /* Shaders.metal */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.metal; path = Shaders.metal; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -54,6 +62,10 @@
 			children = (
 				0E45AB4D1E3CAF09000AA11D /* AppDelegate.swift */,
 				0E45AB4F1E3CAF09000AA11D /* ViewController.swift */,
+				0E45AB5C1E3CD5A2000AA11D /* Renderer.swift */,
+				0E45AB5E1E3CD716000AA11D /* Matrix.swift */,
+				0E45AB601E3CF3BE000AA11D /* MeshRenderer.swift */,
+				0E45AB621E3CF936000AA11D /* Shaders.metal */,
 				0E45AB511E3CAF09000AA11D /* Assets.xcassets */,
 				0E45AB531E3CAF09000AA11D /* Main.storyboard */,
 				0E45AB561E3CAF09000AA11D /* Info.plist */,
@@ -132,7 +144,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0E45AB631E3CF936000AA11D /* Shaders.metal in Sources */,
+				0E45AB5F1E3CD716000AA11D /* Matrix.swift in Sources */,
+				0E45AB611E3CF3BE000AA11D /* MeshRenderer.swift in Sources */,
 				0E45AB501E3CAF09000AA11D /* ViewController.swift in Sources */,
+				0E45AB5D1E3CD5A2000AA11D /* Renderer.swift in Sources */,
 				0E45AB4E1E3CAF09000AA11D /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
