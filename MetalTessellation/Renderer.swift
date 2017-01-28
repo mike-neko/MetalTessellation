@@ -30,6 +30,22 @@ class Renderer: NSObject, MTKViewDelegate {
         let position: float4
         let normal: float3
         let texcoord: float2
+        
+        static func vertexDescriptor() -> MTLVertexDescriptor {
+            let vertexDescriptor = MTLVertexDescriptor()
+            vertexDescriptor.attributes[0].format = .float4
+            vertexDescriptor.attributes[0].offset = 0
+            vertexDescriptor.attributes[0].bufferIndex = 0;
+            vertexDescriptor.attributes[1].format = .float3
+            vertexDescriptor.attributes[1].offset = 16
+            vertexDescriptor.attributes[1].bufferIndex = 0;
+            vertexDescriptor.attributes[2].format = .float2
+            vertexDescriptor.attributes[2].offset = 28
+            vertexDescriptor.attributes[2].bufferIndex = 0;
+            vertexDescriptor.layouts[0].stepRate = 1
+            vertexDescriptor.layouts[0].stride = MemoryLayout<Vertex>.stride
+            return vertexDescriptor
+        }
     }
     
     enum VertexBufferIndex: Int {

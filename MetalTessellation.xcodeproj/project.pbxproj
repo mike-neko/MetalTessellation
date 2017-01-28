@@ -17,6 +17,8 @@
 		0E45AB691E3D05F5000AA11D /* Common.metal in Sources */ = {isa = PBXBuildFile; fileRef = 0E45AB681E3D05F5000AA11D /* Common.metal */; };
 		0E45AB6B1E3D0763000AA11D /* LambertShader.metal in Sources */ = {isa = PBXBuildFile; fileRef = 0E45AB6A1E3D0763000AA11D /* LambertShader.metal */; };
 		0E45AB6D1E3D09B5000AA11D /* checkerboard.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E45AB6C1E3D09B5000AA11D /* checkerboard.png */; };
+		0E45AB6F1E3D0B94000AA11D /* TessellationShader.metal in Sources */ = {isa = PBXBuildFile; fileRef = 0E45AB6E1E3D0B94000AA11D /* TessellationShader.metal */; };
+		0E45AB711E3D0F07000AA11D /* TessellationRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E45AB701E3D0F07000AA11D /* TessellationRenderer.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -32,6 +34,8 @@
 		0E45AB681E3D05F5000AA11D /* Common.metal */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.metal; path = Common.metal; sourceTree = "<group>"; };
 		0E45AB6A1E3D0763000AA11D /* LambertShader.metal */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.metal; path = LambertShader.metal; sourceTree = "<group>"; };
 		0E45AB6C1E3D09B5000AA11D /* checkerboard.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = checkerboard.png; sourceTree = "<group>"; };
+		0E45AB6E1E3D0B94000AA11D /* TessellationShader.metal */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.metal; path = TessellationShader.metal; sourceTree = "<group>"; };
+		0E45AB701E3D0F07000AA11D /* TessellationRenderer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TessellationRenderer.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -69,8 +73,10 @@
 				0E45AB5C1E3CD5A2000AA11D /* Renderer.swift */,
 				0E45AB5E1E3CD716000AA11D /* Matrix.swift */,
 				0E45AB601E3CF3BE000AA11D /* MeshRenderer.swift */,
+				0E45AB701E3D0F07000AA11D /* TessellationRenderer.swift */,
 				0E45AB681E3D05F5000AA11D /* Common.metal */,
 				0E45AB6A1E3D0763000AA11D /* LambertShader.metal */,
+				0E45AB6E1E3D0B94000AA11D /* TessellationShader.metal */,
 				0E45AB6C1E3D09B5000AA11D /* checkerboard.png */,
 				0E45AB511E3CAF09000AA11D /* Assets.xcassets */,
 				0E45AB531E3CAF09000AA11D /* Main.storyboard */,
@@ -158,6 +164,8 @@
 				0E45AB501E3CAF09000AA11D /* ViewController.swift in Sources */,
 				0E45AB5D1E3CD5A2000AA11D /* Renderer.swift in Sources */,
 				0E45AB4E1E3CAF09000AA11D /* AppDelegate.swift in Sources */,
+				0E45AB6F1E3D0B94000AA11D /* TessellationShader.metal in Sources */,
+				0E45AB711E3D0F07000AA11D /* TessellationRenderer.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

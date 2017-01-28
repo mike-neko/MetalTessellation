@@ -46,7 +46,7 @@ class ViewController: NSViewController {
     }
 
     private func setupAsset() {
-        let obj = MeshRenderer(renderer: renderer)
+        let obj = TessellationRenderer(renderer: renderer)
         renderer.targets.append(obj)
     }
 }
