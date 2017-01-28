@@ -29,6 +29,10 @@ class ViewController: NSViewController {
         // Update the view, if already loaded.
         }
     }
+    
+    @IBAction func tapWireFrame(sender: NSButton) {
+        renderer.isWireFrame = (sender.state != 0)
+    }
 
     // MARK: -
     private func setupMetal() {

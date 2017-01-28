@@ -684,14 +684,14 @@
             <objects>
                 <viewController id="XfG-lQ-9wD" customClass="ViewController" customModule="MetalTessellation" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" wantsLayer="YES" id="m2S-Jp-Qdl">
-                        <rect key="frame" x="0.0" y="0.0" width="798" height="447"/>
+                        <rect key="frame" x="0.0" y="0.0" width="798" height="494"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
                             <customView translatesAutoresizingMaskIntoConstraints="NO" id="yAh-37-gi9" customClass="MTKView">
-                                <rect key="frame" x="0.0" y="0.0" width="508" height="447"/>
+                                <rect key="frame" x="0.0" y="0.0" width="508" height="494"/>
                             </customView>
                             <box title="Tessellation" translatesAutoresizingMaskIntoConstraints="NO" id="dNA-w4-oHJ">
-                                <rect key="frame" x="525" y="307" width="256" height="120"/>
+                                <rect key="frame" x="525" y="320" width="256" height="120"/>
                                 <view key="contentView" id="OWG-7I-Uaz">
                                     <rect key="frame" x="2" y="2" width="252" height="103"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -725,7 +725,7 @@
                                 </constraints>
                             </box>
                             <box title="Phong Tessellation" translatesAutoresizingMaskIntoConstraints="NO" id="8yG-ef-Ecg">
-                                <rect key="frame" x="525" y="171" width="256" height="120"/>
+                                <rect key="frame" x="525" y="184" width="256" height="120"/>
                                 <view key="contentView" id="27J-UJ-p9Q">
                                     <rect key="frame" x="2" y="2" width="252" height="103"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -759,7 +759,7 @@
                                 </constraints>
                             </box>
                             <box title="Displacement Map" translatesAutoresizingMaskIntoConstraints="NO" id="yAi-VX-cnr">
-                                <rect key="frame" x="525" y="35" width="256" height="120"/>
+                                <rect key="frame" x="525" y="48" width="256" height="120"/>
                                 <view key="contentView" id="mI5-zX-rmz">
                                     <rect key="frame" x="2" y="2" width="252" height="103"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -792,15 +792,27 @@
                                     <constraint firstAttribute="width" constant="250" id="Ke9-fY-ldq"/>
                                 </constraints>
                             </box>
+                            <button translatesAutoresizingMaskIntoConstraints="NO" id="fLQ-ZJ-m2h">
+                                <rect key="frame" x="526" y="458" width="88" height="18"/>
+                                <buttonCell key="cell" type="check" title="WireFrame" bezelStyle="regularSquare" imagePosition="left" inset="2" id="b1A-jJ-Frd">
+                                    <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="tapWireFrameWithSender:" target="XfG-lQ-9wD" id="Tcv-Hc-Qrl"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <constraints>
                             <constraint firstItem="yAi-VX-cnr" firstAttribute="top" secondItem="8yG-ef-Ecg" secondAttribute="bottom" constant="20" id="4kw-LH-xyv"/>
                             <constraint firstAttribute="trailing" secondItem="yAi-VX-cnr" secondAttribute="trailing" constant="20" id="8yU-B8-rid"/>
                             <constraint firstItem="dNA-w4-oHJ" firstAttribute="leading" secondItem="yAh-37-gi9" secondAttribute="trailing" constant="20" id="IAD-ti-8gn"/>
                             <constraint firstItem="yAh-37-gi9" firstAttribute="leading" secondItem="m2S-Jp-Qdl" secondAttribute="leading" id="Kcj-at-yFc"/>
+                            <constraint firstItem="fLQ-ZJ-m2h" firstAttribute="leading" secondItem="yAh-37-gi9" secondAttribute="trailing" constant="20" id="Lci-ud-VEO"/>
                             <constraint firstItem="yAi-VX-cnr" firstAttribute="leading" secondItem="yAh-37-gi9" secondAttribute="trailing" constant="20" id="Rw8-lD-Id4"/>
                             <constraint firstAttribute="bottom" secondItem="yAh-37-gi9" secondAttribute="bottom" id="dji-Tl-F7R"/>
-                            <constraint firstItem="dNA-w4-oHJ" firstAttribute="top" secondItem="m2S-Jp-Qdl" secondAttribute="top" constant="20" id="qsg-E6-sAy"/>
+                            <constraint firstItem="dNA-w4-oHJ" firstAttribute="top" secondItem="fLQ-ZJ-m2h" secondAttribute="bottom" constant="20" id="fta-9Q-QmD"/>
+                            <constraint firstItem="fLQ-ZJ-m2h" firstAttribute="top" secondItem="m2S-Jp-Qdl" secondAttribute="top" constant="20" id="mCx-TH-mu7"/>
                             <constraint firstAttribute="trailing" secondItem="dNA-w4-oHJ" secondAttribute="trailing" constant="20" id="u7g-s4-3ZS"/>
                             <constraint firstAttribute="trailing" secondItem="8yG-ef-Ecg" secondAttribute="trailing" constant="20" id="vJ4-NH-BCX"/>
                             <constraint firstItem="8yG-ef-Ecg" firstAttribute="leading" secondItem="yAh-37-gi9" secondAttribute="trailing" constant="20" id="vaj-gc-HyX"/>
@@ -814,7 +826,7 @@
                 </viewController>
                 <customObject id="rPt-NT-nkU" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="234" y="743.5"/>
+            <point key="canvasLocation" x="234" y="767"/>
         </scene>
     </scenes>
 </document>
