@@ -22,7 +22,7 @@ class MeshRenderer: RenderObject {
     }
     
     let vertexTexture: MTLTexture? = nil
-    let fragmentTexture: MTLTexture? = nil
+    let fragmentTexture: MTLTexture?
 
     var modelMatrix = matrix_identity_float4x4
 
@@ -43,17 +43,22 @@ class MeshRenderer: RenderObject {
         renderDescriptor.vertexDescriptor = MTKMetalVertexDescriptorFromModelIO(mesh.vertexDescriptor)
         renderDescriptor.sampleCount = mtkView.sampleCount
         renderDescriptor.colorAttachments[0].pixelFormat = mtkView.colorPixelFormat
-        renderDescriptor.vertexFunction = library.makeFunction(name: "passThroughVertex")
-        renderDescriptor.fragmentFunction = library.makeFunction(name: "passThroughFragment")
+        renderDescriptor.vertexFunction = library.makeFunction(name: "lambertVertex")
+        renderDescriptor.fragmentFunction = library.makeFunction(name: "lambertFragment")
         renderDescriptor.depthAttachmentPixelFormat = mtkView.depthStencilPixelFormat
         renderDescriptor.stencilAttachmentPixelFormat = mtkView.depthStencilPixelFormat
-        
         self.renderState = try! device.makeRenderPipelineState(descriptor: renderDescriptor)
         
         let depthDescriptor = MTLDepthStencilDescriptor()
         depthDescriptor.depthCompareFunction = .less
         depthDescriptor.isDepthWriteEnabled = true
         self.depthStencilState = device.makeDepthStencilState(descriptor: depthDescriptor)
+        
+        let loader = MTKTextureLoader(device: device)
+        self.fragmentTexture = try! loader.newTexture(withContentsOf: Bundle.main.url(forResource: "checkerboard",
+                                                                                      withExtension: "png")!,
+                                                      options: nil)
+
     }
     
     func update(renderer: Renderer) {

@@ -14,7 +14,9 @@
 		0E45AB5D1E3CD5A2000AA11D /* Renderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E45AB5C1E3CD5A2000AA11D /* Renderer.swift */; };
 		0E45AB5F1E3CD716000AA11D /* Matrix.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E45AB5E1E3CD716000AA11D /* Matrix.swift */; };
 		0E45AB611E3CF3BE000AA11D /* MeshRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E45AB601E3CF3BE000AA11D /* MeshRenderer.swift */; };
-		0E45AB631E3CF936000AA11D /* Shaders.metal in Sources */ = {isa = PBXBuildFile; fileRef = 0E45AB621E3CF936000AA11D /* Shaders.metal */; };
+		0E45AB691E3D05F5000AA11D /* Common.metal in Sources */ = {isa = PBXBuildFile; fileRef = 0E45AB681E3D05F5000AA11D /* Common.metal */; };
+		0E45AB6B1E3D0763000AA11D /* LambertShader.metal in Sources */ = {isa = PBXBuildFile; fileRef = 0E45AB6A1E3D0763000AA11D /* LambertShader.metal */; };
+		0E45AB6D1E3D09B5000AA11D /* checkerboard.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E45AB6C1E3D09B5000AA11D /* checkerboard.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -27,7 +29,9 @@
 		0E45AB5C1E3CD5A2000AA11D /* Renderer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Renderer.swift; sourceTree = "<group>"; };
 		0E45AB5E1E3CD716000AA11D /* Matrix.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Matrix.swift; sourceTree = "<group>"; };
 		0E45AB601E3CF3BE000AA11D /* MeshRenderer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MeshRenderer.swift; sourceTree = "<group>"; };
-		0E45AB621E3CF936000AA11D /* Shaders.metal */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.metal; path = Shaders.metal; sourceTree = "<group>"; };
+		0E45AB681E3D05F5000AA11D /* Common.metal */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.metal; path = Common.metal; sourceTree = "<group>"; };
+		0E45AB6A1E3D0763000AA11D /* LambertShader.metal */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.metal; path = LambertShader.metal; sourceTree = "<group>"; };
+		0E45AB6C1E3D09B5000AA11D /* checkerboard.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = checkerboard.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -65,7 +69,9 @@
 				0E45AB5C1E3CD5A2000AA11D /* Renderer.swift */,
 				0E45AB5E1E3CD716000AA11D /* Matrix.swift */,
 				0E45AB601E3CF3BE000AA11D /* MeshRenderer.swift */,
-				0E45AB621E3CF936000AA11D /* Shaders.metal */,
+				0E45AB681E3D05F5000AA11D /* Common.metal */,
+				0E45AB6A1E3D0763000AA11D /* LambertShader.metal */,
+				0E45AB6C1E3D09B5000AA11D /* checkerboard.png */,
 				0E45AB511E3CAF09000AA11D /* Assets.xcassets */,
 				0E45AB531E3CAF09000AA11D /* Main.storyboard */,
 				0E45AB561E3CAF09000AA11D /* Info.plist */,
@@ -134,6 +140,7 @@
 			files = (
 				0E45AB521E3CAF09000AA11D /* Assets.xcassets in Resources */,
 				0E45AB551E3CAF09000AA11D /* Main.storyboard in Resources */,
+				0E45AB6D1E3D09B5000AA11D /* checkerboard.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -144,8 +151,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0E45AB631E3CF936000AA11D /* Shaders.metal in Sources */,
 				0E45AB5F1E3CD716000AA11D /* Matrix.swift in Sources */,
+				0E45AB6B1E3D0763000AA11D /* LambertShader.metal in Sources */,
+				0E45AB691E3D05F5000AA11D /* Common.metal in Sources */,
 				0E45AB611E3CF3BE000AA11D /* MeshRenderer.swift in Sources */,
 				0E45AB501E3CAF09000AA11D /* ViewController.swift in Sources */,
 				0E45AB5D1E3CD5A2000AA11D /* Renderer.swift in Sources */,
