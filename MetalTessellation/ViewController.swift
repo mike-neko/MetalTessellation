@@ -16,7 +16,7 @@ class ViewController: NSViewController {
     @IBOutlet private weak var phongFactorLabel: NSTextField!
 
     private var renderer: Renderer!
-    private var tessellationBox: TessellationRenderer!
+    private var tessellationBox: TessellationMeshRenderer!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -61,8 +61,12 @@ class ViewController: NSViewController {
     }
 
     private func setupAsset() {
-        tessellationBox = TessellationRenderer(renderer: renderer)
+        tessellationBox = TessellationMeshRenderer(renderer: renderer)
         renderer.targets.append(tessellationBox)
+//        tessellationBox.isActive = false
+        let a = TessellationMeshRenderer(renderer: renderer)
+//        renderer.targets.append(a)
+        
     }
 }
 
