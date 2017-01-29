@@ -12,6 +12,8 @@ import MetalKit
 class ViewController: NSViewController {
     
     @IBOutlet private weak var mtkView: MTKView!
+    @IBOutlet private weak var tessellationFactorLabel: NSTextField!
+    @IBOutlet private weak var phongFactorLabel: NSTextField!
 
     private var renderer: Renderer!
     private var tessellationBox: TessellationRenderer!
@@ -38,7 +40,14 @@ class ViewController: NSViewController {
     @IBAction func changeTessellationFactor(sender: NSSlider) {
         tessellationBox.edgeFactor = UInt16(sender.integerValue)
         tessellationBox.insideFactor = UInt16(sender.integerValue)
+        tessellationFactorLabel.integerValue = sender.integerValue
     }
+    
+    @IBAction func changePhongFactor(sender: NSSlider) {
+        tessellationBox.phongFactor = sender.floatValue
+        phongFactorLabel.stringValue = String(format: "%.02f", sender.floatValue)
+    }
+
     
     // MARK: -
     private func setupMetal() {
