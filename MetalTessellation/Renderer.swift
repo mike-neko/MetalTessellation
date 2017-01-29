@@ -18,8 +18,10 @@ protocol RenderObject {
     var vertexTexture: MTLTexture? { get }
     var fragmentTexture: MTLTexture? { get }
     
+    var isActive: Bool { get set }
     var modelMatrix: matrix_float4x4 { get }
     
+    func compute(renderer: Renderer, commandBuffer: MTLCommandBuffer)
     func update(renderer: Renderer)
     func render(renderer: Renderer, encoder: MTLRenderCommandEncoder)
 }
@@ -129,9 +131,11 @@ class Renderer: NSObject, MTKViewDelegate {
             lastTime = Date()
             totalTime += deltaTime
 
+            let commandBuffer = commandQueue.makeCommandBuffer()
+            compute(commandBuffer: commandBuffer)
+
             update()
 
-            let commandBuffer = commandQueue.makeCommandBuffer()
             let renderEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: renderDescriptor)
             render(encoder: renderEncoder)
             renderEncoder.endEncoding()
@@ -146,14 +150,25 @@ class Renderer: NSObject, MTKViewDelegate {
     }
     
     // MARK: - private
+    private func compute(commandBuffer: MTLCommandBuffer) {
+        targets.forEach {
+            guard $0.isActive else { return }
+            $0.compute(renderer: self, commandBuffer: commandBuffer)
+        }
+    }
+    
     private func update() {
-        targets.forEach { $0.update(renderer: self) }
+        targets.forEach {
+            guard $0.isActive else { return }
+            $0.update(renderer: self)
+        }
     }
 
     private func render(encoder: MTLRenderCommandEncoder) {
         let fillMode: MTLTriangleFillMode = isWireFrame ? .lines : .fill
 
         targets.forEach {
+            guard $0.isActive else { return }
             encoder.pushDebugGroup($0.name)
             
             encoder.setRenderPipelineState($0.renderState)

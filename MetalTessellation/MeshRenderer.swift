@@ -24,6 +24,7 @@ class MeshRenderer: RenderObject {
     let vertexTexture: MTLTexture? = nil
     let fragmentTexture: MTLTexture?
 
+    var isActive = true
     var modelMatrix = matrix_identity_float4x4
 
     init(renderer: Renderer) {
@@ -59,6 +60,9 @@ class MeshRenderer: RenderObject {
                                                                                       withExtension: "png")!,
                                                       options: nil)
 
+    }
+    
+    func compute(renderer: Renderer, commandBuffer: MTLCommandBuffer) {
     }
     
     func update(renderer: Renderer) {

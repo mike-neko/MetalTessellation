@@ -14,6 +14,7 @@ class ViewController: NSViewController {
     @IBOutlet private weak var mtkView: MTKView!
 
     private var renderer: Renderer!
+    private var tessellationBox: TessellationRenderer!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -34,6 +35,11 @@ class ViewController: NSViewController {
         renderer.isWireFrame = (sender.state != 0)
     }
 
+    @IBAction func changeTessellationFactor(sender: NSSlider) {
+        tessellationBox.edgeFactor = UInt16(sender.integerValue)
+        tessellationBox.insideFactor = UInt16(sender.integerValue)
+    }
+    
     // MARK: -
     private func setupMetal() {
         mtkView.sampleCount = 4
@@ -46,8 +52,8 @@ class ViewController: NSViewController {
     }
 
     private func setupAsset() {
-        let obj = TessellationRenderer(renderer: renderer)
-        renderer.targets.append(obj)
+        tessellationBox = TessellationRenderer(renderer: renderer)
+        renderer.targets.append(tessellationBox)
     }
 }
 

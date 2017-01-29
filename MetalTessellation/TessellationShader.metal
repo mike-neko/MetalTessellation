@@ -29,13 +29,20 @@ struct PhongPatch {
 
 float3 PI(ControlPoint q, ControlPoint I);
 
+kernel void tessellationFactorsCompute(constant uint2& factor [[ buffer(0) ]],
+                                       device MTLTriangleTessellationFactorsHalf* factors [[ buffer(1) ]]) {
+    factors[0].edgeTessellationFactor[0] = factor.x;
+    factors[0].edgeTessellationFactor[1] = factor.x;
+    factors[0].edgeTessellationFactor[2] = factor.x;
+    factors[0].insideTessellationFactor = factor.y;
+}
+
 [[patch(triangle, 3)]]
 vertex VertexOut tessellationTriangleVertex(PatchIn patchIn [[stage_in]],
-                                      constant VertexUniforms& uniforms [[ buffer(1) ]],
-                                      constant TessellationUniforms& tessellation [[ buffer(2) ]],
-                                      float3 patchCoord [[ position_in_patch ]],
-                                      texture2d<float, access::sample> texture [[ texture(0) ]])
-{
+                                            constant VertexUniforms& uniforms [[ buffer(1) ]],
+                                            constant TessellationUniforms& tessellation [[ buffer(2) ]],
+                                            float3 patchCoord [[ position_in_patch ]],
+                                            texture2d<float, access::sample> texture [[ texture(0) ]]) {
     auto u = patchCoord.x;
     auto v = patchCoord.y;
     auto w = patchCoord.z;
@@ -69,7 +76,6 @@ vertex VertexOut tessellationTriangleVertex(PatchIn patchIn [[stage_in]],
     return out;
 }
 
-float3 PI(ControlPoint q, ControlPoint I)
-{
+float3 PI(ControlPoint q, ControlPoint I) {
     return q.position - dot(q.position - I.position, I.normal) * I.normal;
 }

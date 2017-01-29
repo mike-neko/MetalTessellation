@@ -708,7 +708,10 @@
                                         </segmentedControl>
                                         <slider verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="BoB-DH-zJb">
                                             <rect key="frame" x="18" y="18" width="216" height="24"/>
-                                            <sliderCell key="cell" state="on" alignment="left" minValue="1" maxValue="16" doubleValue="1" tickMarkPosition="above" numberOfTickMarks="4" sliderType="linear" id="Bjt-oZ-Scw"/>
+                                            <sliderCell key="cell" continuous="YES" state="on" alignment="left" minValue="1" maxValue="16" doubleValue="1" tickMarkPosition="above" numberOfTickMarks="4" sliderType="linear" id="Bjt-oZ-Scw"/>
+                                            <connections>
+                                                <action selector="changeTessellationFactorWithSender:" target="XfG-lQ-9wD" id="5f3-NK-l3R"/>
+                                            </connections>
                                         </slider>
                                     </subviews>
                                     <constraints>
@@ -725,33 +728,21 @@
                                 </constraints>
                             </box>
                             <box title="Phong Tessellation" translatesAutoresizingMaskIntoConstraints="NO" id="8yG-ef-Ecg">
-                                <rect key="frame" x="525" y="184" width="256" height="120"/>
+                                <rect key="frame" x="525" y="225" width="256" height="79"/>
                                 <view key="contentView" id="27J-UJ-p9Q">
-                                    <rect key="frame" x="2" y="2" width="252" height="103"/>
+                                    <rect key="frame" x="2" y="2" width="252" height="62"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
-                                        <segmentedControl verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="azC-WE-SA6">
-                                            <rect key="frame" x="18" y="60" width="71" height="24"/>
-                                            <segmentedCell key="cell" borderStyle="border" alignment="left" style="rounded" trackingMode="selectOne" id="XEl-Nn-Ps9">
-                                                <font key="font" metaFont="system"/>
-                                                <segments>
-                                                    <segment label="On" width="32"/>
-                                                    <segment label="Off" width="32" selected="YES" tag="1"/>
-                                                </segments>
-                                            </segmentedCell>
-                                        </segmentedControl>
                                         <slider verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="z0I-tX-Zp5">
                                             <rect key="frame" x="18" y="18" width="216" height="24"/>
-                                            <sliderCell key="cell" state="on" alignment="left" minValue="1" maxValue="16" doubleValue="1" tickMarkPosition="above" numberOfTickMarks="4" sliderType="linear" id="3Qm-gr-Suv"/>
+                                            <sliderCell key="cell" state="on" alignment="left" maxValue="1" tickMarkPosition="above" numberOfTickMarks="4" sliderType="linear" id="3Qm-gr-Suv"/>
                                         </slider>
                                     </subviews>
                                     <constraints>
                                         <constraint firstAttribute="trailing" secondItem="z0I-tX-Zp5" secondAttribute="trailing" constant="20" id="2CY-pA-C3q"/>
-                                        <constraint firstItem="z0I-tX-Zp5" firstAttribute="top" secondItem="azC-WE-SA6" secondAttribute="bottom" constant="20" id="Dnv-vo-pvP"/>
                                         <constraint firstAttribute="bottom" secondItem="z0I-tX-Zp5" secondAttribute="bottom" constant="20" id="RqW-ke-QgU"/>
                                         <constraint firstItem="z0I-tX-Zp5" firstAttribute="leading" secondItem="27J-UJ-p9Q" secondAttribute="leading" constant="20" id="TNS-Kc-bai"/>
-                                        <constraint firstItem="azC-WE-SA6" firstAttribute="top" secondItem="27J-UJ-p9Q" secondAttribute="top" constant="20" id="smv-mc-rZJ"/>
-                                        <constraint firstItem="azC-WE-SA6" firstAttribute="leading" secondItem="27J-UJ-p9Q" secondAttribute="leading" constant="20" id="ycj-bc-kaP"/>
+                                        <constraint firstItem="z0I-tX-Zp5" firstAttribute="top" secondItem="27J-UJ-p9Q" secondAttribute="top" constant="20" id="gLR-nj-4bo"/>
                                     </constraints>
                                 </view>
                                 <constraints>
@@ -759,30 +750,18 @@
                                 </constraints>
                             </box>
                             <box title="Displacement Map" translatesAutoresizingMaskIntoConstraints="NO" id="yAi-VX-cnr">
-                                <rect key="frame" x="525" y="48" width="256" height="120"/>
+                                <rect key="frame" x="525" y="130" width="256" height="79"/>
                                 <view key="contentView" id="mI5-zX-rmz">
-                                    <rect key="frame" x="2" y="2" width="252" height="103"/>
+                                    <rect key="frame" x="2" y="2" width="252" height="62"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
-                                        <segmentedControl verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="64H-4k-0Vp">
-                                            <rect key="frame" x="18" y="60" width="71" height="24"/>
-                                            <segmentedCell key="cell" borderStyle="border" alignment="left" style="rounded" trackingMode="selectOne" id="dss-0a-qER">
-                                                <font key="font" metaFont="system"/>
-                                                <segments>
-                                                    <segment label="On" width="32"/>
-                                                    <segment label="Off" width="32" selected="YES" tag="1"/>
-                                                </segments>
-                                            </segmentedCell>
-                                        </segmentedControl>
                                         <slider verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="ESU-qE-YyA">
                                             <rect key="frame" x="18" y="18" width="216" height="24"/>
-                                            <sliderCell key="cell" state="on" alignment="left" minValue="1" maxValue="16" doubleValue="1" tickMarkPosition="above" numberOfTickMarks="4" sliderType="linear" id="h8x-Cq-6TO"/>
+                                            <sliderCell key="cell" state="on" alignment="left" maxValue="1" tickMarkPosition="above" numberOfTickMarks="4" sliderType="linear" id="h8x-Cq-6TO"/>
                                         </slider>
                                     </subviews>
                                     <constraints>
-                                        <constraint firstItem="64H-4k-0Vp" firstAttribute="leading" secondItem="mI5-zX-rmz" secondAttribute="leading" constant="20" id="GcE-jL-hh8"/>
-                                        <constraint firstItem="ESU-qE-YyA" firstAttribute="top" secondItem="64H-4k-0Vp" secondAttribute="bottom" constant="20" id="Mx2-Ob-Chn"/>
-                                        <constraint firstItem="64H-4k-0Vp" firstAttribute="top" secondItem="mI5-zX-rmz" secondAttribute="top" constant="20" id="dRg-jk-1LD"/>
+                                        <constraint firstItem="ESU-qE-YyA" firstAttribute="top" secondItem="mI5-zX-rmz" secondAttribute="top" constant="20" id="SF0-4U-nS1"/>
                                         <constraint firstAttribute="bottom" secondItem="ESU-qE-YyA" secondAttribute="bottom" constant="20" id="ne0-Hh-oqd"/>
                                         <constraint firstItem="ESU-qE-YyA" firstAttribute="leading" secondItem="mI5-zX-rmz" secondAttribute="leading" constant="20" id="rYJ-3f-ar2"/>
                                         <constraint firstAttribute="trailing" secondItem="ESU-qE-YyA" secondAttribute="trailing" constant="20" id="skR-H8-IVY"/>
