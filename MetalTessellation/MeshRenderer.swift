@@ -32,13 +32,23 @@ class MeshRenderer: RenderObject {
         let library = renderer.library
         let mtkView = renderer.view!
         
-        let mdlMesh = MDLMesh.newBox(withDimensions: vector_float3(1, 1, 1),
-                                     segments: vector_uint3(1, 1, 1),
-                                     geometryType: .triangles,
-                                     inwardNormals: false,
-                                     allocator: MTKMeshBufferAllocator(device: device))
-
-        self.mesh = try! MTKMesh(mesh: mdlMesh, device: device)
+        let asset = MDLAsset(url: Bundle.main.url(forResource: "a", withExtension: "obj")!,
+                             vertexDescriptor: nil,
+                             bufferAllocator: MTKMeshBufferAllocator(device: device))
+        
+        // 0決め打ち
+        var mdlArray: NSArray?
+        let mtkMeshes = try! MTKMesh.newMeshes(from: asset, device: device, sourceMeshes: &mdlArray)
+        self.mesh = mtkMeshes[0]
+        
+        let mdl = mdlArray![0] as! MDLMesh
+                let diff = mdl.boundingBox.maxBounds - mdl.boundingBox.minBounds
+                let scale = 1.0 / max(diff.x, max(diff.y, diff.z))
+                let center = (mdl.boundingBox.maxBounds + mdl.boundingBox.minBounds) / vector_float3(2)
+                let normalizeMatrix = matrix_multiply(Matrix.scale(x: scale, y: scale, z: scale),
+                                                      Matrix.translation(x: -center.x, y: -center.y, z: -center.z))
+        
+                modelMatrix = matrix_multiply(Matrix.scale(x: 2, y: 2, z: 2), normalizeMatrix)
         
         let renderDescriptor = MTLRenderPipelineDescriptor()
         renderDescriptor.vertexDescriptor = MTKMetalVertexDescriptorFromModelIO(mesh.vertexDescriptor)

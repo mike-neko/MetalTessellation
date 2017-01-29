@@ -29,7 +29,7 @@ protocol RenderObject {
 class Renderer: NSObject, MTKViewDelegate {
     // MARK: Vertex
     struct Vertex {
-        let position: float4
+        let position: float3
         let normal: float3
         let texcoord: float2
         

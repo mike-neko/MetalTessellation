@@ -20,6 +20,8 @@
 		0E45AB6F1E3D0B94000AA11D /* TessellationShader.metal in Sources */ = {isa = PBXBuildFile; fileRef = 0E45AB6E1E3D0B94000AA11D /* TessellationShader.metal */; };
 		0E45AB711E3D0F07000AA11D /* TessellationRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E45AB701E3D0F07000AA11D /* TessellationRenderer.swift */; };
 		0E45AB731E3E01FF000AA11D /* TessellationMeshRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E45AB721E3E01FF000AA11D /* TessellationMeshRenderer.swift */; };
+		0E5F21461E3E3B620045D5C8 /* teapot.obj in Resources */ = {isa = PBXBuildFile; fileRef = 0E5F21451E3E3B620045D5C8 /* teapot.obj */; };
+		0E5F214B1E3E40AE0045D5C8 /* a.obj in Resources */ = {isa = PBXBuildFile; fileRef = 0E5F214A1E3E40AE0045D5C8 /* a.obj */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -38,6 +40,8 @@
 		0E45AB6E1E3D0B94000AA11D /* TessellationShader.metal */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.metal; path = TessellationShader.metal; sourceTree = "<group>"; };
 		0E45AB701E3D0F07000AA11D /* TessellationRenderer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TessellationRenderer.swift; sourceTree = "<group>"; };
 		0E45AB721E3E01FF000AA11D /* TessellationMeshRenderer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TessellationMeshRenderer.swift; sourceTree = "<group>"; };
+		0E5F21451E3E3B620045D5C8 /* teapot.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = teapot.obj; sourceTree = "<group>"; };
+		0E5F214A1E3E40AE0045D5C8 /* a.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = a.obj; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -81,6 +85,8 @@
 				0E45AB6A1E3D0763000AA11D /* LambertShader.metal */,
 				0E45AB6E1E3D0B94000AA11D /* TessellationShader.metal */,
 				0E45AB6C1E3D09B5000AA11D /* checkerboard.png */,
+				0E5F214A1E3E40AE0045D5C8 /* a.obj */,
+				0E5F21451E3E3B620045D5C8 /* teapot.obj */,
 				0E45AB511E3CAF09000AA11D /* Assets.xcassets */,
 				0E45AB531E3CAF09000AA11D /* Main.storyboard */,
 				0E45AB561E3CAF09000AA11D /* Info.plist */,
@@ -147,7 +153,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0E5F21461E3E3B620045D5C8 /* teapot.obj in Resources */,
 				0E45AB521E3CAF09000AA11D /* Assets.xcassets in Resources */,
+				0E5F214B1E3E40AE0045D5C8 /* a.obj in Resources */,
 				0E45AB551E3CAF09000AA11D /* Main.storyboard in Resources */,
 				0E45AB6D1E3D09B5000AA11D /* checkerboard.png in Resources */,
 			);
@@ -322,6 +330,7 @@
 				0E45AB5B1E3CAF09000AA11D /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

@@ -62,10 +62,10 @@ class ViewController: NSViewController {
 
     private func setupAsset() {
         tessellationBox = TessellationMeshRenderer(renderer: renderer)
-        renderer.targets.append(tessellationBox)
+//        renderer.targets.append(tessellationBox)
 //        tessellationBox.isActive = false
-        let a = TessellationMeshRenderer(renderer: renderer)
-//        renderer.targets.append(a)
+        let a = MeshRenderer(renderer: renderer)
+        renderer.targets.append(a)
         
     }
 }
