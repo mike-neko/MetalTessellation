@@ -10,17 +10,13 @@ import Foundation
 import MetalKit
 
 class MeshRenderer: RenderObject {
-    let mesh: MTKMesh
-
     // MARK: - Common
     var name = "MeshRenderer"
     let renderState: MTLRenderPipelineState
     let depthStencilState: MTLDepthStencilState
-    
-    var vertexBuffer: MTLBuffer {
-        return mesh.vertexBuffers[0].buffer
-    }
-    
+
+    let vertexCount: Int
+    let vertexBuffer: MTLBuffer
     let vertexTexture: MTLTexture? = nil
     let fragmentTexture: MTLTexture?
 
@@ -32,26 +28,22 @@ class MeshRenderer: RenderObject {
         let library = renderer.library
         let mtkView = renderer.view!
         
-        let asset = MDLAsset(url: Bundle.main.url(forResource: "a", withExtension: "obj")!,
-                             vertexDescriptor: nil,
-                             bufferAllocator: MTKMeshBufferAllocator(device: device))
+        let mdlMesh = MDLMesh.newBox(withDimensions: vector_float3(2, 2, 1),
+                                     segments: vector_uint3(2, 2, 2),
+                                     geometryType: .triangles,
+                                     inwardNormals: false,
+                                     allocator: MTKMeshBufferAllocator(device: device))
+
         
-        // 0決め打ち
-        var mdlArray: NSArray?
-        let mtkMeshes = try! MTKMesh.newMeshes(from: asset, device: device, sourceMeshes: &mdlArray)
-        self.mesh = mtkMeshes[0]
+//        let o = Geometry(withMDLMesh: mdlMesh, device: device)!
+        let o = Geometry(url: Bundle.main.url(forResource: "a", withExtension: "obj")!, device: device)!
+        modelMatrix = matrix_multiply(Matrix.scale(x: 2, y: 2, z: 2), o.normalizeMatrix)
+        vertexCount = o.vertexCount
+        vertexBuffer = o.vertexBuffer
         
-        let mdl = mdlArray![0] as! MDLMesh
-                let diff = mdl.boundingBox.maxBounds - mdl.boundingBox.minBounds
-                let scale = 1.0 / max(diff.x, max(diff.y, diff.z))
-                let center = (mdl.boundingBox.maxBounds + mdl.boundingBox.minBounds) / vector_float3(2)
-                let normalizeMatrix = matrix_multiply(Matrix.scale(x: scale, y: scale, z: scale),
-                                                      Matrix.translation(x: -center.x, y: -center.y, z: -center.z))
-        
-                modelMatrix = matrix_multiply(Matrix.scale(x: 2, y: 2, z: 2), normalizeMatrix)
         
         let renderDescriptor = MTLRenderPipelineDescriptor()
-        renderDescriptor.vertexDescriptor = MTKMetalVertexDescriptorFromModelIO(mesh.vertexDescriptor)
+        renderDescriptor.vertexDescriptor = o.vertexDescriptor
         renderDescriptor.sampleCount = mtkView.sampleCount
         renderDescriptor.colorAttachments[0].pixelFormat = mtkView.colorPixelFormat
         renderDescriptor.vertexFunction = library.makeFunction(name: "lambertVertex")
@@ -80,12 +72,7 @@ class MeshRenderer: RenderObject {
     }
     
     func render(renderer: Renderer, encoder: MTLRenderCommandEncoder) {
-        let sub = mesh.submeshes[0]
-        encoder.drawIndexedPrimitives(type: sub.primitiveType,
-                                      indexCount: sub.indexCount,
-                                      indexType: sub.indexType,
-                                      indexBuffer: sub.indexBuffer.buffer,
-                                      indexBufferOffset: sub.indexBuffer.offset)
-
+        encoder.drawPrimitives(type: .triangle, vertexStart: 0, vertexCount: vertexCount)
+        
     }
 }
