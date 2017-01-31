@@ -49,7 +49,21 @@ class Matrix {
             vector_float4(x * z * ci + y * st, y * z * ci - x * st, ct + z * z * ci, 0),
             vector_float4(0, 0, 0, 1)))
     }
+    
+    static func scale(x: Float, y: Float, z: Float) -> matrix_float4x4 {
+        return matrix_float4x4(columns: (vector_float4(x, 0, 0, 0),
+                                         vector_float4(0, y, 0, 0),
+                                         vector_float4(0, 0, z, 0),
+                                         vector_float4(0, 0, 0, 1)))
+    }
 
+    static func translation(x: Float, y: Float, z: Float) -> matrix_float4x4 {
+        return matrix_float4x4(columns: (vector_float4(1, 0, 0, 0),
+                                         vector_float4(0, 1, 0, 0),
+                                         vector_float4(0, 0, 1, 0),
+                                         vector_float4(x, y, z, 1)))
+    }
+    
     static func toUpperLeft3x3(from4x4 m: matrix_float4x4) -> matrix_float3x3 {
         let x = m.columns.0
         let y = m.columns.1

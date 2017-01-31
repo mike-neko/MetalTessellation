@@ -55,21 +55,48 @@ class TessellationMeshRenderer: RenderObject {
         let library = renderer.library
         let mtkView = renderer.view!
         
-        let mdlMesh = MDLMesh(sphereWithExtent: vector_float3(2, 2, 2),
-                              segments: vector_uint2(8, 8),
-                              inwardNormals: false,
-                              geometryType: .triangles,
-                              allocator: MTKMeshBufferAllocator(device: device))
+
+        let asset = MDLAsset(url: Bundle.main.url(forResource: "a", withExtension: "obj")!,
+                             vertexDescriptor: MTKModelIOVertexDescriptorFromMetal(Renderer.Vertex.vertexDescriptor()),
+                             bufferAllocator: MTKMeshBufferAllocator(device: device))
+
+        // 0決め打ち
+        var mdlArray: NSArray?
+        let mtkMeshes = try! MTKMesh.newMeshes(from: asset, device: device, sourceMeshes: &mdlArray)
+        let mesh = mtkMeshes[0]
+        
+        let mdl = mdlArray![0] as! MDLMesh
+//        let diff = mdl.boundingBox.maxBounds - mdl.boundingBox.minBounds
+//        let scale = 1.0 / max(diff.x, max(diff.y, diff.z))
+//        let center = (mdl.boundingBox.maxBounds + mdl.boundingBox.minBounds) / vector_float3(2)
+//        let normalizeMatrix = matrix_multiply(matrix4x4_scale(scale, scale, scale),
+//                                              matrix4x4_translation(-center.x, -center.y, -center.z))
+//        
+//        modelMatrix = matrix_multiply(matrix4x4_scale(2, 2, 2), normalizeMatrix)
+        
+//        let mdlMesh = MDLMesh(sphereWithExtent: vector_float3(2, 2, 2),
+//                              segments: vector_uint2(8, 8),
+//                              inwardNormals: false,
+//                              geometryType: .triangles,
+//                              allocator: MTKMeshBufferAllocator(device: device))
 //        let mdlMesh = MDLMesh.newBox(withDimensions: vector_float3(2, 2, 2),
 //                                     segments: vector_uint3(1, 1, 1),
 //                                     geometryType: .triangles,
 //                                     inwardNormals: false,
 //                                     allocator: MTKMeshBufferAllocator(device: device))
         
-        let mesh = try! MTKMesh(mesh: mdlMesh, device: device)
-        
         let vertexDescriptor = MTKMetalVertexDescriptorFromModelIO(mesh.vertexDescriptor)
         vertexDescriptor.layouts[0].stepFunction = .perPatchControlPoint
+        
+        print(vertexDescriptor.attributes[0].offset)
+        print(vertexDescriptor.attributes[0].format.rawValue)
+        print(vertexDescriptor.attributes[1].offset)
+        print(vertexDescriptor.attributes[1].format.rawValue)
+        print(vertexDescriptor.attributes[2].offset)
+        print(vertexDescriptor.attributes[2].format.rawValue)
+        print(vertexDescriptor.attributes[3].offset)
+        print(vertexDescriptor.attributes[3].format.rawValue)
+        print(vertexDescriptor.layouts[0].stride)
         
         let renderDescriptor = MTLRenderPipelineDescriptor()
         renderDescriptor.vertexDescriptor = vertexDescriptor

@@ -10,38 +10,41 @@ import Foundation
 import MetalKit
 
 class MeshRenderer: RenderObject {
-    let mesh: MTKMesh
-
     // MARK: - Common
     var name = "MeshRenderer"
     let renderState: MTLRenderPipelineState
     let depthStencilState: MTLDepthStencilState
     
-    var vertexBuffer: MTLBuffer {
-        return mesh.vertexBuffers[0].buffer
-    }
-    
+    let vertexCount: Int
+    let vertexBuffer: MTLBuffer
     let vertexTexture: MTLTexture? = nil
     let fragmentTexture: MTLTexture?
-
+    
     var isActive = true
     var modelMatrix = matrix_identity_float4x4
-
+    var baseMatrix: matrix_float4x4
+    
     init(renderer: Renderer) {
         let device = renderer.device
         let library = renderer.library
         let mtkView = renderer.view!
         
-        let mdlMesh = MDLMesh.newBox(withDimensions: vector_float3(1, 1, 1),
-                                     segments: vector_uint3(1, 1, 1),
+        let mdlMesh = MDLMesh.newBox(withDimensions: vector_float3(2, 2, 1),
+                                     segments: vector_uint3(2, 2, 2),
                                      geometryType: .triangles,
                                      inwardNormals: false,
                                      allocator: MTKMeshBufferAllocator(device: device))
-
-        self.mesh = try! MTKMesh(mesh: mdlMesh, device: device)
+        
+        
+        //        let o = Geometry(withMDLMesh: mdlMesh, device: device)!
+        let o = Geometry(url: Bundle.main.url(forResource: "n", withExtension: "obj")!, device: device)!
+        baseMatrix = matrix_multiply(Matrix.scale(x: 2, y: 2, z: 2), o.normalizeMatrix)
+        vertexCount = o.vertexCount
+        vertexBuffer = o.vertexBuffer
+        
         
         let renderDescriptor = MTLRenderPipelineDescriptor()
-        renderDescriptor.vertexDescriptor = MTKMetalVertexDescriptorFromModelIO(mesh.vertexDescriptor)
+        renderDescriptor.vertexDescriptor = o.vertexDescriptor
         renderDescriptor.sampleCount = mtkView.sampleCount
         renderDescriptor.colorAttachments[0].pixelFormat = mtkView.colorPixelFormat
         renderDescriptor.vertexFunction = library.makeFunction(name: "lambertVertex")
@@ -59,23 +62,18 @@ class MeshRenderer: RenderObject {
         self.fragmentTexture = try! loader.newTexture(withContentsOf: Bundle.main.url(forResource: "checkerboard",
                                                                                       withExtension: "png")!,
                                                       options: nil)
-
+        
     }
     
     func compute(renderer: Renderer, commandBuffer: MTLCommandBuffer) {
     }
     
     func update(renderer: Renderer) {
-        modelMatrix = Matrix.rotation(radians: Float(renderer.totalTime) * 0.5, axis: float3(0, 1, 0))
+        let mat = Matrix.rotation(radians: Float(renderer.totalTime) * 0.5, axis: float3(0, 1, 0))
+        modelMatrix = matrix_multiply(mat, baseMatrix)
     }
     
     func render(renderer: Renderer, encoder: MTLRenderCommandEncoder) {
-        let sub = mesh.submeshes[0]
-        encoder.drawIndexedPrimitives(type: sub.primitiveType,
-                                      indexCount: sub.indexCount,
-                                      indexType: sub.indexType,
-                                      indexBuffer: sub.indexBuffer.buffer,
-                                      indexBufferOffset: sub.indexBuffer.offset)
-
+        encoder.drawPrimitives(type: .triangle, vertexStart: 0, vertexCount: vertexCount)
     }
 }
