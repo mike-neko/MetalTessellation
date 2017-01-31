@@ -27,7 +27,7 @@ class TessellationMeshRenderer: RenderObject {
     var phongFactor = Float(0) {
         didSet { updateUniforms() }
     }
-    var displacementFactor = Float(0) {
+    var displacementFactor = Float(0.1) {
         didSet { updateUniforms() }
     }
     var displacementOffset = Float(0) {
@@ -89,8 +89,8 @@ class TessellationMeshRenderer: RenderObject {
         self.depthStencilState = device.makeDepthStencilState(descriptor: depthDescriptor)
         
         let loader = MTKTextureLoader(device: device)
-        self.vertexTexture = try! loader.newTexture(withContentsOf: Bundle.main.url(forResource: "checkerboard",
-                                                                                    withExtension: "png")!,
+        self.vertexTexture = try! loader.newTexture(withContentsOf: Bundle.main.url(forResource: "d",
+                                                                                    withExtension: "jpg")!,
                                                     options: nil)
         self.fragmentTexture = try! loader.newTexture(withContentsOf: Bundle.main.url(forResource: "checkerboard",
                                                                                       withExtension: "png")!,

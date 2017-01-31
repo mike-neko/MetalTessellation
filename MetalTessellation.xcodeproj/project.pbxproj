@@ -22,6 +22,10 @@
 		0E45AB711E3D0F07000AA11D /* TessellationRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E45AB701E3D0F07000AA11D /* TessellationRenderer.swift */; };
 		0E45AB731E3E01FF000AA11D /* TessellationMeshRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E45AB721E3E01FF000AA11D /* TessellationMeshRenderer.swift */; };
 		0E80C3051E3FA43100D5F859 /* Geometry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E80C3041E3FA43100D5F859 /* Geometry.swift */; };
+		0EF4596F1E40E35400B56B6E /* monsterfrog_mapped.obj in Resources */ = {isa = PBXBuildFile; fileRef = 0EF4596E1E40E35400B56B6E /* monsterfrog_mapped.obj */; };
+		0EF459711E40E35A00B56B6E /* monsterfrog-d.bmp in Resources */ = {isa = PBXBuildFile; fileRef = 0EF459701E40E35A00B56B6E /* monsterfrog-d.bmp */; };
+		0EF459731E40E36400B56B6E /* monsterfrog-n.bmp in Resources */ = {isa = PBXBuildFile; fileRef = 0EF459721E40E36400B56B6E /* monsterfrog-n.bmp */; };
+		0EF459751E40E5DF00B56B6E /* d.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 0EF459741E40E5DF00B56B6E /* d.jpg */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -42,6 +46,10 @@
 		0E45AB701E3D0F07000AA11D /* TessellationRenderer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TessellationRenderer.swift; sourceTree = "<group>"; };
 		0E45AB721E3E01FF000AA11D /* TessellationMeshRenderer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TessellationMeshRenderer.swift; sourceTree = "<group>"; };
 		0E80C3041E3FA43100D5F859 /* Geometry.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Geometry.swift; sourceTree = "<group>"; };
+		0EF4596E1E40E35400B56B6E /* monsterfrog_mapped.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = monsterfrog_mapped.obj; sourceTree = "<group>"; };
+		0EF459701E40E35A00B56B6E /* monsterfrog-d.bmp */ = {isa = PBXFileReference; lastKnownFileType = image.bmp; path = "monsterfrog-d.bmp"; sourceTree = "<group>"; };
+		0EF459721E40E36400B56B6E /* monsterfrog-n.bmp */ = {isa = PBXFileReference; lastKnownFileType = image.bmp; path = "monsterfrog-n.bmp"; sourceTree = "<group>"; };
+		0EF459741E40E5DF00B56B6E /* d.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = d.jpg; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -87,6 +95,10 @@
 				0E45AB6E1E3D0B94000AA11D /* TessellationShader.metal */,
 				0E45AB6C1E3D09B5000AA11D /* checkerboard.png */,
 				0E02DA971E3FA7AC009AA1D2 /* n.obj */,
+				0EF459741E40E5DF00B56B6E /* d.jpg */,
+				0EF4596E1E40E35400B56B6E /* monsterfrog_mapped.obj */,
+				0EF459701E40E35A00B56B6E /* monsterfrog-d.bmp */,
+				0EF459721E40E36400B56B6E /* monsterfrog-n.bmp */,
 				0E45AB511E3CAF09000AA11D /* Assets.xcassets */,
 				0E45AB531E3CAF09000AA11D /* Main.storyboard */,
 				0E45AB561E3CAF09000AA11D /* Info.plist */,
@@ -153,8 +165,12 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0EF459751E40E5DF00B56B6E /* d.jpg in Resources */,
 				0E45AB521E3CAF09000AA11D /* Assets.xcassets in Resources */,
 				0E02DA981E3FA7AC009AA1D2 /* n.obj in Resources */,
+				0EF4596F1E40E35400B56B6E /* monsterfrog_mapped.obj in Resources */,
+				0EF459711E40E35A00B56B6E /* monsterfrog-d.bmp in Resources */,
+				0EF459731E40E36400B56B6E /* monsterfrog-n.bmp in Resources */,
 				0E45AB551E3CAF09000AA11D /* Main.storyboard in Resources */,
 				0E45AB6D1E3D09B5000AA11D /* checkerboard.png in Resources */,
 			);
