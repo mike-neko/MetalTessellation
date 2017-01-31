@@ -29,22 +29,15 @@ class MeshRenderer: RenderObject {
         let library = renderer.library
         let mtkView = renderer.view!
         
-        let mdlMesh = MDLMesh.newBox(withDimensions: vector_float3(2, 2, 1),
-                                     segments: vector_uint3(2, 2, 2),
-                                     geometryType: .triangles,
-                                     inwardNormals: false,
-                                     allocator: MTKMeshBufferAllocator(device: device))
-        
-        
-        //        let o = Geometry(withMDLMesh: mdlMesh, device: device)!
-        let o = Geometry(url: Bundle.main.url(forResource: "n", withExtension: "obj")!, device: device)!
-        baseMatrix = matrix_multiply(Matrix.scale(x: 2, y: 2, z: 2), o.normalizeMatrix)
-        vertexCount = o.vertexCount
-        vertexBuffer = o.vertexBuffer
+//        let o = Geometry(withMDLMesh: mdlMesh, device: device)!
+        let model = Geometry(url: Bundle.main.url(forResource: "n", withExtension: "obj")!, device: device)!
+        baseMatrix = matrix_multiply(Matrix.scale(x: 2, y: 2, z: 2), model.normalizeMatrix)
+        vertexCount = model.vertexCount
+        vertexBuffer = model.vertexBuffer
         
         
         let renderDescriptor = MTLRenderPipelineDescriptor()
-        renderDescriptor.vertexDescriptor = o.vertexDescriptor
+        renderDescriptor.vertexDescriptor = model.vertexDescriptor
         renderDescriptor.sampleCount = mtkView.sampleCount
         renderDescriptor.colorAttachments[0].pixelFormat = mtkView.colorPixelFormat
         renderDescriptor.vertexFunction = library.makeFunction(name: "lambertVertex")

@@ -47,6 +47,7 @@ class TessellationMeshRenderer: RenderObject {
     
     var isActive = true
     var modelMatrix = matrix_identity_float4x4
+    var baseMatrix: matrix_float4x4
     
     private let vertexCount: Int
     
@@ -55,48 +56,13 @@ class TessellationMeshRenderer: RenderObject {
         let library = renderer.library
         let mtkView = renderer.view!
         
-
-        let asset = MDLAsset(url: Bundle.main.url(forResource: "a", withExtension: "obj")!,
-                             vertexDescriptor: MTKModelIOVertexDescriptorFromMetal(Renderer.Vertex.vertexDescriptor()),
-                             bufferAllocator: MTKMeshBufferAllocator(device: device))
-
-        // 0決め打ち
-        var mdlArray: NSArray?
-        let mtkMeshes = try! MTKMesh.newMeshes(from: asset, device: device, sourceMeshes: &mdlArray)
-        let mesh = mtkMeshes[0]
+        let model = Geometry(url: Bundle.main.url(forResource: "n", withExtension: "obj")!, device: device)!
+        baseMatrix = matrix_multiply(Matrix.scale(x: 4, y: 4, z: 4), model.normalizeMatrix)
+        vertexCount = model.vertexCount
+        vertexBuffer = model.vertexBuffer
         
-        let mdl = mdlArray![0] as! MDLMesh
-//        let diff = mdl.boundingBox.maxBounds - mdl.boundingBox.minBounds
-//        let scale = 1.0 / max(diff.x, max(diff.y, diff.z))
-//        let center = (mdl.boundingBox.maxBounds + mdl.boundingBox.minBounds) / vector_float3(2)
-//        let normalizeMatrix = matrix_multiply(matrix4x4_scale(scale, scale, scale),
-//                                              matrix4x4_translation(-center.x, -center.y, -center.z))
-//        
-//        modelMatrix = matrix_multiply(matrix4x4_scale(2, 2, 2), normalizeMatrix)
-        
-//        let mdlMesh = MDLMesh(sphereWithExtent: vector_float3(2, 2, 2),
-//                              segments: vector_uint2(8, 8),
-//                              inwardNormals: false,
-//                              geometryType: .triangles,
-//                              allocator: MTKMeshBufferAllocator(device: device))
-//        let mdlMesh = MDLMesh.newBox(withDimensions: vector_float3(2, 2, 2),
-//                                     segments: vector_uint3(1, 1, 1),
-//                                     geometryType: .triangles,
-//                                     inwardNormals: false,
-//                                     allocator: MTKMeshBufferAllocator(device: device))
-        
-        let vertexDescriptor = MTKMetalVertexDescriptorFromModelIO(mesh.vertexDescriptor)
+        let vertexDescriptor = model.vertexDescriptor
         vertexDescriptor.layouts[0].stepFunction = .perPatchControlPoint
-        
-        print(vertexDescriptor.attributes[0].offset)
-        print(vertexDescriptor.attributes[0].format.rawValue)
-        print(vertexDescriptor.attributes[1].offset)
-        print(vertexDescriptor.attributes[1].format.rawValue)
-        print(vertexDescriptor.attributes[2].offset)
-        print(vertexDescriptor.attributes[2].format.rawValue)
-        print(vertexDescriptor.attributes[3].offset)
-        print(vertexDescriptor.attributes[3].format.rawValue)
-        print(vertexDescriptor.layouts[0].stride)
         
         let renderDescriptor = MTLRenderPipelineDescriptor()
         renderDescriptor.vertexDescriptor = vertexDescriptor
@@ -137,22 +103,6 @@ class TessellationMeshRenderer: RenderObject {
                                                             options: .storageModeShared)
         tessellationUniformsBuffer.label = "Tessellation Uniforms"
         
-        let count = vertexDescriptor.layouts[0].stride / MemoryLayout<Float>.stride
-        let pVertex = mesh.vertexBuffers[0].buffer.contents().assumingMemoryBound(to: Float.self)
-        let data = UnsafeBufferPointer(start: pVertex, count: mesh.vertexCount * count).map { $0 }
-        let subMesh = mesh.submeshes[0]
-        let pIndex = subMesh.indexBuffer.buffer.contents().assumingMemoryBound(to: UInt16.self)
-        let index = UnsafeBufferPointer(start: pIndex, count: subMesh.indexCount).map { $0 }
-
-        var points = [Float]()
-        index.forEach {
-            let i = Int($0) * count
-            points.append(contentsOf: data[i..<(i + count)])
-        }
-
-        vertexCount = index.count
-        self.vertexBuffer = device.makeBuffer(bytes: &points, length: MemoryLayout<Float>.stride * points.count, options: [])
-        
         let kernel = library.makeFunction(name: "tessellationFactorsCompute")
         computePipeline = try! device.makeComputePipelineState(function: kernel!)
         
@@ -180,7 +130,8 @@ class TessellationMeshRenderer: RenderObject {
     }
     
     func update(renderer: Renderer) {
-        modelMatrix = Matrix.rotation(radians: Float(renderer.totalTime) * 0.5, axis: float3(0, 1, 0))
+        let mat = Matrix.rotation(radians: Float(renderer.totalTime) * 0.5, axis: float3(0, 1, 0))
+        modelMatrix = matrix_multiply(mat, baseMatrix)
     }
     
     func render(renderer: Renderer, encoder: MTLRenderCommandEncoder) {

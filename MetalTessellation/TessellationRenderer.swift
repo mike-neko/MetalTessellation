@@ -94,9 +94,9 @@ class TessellationRenderer: RenderObject {
         tessellationUniformsBuffer.label = "Tessellation Uniforms"
         
         let positions: [Renderer.Vertex] = [
-//            Renderer.Vertex(position: float4(0.8, -0.8, 0, 1), normal: float3(), texcoord: float2()),
-//            Renderer.Vertex(position: float4(0.8, 0.8, 0, 1), normal: float3(), texcoord: float2()),
-//            Renderer.Vertex(position: float4(-0.8, 0.8, 0, 1), normal: float3(), texcoord: float2()),
+            Renderer.Vertex(position: float3(0.8, -0.8, 0), normal: float3(), texcoord: float2()),
+            Renderer.Vertex(position: float3(0.8, 0.8, 0), normal: float3(), texcoord: float2()),
+            Renderer.Vertex(position: float3(-0.8, 0.8, 0), normal: float3(), texcoord: float2()),
             ]
         let buffer: MTLBuffer? = positions.withUnsafeBufferPointer {
             return device.makeBuffer(bytes: UnsafeRawPointer($0.baseAddress!),
