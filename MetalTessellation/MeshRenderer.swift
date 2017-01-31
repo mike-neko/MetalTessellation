@@ -14,15 +14,16 @@ class MeshRenderer: RenderObject {
     var name = "MeshRenderer"
     let renderState: MTLRenderPipelineState
     let depthStencilState: MTLDepthStencilState
-
+    
     let vertexCount: Int
     let vertexBuffer: MTLBuffer
     let vertexTexture: MTLTexture? = nil
     let fragmentTexture: MTLTexture?
-
+    
     var isActive = true
     var modelMatrix = matrix_identity_float4x4
-
+    var baseMatrix: matrix_float4x4
+    
     init(renderer: Renderer) {
         let device = renderer.device
         let library = renderer.library
@@ -33,11 +34,11 @@ class MeshRenderer: RenderObject {
                                      geometryType: .triangles,
                                      inwardNormals: false,
                                      allocator: MTKMeshBufferAllocator(device: device))
-
         
-//        let o = Geometry(withMDLMesh: mdlMesh, device: device)!
-        let o = Geometry(url: Bundle.main.url(forResource: "a", withExtension: "obj")!, device: device)!
-        modelMatrix = matrix_multiply(Matrix.scale(x: 2, y: 2, z: 2), o.normalizeMatrix)
+        
+        //        let o = Geometry(withMDLMesh: mdlMesh, device: device)!
+        let o = Geometry(url: Bundle.main.url(forResource: "n", withExtension: "obj")!, device: device)!
+        baseMatrix = matrix_multiply(Matrix.scale(x: 2, y: 2, z: 2), o.normalizeMatrix)
         vertexCount = o.vertexCount
         vertexBuffer = o.vertexBuffer
         
@@ -61,18 +62,18 @@ class MeshRenderer: RenderObject {
         self.fragmentTexture = try! loader.newTexture(withContentsOf: Bundle.main.url(forResource: "checkerboard",
                                                                                       withExtension: "png")!,
                                                       options: nil)
-
+        
     }
     
     func compute(renderer: Renderer, commandBuffer: MTLCommandBuffer) {
     }
     
     func update(renderer: Renderer) {
-        modelMatrix = Matrix.rotation(radians: Float(renderer.totalTime) * 0.5, axis: float3(0, 1, 0))
+        let mat = Matrix.rotation(radians: Float(renderer.totalTime) * 0.5, axis: float3(0, 1, 0))
+        modelMatrix = matrix_multiply(mat, baseMatrix)
     }
     
     func render(renderer: Renderer, encoder: MTLRenderCommandEncoder) {
         encoder.drawPrimitives(type: .triangle, vertexStart: 0, vertexCount: vertexCount)
-        
     }
 }

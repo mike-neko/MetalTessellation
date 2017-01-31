@@ -22,8 +22,25 @@ class Geometry {
     }
     
     convenience init?(url: URL, device: MTLDevice) {
+        let mtlVertex = MTLVertexDescriptor()
+        mtlVertex.attributes[0].format = .float3
+        mtlVertex.attributes[0].offset = 0
+        mtlVertex.attributes[0].bufferIndex = 0
+        mtlVertex.attributes[1].format = .float3
+        mtlVertex.attributes[1].offset = 12
+        mtlVertex.attributes[1].bufferIndex = 0
+        mtlVertex.attributes[2].format = .float2
+        mtlVertex.attributes[2].offset = 24
+        mtlVertex.attributes[2].bufferIndex = 0
+        mtlVertex.layouts[0].stride = 32
+        mtlVertex.layouts[0].stepRate = 1
+        let modelDescriptor = MTKModelIOVertexDescriptorFromMetal(mtlVertex)
+        (modelDescriptor.attributes[0] as! MDLVertexAttribute).name = MDLVertexAttributePosition
+        (modelDescriptor.attributes[1] as! MDLVertexAttribute).name = MDLVertexAttributeNormal
+        (modelDescriptor.attributes[2] as! MDLVertexAttribute).name = MDLVertexAttributeTextureCoordinate
+        
         let asset = MDLAsset(url: url,
-                             vertexDescriptor: nil,
+                             vertexDescriptor: modelDescriptor,
                              bufferAllocator: MTKMeshBufferAllocator(device: device))
         let mesh: MTKMesh
         let normalizeMatrix: matrix_float4x4
@@ -40,62 +57,13 @@ class Geometry {
             return nil
         }
         
-        for a in mesh.vertexDescriptor.attributes.enumerated() {
-            let b = a.1 as! MDLVertexAttribute
-            print("\(a.0): " + b.name + " \(b.offset) \(b.bufferIndex) \(b.format.rawValue)")
+        guard let vertex = Geometry.vertexFromMTK(mesh: mesh, device: device) else {
+            return nil
         }
-        
-        /*
-         pos float3, normal float3, tex float2
-         */
-        guard let attrPosition = mesh.vertexDescriptor.attributeNamed(MDLVertexAttributePosition),
-            attrPosition.format == .float3 else {
-                return nil
-        }
-        let ofsPosition = attrPosition.offset / MemoryLayout<Float>.size
-        guard let attrNormal = mesh.vertexDescriptor.attributeNamed(MDLVertexAttributeNormal),
-            attrNormal.format == .float3 else {
-                return nil
-        }
-        let ofsNormal = attrNormal.offset / MemoryLayout<Float>.size
-        guard let attrTexcoord = mesh.vertexDescriptor.attributeNamed(MDLVertexAttributeTextureCoordinate),
-            attrTexcoord.format == .float2 else {
-                return nil
-        }
-        let ofsTexcoord = attrTexcoord.offset / MemoryLayout<Float>.size
-        
-        
-        let vertexDescriptor = MTKMetalVertexDescriptorFromModelIO(mesh.vertexDescriptor)
-        let subMesh = mesh.submeshes[0]
-        
-        let indices: [UInt32]
-        if subMesh.indexType == .uint16 {
-            let pIndex = subMesh.indexBuffer.buffer.contents().assumingMemoryBound(to: UInt16.self)
-            indices = UnsafeBufferPointer(start: pIndex, count: subMesh.indexCount).map { UInt32($0) }
-        } else {
-            let pIndex = subMesh.indexBuffer.buffer.contents().assumingMemoryBound(to: UInt32.self)
-            indices = UnsafeBufferPointer(start: pIndex, count: subMesh.indexCount).map { $0 }
-        }
-        
-        let count = vertexDescriptor.layouts[0].stride / MemoryLayout<Float>.size
-        let p = mesh.vertexBuffers[0].buffer.contents().assumingMemoryBound(to: Float.self)
-        let data = UnsafeBufferPointer(start: p, count: mesh.vertexCount * count)
-        
-        var buf = [Float]()
-        print(data[1])
-        indices.forEach {
-            let i = Int($0) * count
-            let pos = i + ofsPosition
-            buf.append(contentsOf: data[pos..<pos + 3])
-            let normal = i + ofsNormal
-            buf.append(contentsOf: data[normal..<normal + 3])
-            let texcoord = i + ofsTexcoord
-            buf.append(contentsOf: data[texcoord..<texcoord + 2])
-        }
-        
-        self.init(vertexBuffer: device.makeBuffer(bytes: &buf, length: MemoryLayout<Float>.stride * buf.count, options: []),
-                  vertexCount: indices.count,
-                  vertexDescriptor: vertexDescriptor,
+
+        self.init(vertexBuffer: vertex.buffer,
+                  vertexCount: vertex.count,
+                  vertexDescriptor: vertex.descriptor,
                   normalizeMatrix: normalizeMatrix)
     }
     
@@ -118,10 +86,10 @@ class Geometry {
     }
     
     private static func vertexFromMTK(mesh: MTKMesh, device: MTLDevice) -> (buffer: MTLBuffer, count: Int, descriptor: MTLVertexDescriptor)? {
-        for a in mesh.vertexDescriptor.attributes.enumerated() {
-            let b = a.1 as! MDLVertexAttribute
-            print("\(a.0): " + b.name + " \(b.offset) \(b.bufferIndex) \(b.format.rawValue)")
-        }
+//        for a in mesh.vertexDescriptor.attributes.enumerated() {
+//            let b = a.1 as! MDLVertexAttribute
+//            print("\(a.0): " + b.name + " \(b.offset) \(b.bufferIndex) \(b.format.rawValue)")
+//        }
 
         /*
          pos float3, normal float3, tex float2
@@ -160,7 +128,6 @@ class Geometry {
         let data = UnsafeBufferPointer(start: p, count: mesh.vertexCount * count)
         
         var buf = [Float]()
-        print(data[1])
         indices.forEach {
             let i = Int($0) * count
             let pos = i + ofsPosition
