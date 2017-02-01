@@ -70,9 +70,9 @@ vertex VertexOut tessellationTriangleVertex(PatchIn patchIn [[stage_in]],
     position += position * disp;
     
     VertexOut out;
-    out.position = uniforms.projectionViewMatrinx * float4(position, 1);
+    out.position = uniforms.projectionViewMatrix * float4(position, 1);
     out.texcoord = texcoord;
-    out.normal = uniforms.normalMatrinx * normal;
+    out.normal = uniforms.normalMatrix * normal;
     return out;
 }
 

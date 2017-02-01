@@ -16,8 +16,10 @@ struct VertexInput {
 };
 
 struct VertexUniforms {
-    float4x4    projectionViewMatrinx;
-    float3x3    normalMatrinx;
+    float4x4    projectionViewMatrix;
+    float3x3    normalMatrix;
+    float4x4    inverseViewMatrix;
+    float4x4    modelMatrix;
 };
 
 struct VertexOut {
@@ -25,5 +27,13 @@ struct VertexOut {
     float3      normal;
     float2      texcoord;
 };
+
+struct BumpOut {
+    float4      position    [[ position ]];
+    float3      light;
+    float3      eye;
+    float2      texcoord;
+};
+
 
 #define lightDirection float3(0.1, -0.577, -1)

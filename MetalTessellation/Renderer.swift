@@ -58,6 +58,8 @@ class Renderer: NSObject, MTKViewDelegate {
     struct FrameUniforms {
         var projectionViewMatrinx: matrix_float4x4
         var normalMatrinx: matrix_float3x3
+        var inverseViewMatrinx: matrix_float4x4
+        var modelMatrinx: matrix_float4x4
     }
     
     // MARK: Camera
@@ -196,5 +198,7 @@ class Renderer: NSObject, MTKViewDelegate {
         p.pointee.projectionViewMatrinx = matrix_multiply(projectionMatrix, mat4)
         let mat3 = Matrix.toUpperLeft3x3(from4x4: mat4)
         p.pointee.normalMatrinx = matrix_invert(matrix_transpose(mat3))
+        p.pointee.modelMatrinx = modelMatrinx
+        p.pointee.inverseViewMatrinx = matrix_invert(cameraMatrix)
     }
 }
