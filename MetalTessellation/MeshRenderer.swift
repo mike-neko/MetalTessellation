@@ -9,8 +9,6 @@
 import Foundation
 import MetalKit
 
-
-
 class MeshRenderer: RenderObject {
     // MARK: - Common
     var name = "MeshRenderer"
@@ -19,22 +17,22 @@ class MeshRenderer: RenderObject {
     
     let vertexCount: Int
     let vertexBuffer: MTLBuffer
-    let vertexTexture: MTLTexture? = nil
-    let fragmentTexture: MTLTexture?
-    let normalMapTexture: MTLTexture
+    var vertexTexture: MTLTexture?
+    var fragmentTexture: MTLTexture?
+    var normalMapTexture: MTLTexture?
     
     var isActive = true
     var modelMatrix = matrix_identity_float4x4
     var baseMatrix: matrix_float4x4
     
-    init(renderer: Renderer) {
+    init(renderer: Renderer, mesh: MeshObject) {
         let device = renderer.device
         let library = renderer.library
         let mtkView = renderer.view!
         
-//        let o = Geometry(withMDLMesh: mdlMesh, device: device)!
-        let model = Geometry(url: Bundle.main.url(forResource: "mm", withExtension: "obj")!, device: device)!
-        baseMatrix = matrix_multiply(Matrix.scale(x: 2, y: 2, z: 2), model.normalizeMatrix)
+        //        let o = Geometry(withMDLMesh: mdlMesh, device: device)!
+        let model = mesh.makeGeometory(renderer: renderer)!
+        baseMatrix = mesh.setupBaseMatrix?(model.normalizeMatrix) ?? model.normalizeMatrix
         vertexCount = model.vertexCount
         vertexBuffer = model.vertexBuffer
         
@@ -43,8 +41,8 @@ class MeshRenderer: RenderObject {
         renderDescriptor.vertexDescriptor = model.vertexDescriptor
         renderDescriptor.sampleCount = mtkView.sampleCount
         renderDescriptor.colorAttachments[0].pixelFormat = mtkView.colorPixelFormat
-        renderDescriptor.vertexFunction = library.makeFunction(name: "bumpVertex")
-        renderDescriptor.fragmentFunction = library.makeFunction(name: "bumpFragment")
+        renderDescriptor.vertexFunction = library.makeFunction(name: mesh.vertexFunctionName)
+        renderDescriptor.fragmentFunction = library.makeFunction(name: mesh.fragmentFunctionName)
         renderDescriptor.depthAttachmentPixelFormat = mtkView.depthStencilPixelFormat
         renderDescriptor.stencilAttachmentPixelFormat = mtkView.depthStencilPixelFormat
         self.renderState = try! device.makeRenderPipelineState(descriptor: renderDescriptor)
@@ -55,12 +53,17 @@ class MeshRenderer: RenderObject {
         self.depthStencilState = device.makeDepthStencilState(descriptor: depthDescriptor)
         
         let loader = MTKTextureLoader(device: device)
-        self.fragmentTexture = try! loader.newTexture(withContentsOf: Bundle.main.url(forResource: "checkerboard",
-                                                                                      withExtension: "png")!,
-                                                      options: nil)
-        self.normalMapTexture = try! loader.newTexture(withContentsOf: Bundle.main.url(forResource: "mn",
-                                                                                       withExtension: "bmp")!,
-                                                       options: nil)
+        self.fragmentTexture = try! loader.newTexture(withContentsOf: mesh.diffuseTextureURL, options: nil)
+        if let displacementMap = mesh.displacementMapTextureURL {
+            self.vertexTexture = try? loader.newTexture(withContentsOf: displacementMap, options: nil)
+        } else {
+            self.vertexTexture = nil
+        }
+        if let normalMap = mesh.displacementMapTextureURL {
+            self.normalMapTexture = try? loader.newTexture(withContentsOf: normalMap, options: nil)
+        } else {
+            self.normalMapTexture = nil
+        }
         
     }
     
@@ -73,7 +76,7 @@ class MeshRenderer: RenderObject {
     }
     
     func render(renderer: Renderer, encoder: MTLRenderCommandEncoder) {
-        encoder.setFragmentTexture(self.normalMapTexture, at: 1)
+        encoder.setFragmentTexture(normalMapTexture, at: 1)
         encoder.drawPrimitives(type: .triangle, vertexStart: 0, vertexCount: vertexCount)
     }
 }

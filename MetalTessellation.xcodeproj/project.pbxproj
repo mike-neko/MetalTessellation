@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		0E02DA981E3FA7AC009AA1D2 /* n.obj in Resources */ = {isa = PBXBuildFile; fileRef = 0E02DA971E3FA7AC009AA1D2 /* n.obj */; };
+		0E14BADA1E437D7F009C4110 /* Mesh.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E14BAD91E437D7F009C4110 /* Mesh.swift */; };
 		0E45AB4E1E3CAF09000AA11D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E45AB4D1E3CAF09000AA11D /* AppDelegate.swift */; };
 		0E45AB501E3CAF09000AA11D /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E45AB4F1E3CAF09000AA11D /* ViewController.swift */; };
 		0E45AB521E3CAF09000AA11D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0E45AB511E3CAF09000AA11D /* Assets.xcassets */; };
@@ -30,6 +31,7 @@
 
 /* Begin PBXFileReference section */
 		0E02DA971E3FA7AC009AA1D2 /* n.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = n.obj; sourceTree = "<group>"; };
+		0E14BAD91E437D7F009C4110 /* Mesh.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Mesh.swift; sourceTree = "<group>"; };
 		0E45AB4A1E3CAF09000AA11D /* MetalTessellation.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MetalTessellation.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0E45AB4D1E3CAF09000AA11D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		0E45AB4F1E3CAF09000AA11D /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -87,6 +89,7 @@
 				0E45AB5C1E3CD5A2000AA11D /* Renderer.swift */,
 				0E45AB5E1E3CD716000AA11D /* Matrix.swift */,
 				0E45AB601E3CF3BE000AA11D /* MeshRenderer.swift */,
+				0E14BAD91E437D7F009C4110 /* Mesh.swift */,
 				0E45AB701E3D0F07000AA11D /* TessellationRenderer.swift */,
 				0E45AB721E3E01FF000AA11D /* TessellationMeshRenderer.swift */,
 				0E80C3041E3FA43100D5F859 /* Geometry.swift */,
@@ -189,6 +192,7 @@
 				0E80C3051E3FA43100D5F859 /* Geometry.swift in Sources */,
 				0E45AB611E3CF3BE000AA11D /* MeshRenderer.swift in Sources */,
 				0E45AB731E3E01FF000AA11D /* TessellationMeshRenderer.swift in Sources */,
+				0E14BADA1E437D7F009C4110 /* Mesh.swift in Sources */,
 				0E45AB501E3CAF09000AA11D /* ViewController.swift in Sources */,
 				0E45AB5D1E3CD5A2000AA11D /* Renderer.swift in Sources */,
 				0E45AB4E1E3CAF09000AA11D /* AppDelegate.swift in Sources */,

@@ -42,8 +42,9 @@ class TessellationMeshRenderer: RenderObject {
     let depthStencilState: MTLDepthStencilState
     
     var vertexBuffer: MTLBuffer
-    let vertexTexture: MTLTexture?
-    let fragmentTexture: MTLTexture?
+    var vertexTexture: MTLTexture?
+    var fragmentTexture: MTLTexture?
+    var normalMapTexture: MTLTexture?
     
     var isActive = true
     var modelMatrix = matrix_identity_float4x4
@@ -51,13 +52,13 @@ class TessellationMeshRenderer: RenderObject {
     
     private let vertexCount: Int
     
-    init(renderer: Renderer) {
+    init(renderer: Renderer, mesh: MeshObject) {
         let device = renderer.device
         let library = renderer.library
         let mtkView = renderer.view!
         
-        let model = Geometry(url: Bundle.main.url(forResource: "n", withExtension: "obj")!, device: device)!
-        baseMatrix = matrix_multiply(Matrix.scale(x: 4, y: 4, z: 4), model.normalizeMatrix)
+        let model = mesh.makeGeometory(renderer: renderer)!
+        baseMatrix = mesh.setupBaseMatrix?(model.normalizeMatrix) ?? model.normalizeMatrix
         vertexCount = model.vertexCount
         vertexBuffer = model.vertexBuffer
         
@@ -68,8 +69,8 @@ class TessellationMeshRenderer: RenderObject {
         renderDescriptor.vertexDescriptor = vertexDescriptor
         renderDescriptor.sampleCount = mtkView.sampleCount
         renderDescriptor.colorAttachments[0].pixelFormat = mtkView.colorPixelFormat
-        renderDescriptor.vertexFunction = library.makeFunction(name: "tessellationTriangleVertex")
-        renderDescriptor.fragmentFunction = library.makeFunction(name: "lambertFragment")
+        renderDescriptor.vertexFunction = library.makeFunction(name: mesh.vertexFunctionName)
+        renderDescriptor.fragmentFunction = library.makeFunction(name: mesh.fragmentFunctionName)
         renderDescriptor.depthAttachmentPixelFormat = mtkView.depthStencilPixelFormat
         renderDescriptor.stencilAttachmentPixelFormat = mtkView.depthStencilPixelFormat
         
@@ -89,12 +90,18 @@ class TessellationMeshRenderer: RenderObject {
         self.depthStencilState = device.makeDepthStencilState(descriptor: depthDescriptor)
         
         let loader = MTKTextureLoader(device: device)
-        self.vertexTexture = try! loader.newTexture(withContentsOf: Bundle.main.url(forResource: "d",
-                                                                                    withExtension: "jpg")!,
-                                                    options: nil)
-        self.fragmentTexture = try! loader.newTexture(withContentsOf: Bundle.main.url(forResource: "checkerboard",
-                                                                                      withExtension: "png")!,
-                                                      options: nil)
+        self.fragmentTexture = try! loader.newTexture(withContentsOf: mesh.diffuseTextureURL, options: nil)
+        
+        if let displacementMap = mesh.displacementMapTextureURL {
+            self.vertexTexture = try? loader.newTexture(withContentsOf: displacementMap, options: nil)
+        } else {
+            self.vertexTexture = nil
+        }
+        if let normalMap = mesh.displacementMapTextureURL {
+            self.normalMapTexture = try? loader.newTexture(withContentsOf: normalMap, options: nil)
+        } else {
+            self.normalMapTexture = nil
+        }
         
         self.tessellationFactorsBuffer = device.makeBuffer(length: MemoryLayout<uint2>.stride,
                                                            options: .storageModePrivate)
@@ -135,6 +142,7 @@ class TessellationMeshRenderer: RenderObject {
     }
     
     func render(renderer: Renderer, encoder: MTLRenderCommandEncoder) {
+        encoder.setFragmentTexture(normalMapTexture, at: 1)
         encoder.setVertexBuffer(tessellationUniformsBuffer, offset: 0, at: 2)
         encoder.setTessellationFactorBuffer(tessellationFactorsBuffer, offset: 0, instanceStride: 0)
         encoder.drawPatches(numberOfPatchControlPoints: triangleVertex,

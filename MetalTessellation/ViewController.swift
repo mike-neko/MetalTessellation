@@ -61,12 +61,25 @@ class ViewController: NSViewController {
     }
 
     private func setupAsset() {
-        tessellationBox = TessellationMeshRenderer(renderer: renderer)
+        let t = FileMesh.meshDisplacementMapWithFileURL(
+            Bundle.main.url(forResource: "n", withExtension: "obj")!,
+            diffuseTextureURL: Bundle.main.url(forResource: "checkerboard", withExtension: "png")!,
+            displacementlMapTextureURL: Bundle.main.url(forResource: "checkerboard", withExtension: "png")!,
+            setupBaseMatrix: { return matrix_multiply(Matrix.scale(x: 4, y: 4, z: 4), $0) })
+        tessellationBox = TessellationMeshRenderer(renderer: renderer, mesh:t)
         renderer.targets.append(tessellationBox)
 //        tessellationBox.isActive = false
+        
 //        let a = MeshRenderer(renderer: renderer)
 //        renderer.targets.append(a)
+        let obj = FileMesh.meshLambertWithFileURL(
+            Bundle.main.url(forResource: "n", withExtension: "obj")!,
+            diffuseTextureURL: Bundle.main.url(forResource: "checkerboard", withExtension: "png")!,
+            setupBaseMatrix: { return matrix_multiply(Matrix.scale(x: 2, y: 2, z: 2), $0) })
         
+        let a = MeshRenderer(renderer: renderer, mesh: obj)
+        renderer.targets.append(a)
+        a.isActive = false
     }
 }
 
