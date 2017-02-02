@@ -12,7 +12,7 @@ vertex VertexOut lambertVertex(VertexInput in [[ stage_in ]],
                                constant VertexUniforms& uniforms [[ buffer(1) ]]) {
     VertexOut out;
     out.position = uniforms.projectionViewMatrix * float4(in.position, 1);
-    out.texcoord = in.texcoord;
+    out.texcoord = float2(in.texcoord.x, 1 - in.texcoord.y);
     out.normal = uniforms.normalMatrix * in.normal;
     return out;
 }
@@ -23,7 +23,7 @@ fragment half4 lambertFragment(VertexOut in [[ stage_in ]],
     auto color = texture.sample(defaultSampler, in.texcoord);
     
     float diffuseFactor = saturate(dot(in.normal, -lightDirection));
-    return half4(color * diffuseFactor);
+    return half4(color * diffuseFactor + 0.1);
 }
 
 #define lightWorldPosition float3(0.1, -0.577, -1)
@@ -34,7 +34,7 @@ vertex BumpOut bumpVertex(VertexInput in [[ stage_in ]],
                           constant VertexUniforms& uniforms [[ buffer(1) ]]) {
     BumpOut out;
     out.position = uniforms.projectionViewMatrix * float4(in.position, 1);
-    out.texcoord = in.texcoord;
+    out.texcoord = float2(in.texcoord.x, 1 - in.texcoord.y);
     
     auto N = (uniforms.normalMatrix * in.normal).xyz;
     auto T = normalize(cross(N, float3(0, 1, 0)));

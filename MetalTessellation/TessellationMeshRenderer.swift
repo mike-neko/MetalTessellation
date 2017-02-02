@@ -159,6 +159,6 @@ class TessellationMeshRenderer: RenderObject {
         let p = tessellationUniformsBuffer.contents().assumingMemoryBound(to: TessellationUniforms.self)
         p.pointee.phongFactor = phongFactor
         p.pointee.displacementFactor = displacementFactor
-        p.pointee.displacementOffset = displacementOffset
+        p.pointee.displacementOffset = -0.5
     }
 }

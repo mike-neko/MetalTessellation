@@ -65,7 +65,7 @@ vertex VertexOut tessellationTriangleVertex(PatchIn patchIn [[stage_in]],
     auto texcoord = I[0].texcoord * w + I[1].texcoord * u + I[2].texcoord * v;
     
     constexpr sampler defaultSampler;
-    auto disp = texture.sample(defaultSampler, texcoord).r * tessellation.displacementFactor;
+    auto disp = (texture.sample(defaultSampler, texcoord).r - 0.5) * tessellation.displacementFactor;
     disp += tessellation.displacementOffset;
     position += position * disp;
     
