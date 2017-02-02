@@ -64,7 +64,7 @@ class ViewController: NSViewController {
         let t = FileMesh.meshDisplacementMapWithFileURL(
             Bundle.main.url(forResource: "n", withExtension: "obj")!,
             diffuseTextureURL: Bundle.main.url(forResource: "checkerboard", withExtension: "png")!,
-            displacementlMapTextureURL: Bundle.main.url(forResource: "checkerboard", withExtension: "png")!,
+            displacementlMapURL: Bundle.main.url(forResource: "checkerboard", withExtension: "png")!,
             setupBaseMatrix: { return matrix_multiply(Matrix.scale(x: 4, y: 4, z: 4), $0) })
         tessellationBox = TessellationMeshRenderer(renderer: renderer, mesh:t)
         renderer.targets.append(tessellationBox)

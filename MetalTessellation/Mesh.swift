@@ -15,8 +15,8 @@ protocol MeshObject {
     var vertexFunctionName: String { get }
     var fragmentFunctionName: String { get }
     var diffuseTextureURL: URL { get }
-    var normalMapTextureURL: URL? { get }
-    var displacementMapTextureURL: URL? { get }
+    var normalMapURL: URL? { get }
+    var displacementMapURL: URL? { get }
 }
 
 struct FileMesh: MeshObject {
@@ -25,8 +25,8 @@ struct FileMesh: MeshObject {
     let vertexFunctionName: String
     let fragmentFunctionName: String
     let diffuseTextureURL: URL
-    let normalMapTextureURL: URL?
-    let displacementMapTextureURL: URL?
+    let normalMapURL: URL?
+    let displacementMapURL: URL?
     
     func makeGeometory(renderer: Renderer) -> Geometry? {
         return Geometry(url: fileURL, device: renderer.device)
@@ -41,32 +41,32 @@ struct FileMesh: MeshObject {
                         vertexFunctionName: "lambertVertex",
                         fragmentFunctionName: "lambertFragment",
                         diffuseTextureURL: diffuseTextureURL,
-                        normalMapTextureURL: nil,
-                        displacementMapTextureURL: nil,
+                        normalMapURL: nil,
+                        displacementMapURL: nil,
                         setupBaseMatrix: setupBaseMatrix)
     }
     
-    static func meshNormalMapWithFileURL(_ fileURL: URL, diffuseTextureURL: URL, normalMapTextureURL: URL,
+    static func meshNormalMapWithFileURL(_ fileURL: URL, diffuseTextureURL: URL, normalMapURL: URL,
                                          setupBaseMatrix: ((matrix_float4x4) -> matrix_float4x4)?) -> FileMesh {
         return FileMesh(fileURL: fileURL,
                         vertexFunctionName: "bumpVertex",
                         fragmentFunctionName: "bumpFragment",
                         diffuseTextureURL: diffuseTextureURL,
-                        normalMapTextureURL: normalMapTextureURL,
-                        displacementMapTextureURL: nil,
+                        normalMapURL: normalMapURL,
+                        displacementMapURL: nil,
                         setupBaseMatrix: setupBaseMatrix)
     }
     
     static func meshDisplacementMapWithFileURL(_ fileURL: URL, diffuseTextureURL: URL,
-                                               normalMapTextureURL: URL? = nil, displacementlMapTextureURL: URL,
+                                               normalMapURL: URL? = nil, displacementlMapURL: URL,
                                                setupBaseMatrix: ((matrix_float4x4) -> matrix_float4x4)?) -> FileMesh {
-        let frag = (normalMapTextureURL != nil) ? "bumpFragment" : "lambertFragment"
+        let frag = (normalMapURL != nil) ? "bumpFragment" : "lambertFragment"
         return FileMesh(fileURL: fileURL,
                         vertexFunctionName: "tessellationTriangleVertex",
                         fragmentFunctionName: frag,
                         diffuseTextureURL: diffuseTextureURL,
-                        normalMapTextureURL: normalMapTextureURL,
-                        displacementMapTextureURL: displacementlMapTextureURL,
+                        normalMapURL: normalMapURL,
+                        displacementMapURL: displacementlMapURL,
                         setupBaseMatrix: setupBaseMatrix)
     }
     

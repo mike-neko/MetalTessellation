@@ -54,12 +54,12 @@ class MeshRenderer: RenderObject {
         
         let loader = MTKTextureLoader(device: device)
         self.fragmentTexture = try! loader.newTexture(withContentsOf: mesh.diffuseTextureURL, options: nil)
-        if let displacementMap = mesh.displacementMapTextureURL {
+        if let displacementMap = mesh.displacementMapURL {
             self.vertexTexture = try? loader.newTexture(withContentsOf: displacementMap, options: nil)
         } else {
             self.vertexTexture = nil
         }
-        if let normalMap = mesh.displacementMapTextureURL {
+        if let normalMap = mesh.displacementMapURL {
             self.normalMapTexture = try? loader.newTexture(withContentsOf: normalMap, options: nil)
         } else {
             self.normalMapTexture = nil
