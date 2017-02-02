@@ -21,7 +21,7 @@ class Geometry {
         self.normalizeMatrix = normalizeMatrix
     }
     
-    convenience init?(url: URL, device: MTLDevice) {
+    convenience init?(url: URL, device: MTLDevice, addNormalThreshold: Float? = nil) {
         let mtlVertex = MTLVertexDescriptor()
         mtlVertex.attributes[0].format = .float3
         mtlVertex.attributes[0].offset = 0
@@ -52,6 +52,10 @@ class Geometry {
             
             guard let mdl = mdlArray?[0] as? MDLMesh else { return nil }
             normalizeMatrix = Geometry.calcNormalizeMatrix(withMdlMesh: mdl)
+            
+            if let threshold = addNormalThreshold {
+                mdl.addNormals(withAttributeNamed: MDLVertexAttributeNormal, creaseThreshold: threshold)
+            }
         } catch {
             print(error)
             return nil
@@ -112,34 +116,38 @@ class Geometry {
         
         
         let vertexDescriptor = MTKMetalVertexDescriptorFromModelIO(mesh.vertexDescriptor)
-        let subMesh = mesh.submeshes[0]
-        
-        let indices: [UInt32]
-        if subMesh.indexType == .uint16 {
-            let pIndex = subMesh.indexBuffer.buffer.contents().assumingMemoryBound(to: UInt16.self)
-            indices = UnsafeBufferPointer(start: pIndex, count: subMesh.indexCount).map { UInt32($0) }
-        } else {
-            let pIndex = subMesh.indexBuffer.buffer.contents().assumingMemoryBound(to: UInt32.self)
-            indices = UnsafeBufferPointer(start: pIndex, count: subMesh.indexCount).map { $0 }
-        }
-        
-        let count = vertexDescriptor.layouts[0].stride / MemoryLayout<Float>.size
-        let p = mesh.vertexBuffers[0].buffer.contents().assumingMemoryBound(to: Float.self)
-        let data = UnsafeBufferPointer(start: p, count: mesh.vertexCount * count)
         
         var buf = [Float]()
-        indices.forEach {
-            let i = Int($0) * count
-            let pos = i + ofsPosition
-            buf.append(contentsOf: data[pos..<pos + 3])
-            let normal = i + ofsNormal
-            buf.append(contentsOf: data[normal..<normal + 3])
-            let texcoord = i + ofsTexcoord
-            buf.append(contentsOf: data[texcoord..<texcoord + 2])
+        var count = 0
+        mesh.submeshes.forEach { subMesh in
+            let indices: [UInt32]
+            if subMesh.indexType == .uint16 {
+                let pIndex = subMesh.indexBuffer.buffer.contents().assumingMemoryBound(to: UInt16.self)
+                indices = UnsafeBufferPointer(start: pIndex, count: subMesh.indexCount).map { UInt32($0) }
+            } else {
+                let pIndex = subMesh.indexBuffer.buffer.contents().assumingMemoryBound(to: UInt32.self)
+                indices = UnsafeBufferPointer(start: pIndex, count: subMesh.indexCount).map { $0 }
+            }
+            count += indices.count
+            
+            let element = vertexDescriptor.layouts[0].stride / MemoryLayout<Float>.size
+            let p = mesh.vertexBuffers[0].buffer.contents().assumingMemoryBound(to: Float.self)
+            let data = UnsafeBufferPointer(start: p, count: mesh.vertexCount * element)
+            
+            indices.forEach {
+                let i = Int($0) * element
+                let pos = i + ofsPosition
+                buf.append(contentsOf: data[pos..<pos + 3])
+                let normal = i + ofsNormal
+                buf.append(contentsOf: data[normal..<normal + 3])
+                let texcoord = i + ofsTexcoord
+                buf.append(contentsOf: data[texcoord..<texcoord + 2])
+            }
         }
         
+        
         return (buffer: device.makeBuffer(bytes: &buf, length: MemoryLayout<Float>.stride * buf.count, options: []),
-                count: indices.count,
+                count: count,
                 descriptor: vertexDescriptor)
     }
 }
