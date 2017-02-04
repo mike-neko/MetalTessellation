@@ -62,7 +62,7 @@ class TessellationMeshRenderer: RenderObject {
     var modelMatrix = matrix_identity_float4x4
     var baseMatrix: matrix_float4x4
     
-    init(renderer: Renderer, mesh: MeshObject) {
+    init(renderer: Renderer, mesh: TessellationMeshObject) {
         let device = renderer.device
         let library = renderer.library
         
@@ -167,14 +167,14 @@ class TessellationMeshRenderer: RenderObject {
         renderDescriptor.vertexDescriptor = vertexDescriptor
         renderDescriptor.sampleCount = mtkView.sampleCount
         renderDescriptor.colorAttachments[0].pixelFormat = mtkView.colorPixelFormat
-        renderDescriptor.vertexFunction = library.makeFunction(name: "lambertVertex")      // TODO: 仮
+        renderDescriptor.vertexFunction = library.makeFunction(name: mesh.vertexFunctionName)
         renderDescriptor.fragmentFunction = library.makeFunction(name: mesh.fragmentFunctionName)
         renderDescriptor.depthAttachmentPixelFormat = mtkView.depthStencilPixelFormat
         renderDescriptor.stencilAttachmentPixelFormat = mtkView.depthStencilPixelFormat
         return try! device.makeRenderPipelineState(descriptor: renderDescriptor)
     }
     
-    private static func makeTessellationRenderState(renderer: Renderer, vertexDescriptor: MTLVertexDescriptor, mesh: MeshObject) -> MTLRenderPipelineState {
+    private static func makeTessellationRenderState(renderer: Renderer, vertexDescriptor: MTLVertexDescriptor, mesh: TessellationMeshObject) -> MTLRenderPipelineState {
         let device = renderer.device
         let library = renderer.library
         let mtkView = renderer.view!
@@ -185,8 +185,8 @@ class TessellationMeshRenderer: RenderObject {
         renderDescriptor.vertexDescriptor = vertexDescriptor
         renderDescriptor.sampleCount = mtkView.sampleCount
         renderDescriptor.colorAttachments[0].pixelFormat = mtkView.colorPixelFormat
-        renderDescriptor.vertexFunction = library.makeFunction(name: "tessellationTriangleVertex")      // TODO: 仮
-        renderDescriptor.fragmentFunction = library.makeFunction(name: mesh.fragmentFunctionName)
+        renderDescriptor.vertexFunction = library.makeFunction(name: mesh.tessellationVertexFunctionName)
+        renderDescriptor.fragmentFunction = library.makeFunction(name: mesh.tessellationFragmentFunctionName)
         renderDescriptor.depthAttachmentPixelFormat = mtkView.depthStencilPixelFormat
         renderDescriptor.stencilAttachmentPixelFormat = mtkView.depthStencilPixelFormat
         

@@ -16,6 +16,11 @@ protocol MeshObject {
     var fragmentFunctionName: String { get }
     var diffuseTextureURL: URL { get }
     var normalMapURL: URL? { get }
+}
+
+protocol TessellationMeshObject: MeshObject {
+    var tessellationVertexFunctionName: String { get }
+    var tessellationFragmentFunctionName: String { get }
     var displacementMapURL: URL? { get }
 }
 
@@ -26,7 +31,6 @@ struct FileMesh: MeshObject {
     let fragmentFunctionName: String
     let diffuseTextureURL: URL
     let normalMapURL: URL?
-    let displacementMapURL: URL?
     
     func makeGeometory(renderer: Renderer) -> Geometry? {
         return Geometry(url: fileURL, device: renderer.device)
@@ -42,7 +46,6 @@ struct FileMesh: MeshObject {
                         fragmentFunctionName: "lambertFragment",
                         diffuseTextureURL: diffuseTextureURL,
                         normalMapURL: nil,
-                        displacementMapURL: nil,
                         setupBaseMatrix: setupBaseMatrix)
     }
     
@@ -53,22 +56,42 @@ struct FileMesh: MeshObject {
                         fragmentFunctionName: "bumpFragment",
                         diffuseTextureURL: diffuseTextureURL,
                         normalMapURL: normalMapURL,
-                        displacementMapURL: nil,
                         setupBaseMatrix: setupBaseMatrix)
     }
     
     static func meshDisplacementMapWithFileURL(_ fileURL: URL, diffuseTextureURL: URL,
                                                normalMapURL: URL? = nil, displacementlMapURL: URL,
-                                               setupBaseMatrix: ((matrix_float4x4) -> matrix_float4x4)?) -> FileMesh {
-        let frag = (normalMapURL != nil) ? "bumpFragment" : "lambertFragment"
-        return FileMesh(fileURL: fileURL,
-                        vertexFunctionName: "tessellationTriangleVertex",
-                        fragmentFunctionName: frag,
-                        diffuseTextureURL: diffuseTextureURL,
-                        normalMapURL: normalMapURL,
-                        displacementMapURL: displacementlMapURL,
-                        setupBaseMatrix: setupBaseMatrix)
+                                               setupBaseMatrix: ((matrix_float4x4) -> matrix_float4x4)?)
+        -> FileTessellationMesh {
+        return FileTessellationMesh(fileURL: fileURL,
+                                    vertexFunctionName: "lambertVertex",
+                                    fragmentFunctionName: "lambertFragment",
+                                    diffuseTextureURL: diffuseTextureURL,
+                                    normalMapURL: normalMapURL,
+                                    displacementMapURL: displacementlMapURL,
+                                    tessellationVertexFunctionName: "tessellationTriangleVertex",
+                                    tessellationFragmentFunctionName: "lambertFragment",
+                                    setupBaseMatrix: setupBaseMatrix)
     }
     
-    
 }
+
+struct FileTessellationMesh: TessellationMeshObject {
+    let fileURL: URL
+    
+    let vertexFunctionName: String
+    let fragmentFunctionName: String
+    let diffuseTextureURL: URL
+    let normalMapURL: URL?
+    let displacementMapURL: URL?
+    
+    let tessellationVertexFunctionName: String
+    let tessellationFragmentFunctionName: String
+    
+    func makeGeometory(renderer: Renderer) -> Geometry? {
+        return Geometry(url: fileURL, device: renderer.device)
+    }
+    
+    let setupBaseMatrix: ((matrix_float4x4) -> matrix_float4x4)?
+}
+
