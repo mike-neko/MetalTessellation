@@ -67,8 +67,7 @@ class TessellationMeshRenderer: RenderObject {
         let library = renderer.library
         
         // make geometory
-//        let model = mesh.makeGeometory(renderer: renderer)!
-        let model = Geometry.box(withDimensions: vector_float3(1), segments: vector_uint3(1), device: device)!
+        let model = mesh.makeGeometory(renderer: renderer)!
         self.baseMatrix = mesh.setupBaseMatrix?(model.normalizeMatrix) ?? model.normalizeMatrix
         self.vertexCount = model.vertexCount
         self.vertexBuffer = model.vertexBuffer
