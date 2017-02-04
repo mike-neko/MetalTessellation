@@ -39,8 +39,8 @@ struct FileMesh: MeshObject {
     let setupBaseMatrix: ((matrix_float4x4) -> matrix_float4x4)?
     
     
-    static func meshLambertWithFileURL(_ fileURL: URL, diffuseTextureURL: URL,
-                                       setupBaseMatrix: ((matrix_float4x4) -> matrix_float4x4)?) -> FileMesh {
+    static func meshLambert(fileURL: URL, diffuseTextureURL: URL,
+                            setupBaseMatrix: ((matrix_float4x4) -> matrix_float4x4)?) -> FileMesh {
         return FileMesh(fileURL: fileURL,
                         vertexFunctionName: "lambertVertex",
                         fragmentFunctionName: "lambertFragment",
@@ -49,8 +49,8 @@ struct FileMesh: MeshObject {
                         setupBaseMatrix: setupBaseMatrix)
     }
     
-    static func meshNormalMapWithFileURL(_ fileURL: URL, diffuseTextureURL: URL, normalMapURL: URL,
-                                         setupBaseMatrix: ((matrix_float4x4) -> matrix_float4x4)?) -> FileMesh {
+    static func meshNormalMap(fileURL: URL, diffuseTextureURL: URL, normalMapURL: URL,
+                              setupBaseMatrix: ((matrix_float4x4) -> matrix_float4x4)?) -> FileMesh {
         return FileMesh(fileURL: fileURL,
                         vertexFunctionName: "bumpVertex",
                         fragmentFunctionName: "bumpFragment",
@@ -59,10 +59,9 @@ struct FileMesh: MeshObject {
                         setupBaseMatrix: setupBaseMatrix)
     }
     
-    static func meshDisplacementMapWithFileURL(_ fileURL: URL, diffuseTextureURL: URL,
-                                               normalMapURL: URL? = nil, displacementlMapURL: URL,
-                                               setupBaseMatrix: ((matrix_float4x4) -> matrix_float4x4)?)
-        -> FileTessellationMesh {
+    static func meshDisplacementMap(fileURL: URL, diffuseTextureURL: URL,
+                                    normalMapURL: URL? = nil, displacementlMapURL: URL,
+                                    setupBaseMatrix: ((matrix_float4x4) -> matrix_float4x4)?) -> FileTessellationMesh {
         return FileTessellationMesh(fileURL: fileURL,
                                     vertexFunctionName: "lambertVertex",
                                     fragmentFunctionName: "lambertFragment",
@@ -95,3 +94,42 @@ struct FileTessellationMesh: TessellationMeshObject {
     let setupBaseMatrix: ((matrix_float4x4) -> matrix_float4x4)?
 }
 
+struct GeometryMesh: TessellationMeshObject {
+    enum Shape {
+        case box(dimensions: vector_float3, segments: vector_uint3)
+    }
+    
+    let shapeType: Shape
+    
+    let vertexFunctionName: String
+    let fragmentFunctionName: String
+    let diffuseTextureURL: URL
+    let normalMapURL: URL?
+    let displacementMapURL: URL?
+    
+    let tessellationVertexFunctionName: String
+    let tessellationFragmentFunctionName: String
+
+    func makeGeometory(renderer: Renderer) -> Geometry? {
+        switch shapeType {
+        case .box(let dimensions, let segments):
+            return Geometry.box(withDimensions: dimensions, segments: segments, device: renderer.device)
+        }
+    }
+    
+    let setupBaseMatrix: ((matrix_float4x4) -> matrix_float4x4)?
+
+    static func meshDisplacementMap(shapeType: Shape, diffuseTextureURL: URL,
+                                    normalMapURL: URL? = nil, displacementlMapURL: URL,
+                                    setupBaseMatrix: ((matrix_float4x4) -> matrix_float4x4)?) -> GeometryMesh {
+        return GeometryMesh(shapeType: shapeType,
+                            vertexFunctionName: "lambertVertex",
+                            fragmentFunctionName: "lambertFragment",
+                            diffuseTextureURL: diffuseTextureURL,
+                            normalMapURL: normalMapURL,
+                            displacementMapURL: displacementlMapURL,
+                            tessellationVertexFunctionName: "tessellationTriangleVertex",
+                            tessellationFragmentFunctionName: "lambertFragment",
+                            setupBaseMatrix: setupBaseMatrix)
+    }
+}
