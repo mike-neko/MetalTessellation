@@ -60,27 +60,49 @@ class ViewController: NSViewController {
         renderer = Renderer(view: mtkView)
     }
 
+    
+    
+    
     private func setupAsset() {
         let t = FileMesh.meshDisplacementMapWithFileURL(
             Bundle.main.url(forResource: "models/earth/earth", withExtension: "obj")!,
             diffuseTextureURL: Bundle.main.url(forResource: "models/earth/diffuse", withExtension: "jpg")!,
+//            normalMapURL: Bundle.main.url(forResource: "models/earth/normal", withExtension: "jpg")!,
             displacementlMapURL: Bundle.main.url(forResource: "models/earth/bump", withExtension: "jpg")!,
-            setupBaseMatrix: { return matrix_multiply(Matrix.scale(x: 4, y: 4, z: 4), $0) })
+            setupBaseMatrix: { return matrix_multiply(Matrix.scale(x: 5, y: -5, z: 5), $0) })
+
+        
+//        let t = FileMesh.meshDisplacementMapWithFileURL(
+//            Bundle.main.url(forResource: "models/ninja/ninja", withExtension: "obj")!,
+//            diffuseTextureURL: Bundle.main.url(forResource: "models/ninja/ao", withExtension: "jpg")!,
+////            normalMapURL: Bundle.main.url(forResource: "models/earth/normal", withExtension: "jpg")!,
+//            displacementlMapURL: Bundle.main.url(forResource: "models/ninja/bump", withExtension: "jpg")!,
+//            setupBaseMatrix: { return matrix_multiply($0, Matrix.scale(x: 2.5, y: 2.5, z: 2.5)) })
+        
+//        let t = FileMesh.meshDisplacementMapWithFileURL(
+//            Bundle.main.url(forResource: "models/head/head", withExtension: "obj")!,
+//            diffuseTextureURL: Bundle.main.url(forResource: "models/head/diffuse", withExtension: "jpg")!,
+//            //            normalMapURL: Bundle.main.url(forResource: "models/earth/normal", withExtension: "jpg")!,
+//            displacementlMapURL: Bundle.main.url(forResource: "models/head/bump", withExtension: "png")!,
+//            setupBaseMatrix: { return matrix_multiply($0, Matrix.scale(x: 2.5, y: 2.5, z: 2.5)) })
+        
         tessellationBox = TessellationMeshRenderer(renderer: renderer, mesh:t)
-        tessellationBox.displacementFactor = 0.02
+        tessellationBox.displacementFactor = 0.0213
+        tessellationBox.displacementOffset = 0
+        tessellationBox.isTesselasiton = true
         renderer.targets.append(tessellationBox)
 //        tessellationBox.isActive = false
         
 //        let a = MeshRenderer(renderer: renderer)
 //        renderer.targets.append(a)
+//        let earth = FileMesh.meshLambertWithFileURL(
+//            Bundle.main.url(forResource: "models/head/head", withExtension: "obj")!,
+//            diffuseTextureURL: Bundle.main.url(forResource: "models/head/diffuse", withExtension: "jpg")!,
+//            setupBaseMatrix: { return matrix_multiply(Matrix.scale(x: 4, y: 4, z: 4), $0) })
         let earth = FileMesh.meshLambertWithFileURL(
             Bundle.main.url(forResource: "models/earth/earth", withExtension: "obj")!,
             diffuseTextureURL: Bundle.main.url(forResource: "models/earth/diffuse", withExtension: "jpg")!,
             setupBaseMatrix: { return matrix_multiply(Matrix.scale(x: 4, y: 4, z: 4), $0) })
-        
-        let a = MeshRenderer(renderer: renderer, mesh: earth)
-        renderer.targets.append(a)
-        a.isActive = false
     }
 }
 

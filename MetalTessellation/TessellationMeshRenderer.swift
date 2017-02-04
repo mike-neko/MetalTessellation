@@ -10,6 +10,13 @@ import Foundation
 import MetalKit
 
 class TessellationMeshRenderer: RenderObject {
+    var isTesselasiton = false
+    
+    private let standardRenderState: MTLRenderPipelineState
+    private let tesselasitonRenderState: MTLRenderPipelineState
+    
+    // MARK: Tesselasiton
+    
     let triangleVertex = 3
     
     struct TessellationUniforms {
@@ -36,12 +43,17 @@ class TessellationMeshRenderer: RenderObject {
     
     private let computePipeline: MTLComputePipelineState
     
-    // MARK: - Common
-    var name = "TessellationRenderer"
-    let renderState: MTLRenderPipelineState
+    // MARK: - RenderObject Common
+    var name = "MeshRenderer"
+    
+    var renderState: MTLRenderPipelineState {
+        return isTesselasiton ? tesselasitonRenderState : standardRenderState
+    }
+    
     let depthStencilState: MTLDepthStencilState
     
-    var vertexBuffer: MTLBuffer
+    let vertexCount: Int
+    let vertexBuffer: MTLBuffer
     var vertexTexture: MTLTexture?
     var fragmentTexture: MTLTexture?
     var normalMapTexture: MTLTexture?
@@ -50,48 +62,31 @@ class TessellationMeshRenderer: RenderObject {
     var modelMatrix = matrix_identity_float4x4
     var baseMatrix: matrix_float4x4
     
-    private let vertexCount: Int
-    
     init(renderer: Renderer, mesh: MeshObject) {
         let device = renderer.device
         let library = renderer.library
-        let mtkView = renderer.view!
         
+        // make geometory
+        //        let o = Geometry(withMDLMesh: mdlMesh, device: device)!
         let model = mesh.makeGeometory(renderer: renderer)!
-        baseMatrix = mesh.setupBaseMatrix?(model.normalizeMatrix) ?? model.normalizeMatrix
-        vertexCount = model.vertexCount
-        vertexBuffer = model.vertexBuffer
+        self.baseMatrix = mesh.setupBaseMatrix?(model.normalizeMatrix) ?? model.normalizeMatrix
+        self.vertexCount = model.vertexCount
+        self.vertexBuffer = model.vertexBuffer
         
-        let vertexDescriptor = model.vertexDescriptor
-        vertexDescriptor.layouts[0].stepFunction = .perPatchControlPoint
-        
-        let renderDescriptor = MTLRenderPipelineDescriptor()
-        renderDescriptor.vertexDescriptor = vertexDescriptor
-        renderDescriptor.sampleCount = mtkView.sampleCount
-        renderDescriptor.colorAttachments[0].pixelFormat = mtkView.colorPixelFormat
-        renderDescriptor.vertexFunction = library.makeFunction(name: mesh.vertexFunctionName)
-        renderDescriptor.fragmentFunction = library.makeFunction(name: mesh.fragmentFunctionName)
-        renderDescriptor.depthAttachmentPixelFormat = mtkView.depthStencilPixelFormat
-        renderDescriptor.stencilAttachmentPixelFormat = mtkView.depthStencilPixelFormat
-        
-        renderDescriptor.isTessellationFactorScaleEnabled = false
-        renderDescriptor.tessellationFactorFormat = .half
-        renderDescriptor.tessellationControlPointIndexType = .none
-        renderDescriptor.tessellationFactorStepFunction = .constant
-        renderDescriptor.tessellationOutputWindingOrder = .clockwise
-        renderDescriptor.tessellationPartitionMode = .fractionalEven
-        renderDescriptor.maxTessellationFactor = 16
-        
-        self.renderState = try! device.makeRenderPipelineState(descriptor: renderDescriptor)
+        // make renderstate
+        self.standardRenderState = TessellationMeshRenderer.makeStandardRenderState(
+            renderer: renderer, vertexDescriptor: model.vertexDescriptor, mesh: mesh)
+        self.tesselasitonRenderState = TessellationMeshRenderer.makeTessellationRenderState(
+            renderer: renderer, vertexDescriptor: model.vertexDescriptor, mesh: mesh)
         
         let depthDescriptor = MTLDepthStencilDescriptor()
         depthDescriptor.depthCompareFunction = .less
         depthDescriptor.isDepthWriteEnabled = true
         self.depthStencilState = device.makeDepthStencilState(descriptor: depthDescriptor)
         
+        // make texture
         let loader = MTKTextureLoader(device: device)
         self.fragmentTexture = try! loader.newTexture(withContentsOf: mesh.diffuseTextureURL, options: nil)
-        
         if let displacementMap = mesh.displacementMapURL {
             self.vertexTexture = try? loader.newTexture(withContentsOf: displacementMap, options: nil)
         } else {
@@ -103,6 +98,7 @@ class TessellationMeshRenderer: RenderObject {
             self.normalMapTexture = nil
         }
         
+        // init tessellation
         self.tessellationFactorsBuffer = device.makeBuffer(length: MemoryLayout<uint2>.stride,
                                                            options: .storageModePrivate)
         tessellationFactorsBuffer.label = "Tessellation Factors"
@@ -117,48 +113,98 @@ class TessellationMeshRenderer: RenderObject {
     }
     
     func compute(renderer: Renderer, commandBuffer: MTLCommandBuffer) {
-        let computeCommandEncoder = commandBuffer.makeComputeCommandEncoder()
-        computeCommandEncoder.label = "Compute Tessellation Factors"
-        computeCommandEncoder.pushDebugGroup("Compute Tessellation Factors")
-        
-        computeCommandEncoder.setComputePipelineState(computePipeline)
-        
-        var factor = uint2(UInt32(edgeFactor), UInt32(insideFactor))
-        withUnsafePointer(to: &factor) {
-            computeCommandEncoder.setBytes(UnsafeRawPointer($0), length: MemoryLayout<uint2>.stride, at: 0)
+        if isTesselasiton {
+            let computeCommandEncoder = commandBuffer.makeComputeCommandEncoder()
+            computeCommandEncoder.label = "Compute Tessellation Factors"
+            computeCommandEncoder.pushDebugGroup("Compute Tessellation Factors")
+            
+            computeCommandEncoder.setComputePipelineState(computePipeline)
+            
+            var factor = uint2(UInt32(edgeFactor), UInt32(insideFactor))
+            withUnsafePointer(to: &factor) {
+                computeCommandEncoder.setBytes(UnsafeRawPointer($0), length: MemoryLayout<uint2>.stride, at: 0)
+            }
+            
+            computeCommandEncoder.setBuffer(tessellationFactorsBuffer, offset: 0, at: 1)
+            computeCommandEncoder.dispatchThreadgroups(MTLSize(width: 1, height: 1, depth: 1),
+                                                       threadsPerThreadgroup: MTLSize(width: 1, height: 1, depth: 1))
+            
+            computeCommandEncoder.popDebugGroup()
+            computeCommandEncoder.endEncoding()
         }
-        
-        computeCommandEncoder.setBuffer(tessellationFactorsBuffer, offset: 0, at: 1)
-        computeCommandEncoder.dispatchThreadgroups(MTLSize(width: 1, height: 1, depth: 1),
-                                                   threadsPerThreadgroup: MTLSize(width: 1, height: 1, depth: 1))
-        
-        computeCommandEncoder.popDebugGroup()
-        computeCommandEncoder.endEncoding()
     }
     
     func update(renderer: Renderer) {
+        // TODO: 仮
         let mat = Matrix.rotation(radians: Float(renderer.totalTime) * 0.5, axis: float3(0, 1, 0))
         modelMatrix = matrix_multiply(mat, baseMatrix)
     }
     
     func render(renderer: Renderer, encoder: MTLRenderCommandEncoder) {
         encoder.setFragmentTexture(normalMapTexture, at: 1)
-        encoder.setVertexBuffer(tessellationUniformsBuffer, offset: 0, at: 2)
-        encoder.setTessellationFactorBuffer(tessellationFactorsBuffer, offset: 0, instanceStride: 0)
-        encoder.drawPatches(numberOfPatchControlPoints: triangleVertex,
-                            patchStart: 0,
-                            patchCount: vertexCount / triangleVertex,
-                            patchIndexBuffer: nil,
-                            patchIndexBufferOffset: 0,
-                            instanceCount: 1,
-                            baseInstance: 0)
+        if isTesselasiton {
+            encoder.setVertexBuffer(tessellationUniformsBuffer, offset: 0, at: 2)
+            encoder.setTessellationFactorBuffer(tessellationFactorsBuffer, offset: 0, instanceStride: 0)
+            encoder.drawPatches(numberOfPatchControlPoints: triangleVertex,
+                                patchStart: 0,
+                                patchCount: vertexCount / triangleVertex,
+                                patchIndexBuffer: nil,
+                                patchIndexBufferOffset: 0,
+                                instanceCount: 1,
+                                baseInstance: 0)
+        } else {
+            encoder.drawPrimitives(type: .triangle, vertexStart: 0, vertexCount: vertexCount)
+        }
     }
     
-    // MARK: -
+    // MARK: - private
+    private static func makeStandardRenderState(renderer: Renderer, vertexDescriptor: MTLVertexDescriptor, mesh: MeshObject) -> MTLRenderPipelineState {
+        let device = renderer.device
+        let library = renderer.library
+        let mtkView = renderer.view!
+        
+        let renderDescriptor = MTLRenderPipelineDescriptor()
+        renderDescriptor.vertexDescriptor = vertexDescriptor
+        renderDescriptor.sampleCount = mtkView.sampleCount
+        renderDescriptor.colorAttachments[0].pixelFormat = mtkView.colorPixelFormat
+        renderDescriptor.vertexFunction = library.makeFunction(name: "lambertVertex")      // TODO: 仮
+        renderDescriptor.fragmentFunction = library.makeFunction(name: mesh.fragmentFunctionName)
+        renderDescriptor.depthAttachmentPixelFormat = mtkView.depthStencilPixelFormat
+        renderDescriptor.stencilAttachmentPixelFormat = mtkView.depthStencilPixelFormat
+        return try! device.makeRenderPipelineState(descriptor: renderDescriptor)
+    }
+    
+    private static func makeTessellationRenderState(renderer: Renderer, vertexDescriptor: MTLVertexDescriptor, mesh: MeshObject) -> MTLRenderPipelineState {
+        let device = renderer.device
+        let library = renderer.library
+        let mtkView = renderer.view!
+        
+        vertexDescriptor.layouts[0].stepFunction = .perPatchControlPoint
+        
+        let renderDescriptor = MTLRenderPipelineDescriptor()
+        renderDescriptor.vertexDescriptor = vertexDescriptor
+        renderDescriptor.sampleCount = mtkView.sampleCount
+        renderDescriptor.colorAttachments[0].pixelFormat = mtkView.colorPixelFormat
+        renderDescriptor.vertexFunction = library.makeFunction(name: "tessellationTriangleVertex")      // TODO: 仮
+        renderDescriptor.fragmentFunction = library.makeFunction(name: mesh.fragmentFunctionName)
+        renderDescriptor.depthAttachmentPixelFormat = mtkView.depthStencilPixelFormat
+        renderDescriptor.stencilAttachmentPixelFormat = mtkView.depthStencilPixelFormat
+        
+        renderDescriptor.isTessellationFactorScaleEnabled = false
+        renderDescriptor.tessellationFactorFormat = .half
+        renderDescriptor.tessellationControlPointIndexType = .none
+        renderDescriptor.tessellationFactorStepFunction = .constant
+        renderDescriptor.tessellationOutputWindingOrder = .clockwise
+        renderDescriptor.tessellationPartitionMode = .fractionalEven
+        renderDescriptor.maxTessellationFactor = 16
+        
+        return try! device.makeRenderPipelineState(descriptor: renderDescriptor)
+    }
+
     private func updateUniforms() {
         let p = tessellationUniformsBuffer.contents().assumingMemoryBound(to: TessellationUniforms.self)
         p.pointee.phongFactor = phongFactor
         p.pointee.displacementFactor = displacementFactor
-        p.pointee.displacementOffset = -0.5
+        p.pointee.displacementOffset = displacementOffset
     }
 }
