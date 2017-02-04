@@ -89,6 +89,8 @@ class Renderer: NSObject, MTKViewDelegate {
     private(set) var library: MTLLibrary
     private let frameUniformBuffer: MTLBuffer
     
+    var preUpdate: ((Renderer) -> Void)? = nil
+    
     var targets = [RenderObject]()
 
     init?(view: MTKView) {
@@ -160,6 +162,7 @@ class Renderer: NSObject, MTKViewDelegate {
     }
     
     private func update() {
+        preUpdate?(self)
         targets.forEach {
             guard $0.isActive else { return }
             $0.update(renderer: self)
