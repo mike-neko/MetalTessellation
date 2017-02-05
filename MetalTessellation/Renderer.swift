@@ -20,6 +20,7 @@ protocol RenderObject {
     
     var isActive: Bool { get set }
     var modelMatrix: matrix_float4x4 { get }
+    var vertexCount: Int { get }
     
     func compute(renderer: Renderer, commandBuffer: MTLCommandBuffer)
     func update(renderer: Renderer)
@@ -60,6 +61,7 @@ class Renderer: NSObject, MTKViewDelegate {
         var normalMatrinx: matrix_float3x3
         var inverseViewMatrinx: matrix_float4x4
         var modelMatrinx: matrix_float4x4
+        var wireColor: float4
     }
     
     // MARK: Camera
@@ -78,10 +80,13 @@ class Renderer: NSObject, MTKViewDelegate {
     private(set) var deltaTime = TimeInterval(0)
     private(set) var totalTime = TimeInterval(0)
     
+    private(set) var totalVertexCount = 0
+    
     var isWireFrame = false
+    var wireColor = NSColor(red: 1, green: 1, blue: 1, alpha: 1)
     
     // MARK: Renderer
-    let semaphore = DispatchSemaphore(value: 1)
+    private let semaphore = DispatchSemaphore(value: 1)
     
     private(set) weak var view: MTKView!
     private(set) var device: MTLDevice
@@ -171,6 +176,7 @@ class Renderer: NSObject, MTKViewDelegate {
 
     private func render(encoder: MTLRenderCommandEncoder) {
         let fillMode: MTLTriangleFillMode = isWireFrame ? .lines : .fill
+        totalVertexCount = 0
 
         targets.forEach {
             guard $0.isActive else { return }
@@ -185,11 +191,14 @@ class Renderer: NSObject, MTKViewDelegate {
             encoder.setVertexBuffer($0.vertexBuffer, offset: 0, at: VertexBufferIndex.vertexData.rawValue)
             
             encoder.setVertexTexture($0.vertexTexture, at: 0)
+            
             encoder.setFragmentTexture($0.fragmentTexture, at: 0)
 
             encoder.setTriangleFillMode(fillMode)
             
             $0.render(renderer: self, encoder: encoder)
+            
+            totalVertexCount += $0.vertexCount
         
             encoder.popDebugGroup()
         }
@@ -203,5 +212,8 @@ class Renderer: NSObject, MTKViewDelegate {
         p.pointee.normalMatrinx = matrix_invert(matrix_transpose(mat3))
         p.pointee.modelMatrinx = modelMatrinx
         p.pointee.inverseViewMatrinx = matrix_invert(cameraMatrix)
+        let col = float4(Float(wireColor.redComponent), Float(wireColor.greenComponent),
+                         Float(wireColor.blueComponent), isWireFrame ? 1 : 0)
+        p.pointee.wireColor = col
     }
 }

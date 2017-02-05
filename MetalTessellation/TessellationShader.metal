@@ -29,7 +29,7 @@ struct PhongPatch {
 
 float3 PI(ControlPoint q, ControlPoint I);
 
-kernel void tessellationFactorsCompute(constant uint2& factor [[ buffer(0) ]],
+kernel void tessellationFactorsCompute(constant float2& factor [[ buffer(0) ]],
                                        device MTLTriangleTessellationFactorsHalf* factors [[ buffer(1) ]]) {
     factors[0].edgeTessellationFactor[0] = factor.x;
     factors[0].edgeTessellationFactor[1] = factor.x;
@@ -73,6 +73,7 @@ vertex VertexOut tessellationTriangleVertex(PatchIn patchIn [[stage_in]],
     out.position = uniforms.projectionViewMatrix * float4(position, 1);
     out.texcoord = texcoord;
     out.normal = uniforms.normalMatrix * normal;
+    out.wireColor = uniforms.wireColor;
     return out;
 }
 

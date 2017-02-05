@@ -123,8 +123,8 @@ struct GeometryMesh: TessellationMeshObject {
                                     normalMapURL: URL? = nil, displacementlMapURL: URL,
                                     setupBaseMatrix: ((matrix_float4x4) -> matrix_float4x4)?) -> GeometryMesh {
         return GeometryMesh(shapeType: shapeType,
-                            vertexFunctionName: "bumpVertex",
-                            fragmentFunctionName: "bumpFragment",
+                            vertexFunctionName: "lambertVertex",
+                            fragmentFunctionName: "lambertFragment",
                             diffuseTextureURL: diffuseTextureURL,
                             normalMapURL: normalMapURL,
                             displacementMapURL: displacementlMapURL,

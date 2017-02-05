@@ -20,12 +20,14 @@ struct VertexUniforms {
     float3x3    normalMatrix;
     float4x4    inverseViewMatrix;
     float4x4    modelMatrix;
+    float4      wireColor;
 };
 
 struct VertexOut {
     float4      position    [[ position ]];
     float3      normal;
     float2      texcoord;
+    float4      wireColor;
 };
 
 struct BumpOut {

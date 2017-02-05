@@ -45,6 +45,7 @@ class TessellationRenderer: RenderObject {
     
     var isActive = true
     var modelMatrix = matrix_identity_float4x4
+    private(set) var vertexCount: Int
     
     init(renderer: Renderer) {
         let device = renderer.device
@@ -104,6 +105,7 @@ class TessellationRenderer: RenderObject {
                                      options: .storageModeShared)
         }
         self.vertexBuffer = buffer!
+        self.vertexCount = positions.count * 3
         
         let kernel = library.makeFunction(name: "tessellationFactorsCompute")
         computePipeline = try! device.makeComputePipelineState(function: kernel!)
@@ -145,6 +147,7 @@ class TessellationRenderer: RenderObject {
                             patchIndexBufferOffset: 0,
                             instanceCount: 1,
                             baseInstance: 0)
+        vertexCount = 1 * 3 * Int(displacementFactor)
         
     }
     

@@ -14,6 +14,8 @@ class TessellationMeshRenderer: RenderObject {
     
     private let standardRenderState: MTLRenderPipelineState
     private let tesselasitonRenderState: MTLRenderPipelineState
+   
+    var baseMatrix: matrix_float4x4
     
     // MARK: Tesselasiton
     
@@ -28,8 +30,8 @@ class TessellationMeshRenderer: RenderObject {
     private let tessellationFactorsBuffer: MTLBuffer
     private let tessellationUniformsBuffer: MTLBuffer
     
-    var edgeFactor = UInt16(2)
-    var insideFactor = UInt16(2)
+    var edgeFactor = Float(2)
+    var insideFactor = Float(2)
     
     var phongFactor = Float(0) {
         didSet { updateUniforms() }
@@ -60,7 +62,6 @@ class TessellationMeshRenderer: RenderObject {
     
     var isActive = true
     var modelMatrix = matrix_identity_float4x4
-    var baseMatrix: matrix_float4x4
     
     init(renderer: Renderer, mesh: TessellationMeshObject) {
         let device = renderer.device
@@ -119,9 +120,9 @@ class TessellationMeshRenderer: RenderObject {
             
             computeCommandEncoder.setComputePipelineState(computePipeline)
             
-            var factor = uint2(UInt32(edgeFactor), UInt32(insideFactor))
+            var factor = float2(edgeFactor, insideFactor)
             withUnsafePointer(to: &factor) {
-                computeCommandEncoder.setBytes(UnsafeRawPointer($0), length: MemoryLayout<uint2>.stride, at: 0)
+                computeCommandEncoder.setBytes(UnsafeRawPointer($0), length: MemoryLayout<float2>.stride, at: 0)
             }
             
             computeCommandEncoder.setBuffer(tessellationFactorsBuffer, offset: 0, at: 1)

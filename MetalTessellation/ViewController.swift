@@ -14,9 +14,10 @@ class ViewController: NSViewController {
     @IBOutlet private weak var mtkView: MTKView!
     @IBOutlet private weak var tessellationFactorLabel: NSTextField!
     @IBOutlet private weak var phongFactorLabel: NSTextField!
+    @IBOutlet private weak var vertexesLabel: NSTextField!
 
     private var renderer: Renderer!
-    private var tessellationBox: TessellationMeshRenderer!
+    private var activeMeshRenderer: TessellationMeshRenderer? = nil
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -33,22 +34,6 @@ class ViewController: NSViewController {
         }
     }
     
-    @IBAction func tapWireFrame(sender: NSButton) {
-        renderer.isWireFrame = (sender.state != 0)
-    }
-
-    @IBAction func changeTessellationFactor(sender: NSSlider) {
-        tessellationBox.edgeFactor = UInt16(sender.integerValue)
-        tessellationBox.insideFactor = UInt16(sender.integerValue)
-        tessellationFactorLabel.integerValue = sender.integerValue
-    }
-    
-    @IBAction func changePhongFactor(sender: NSSlider) {
-        tessellationBox.phongFactor = sender.floatValue
-        phongFactorLabel.stringValue = String(format: "%.02f", sender.floatValue)
-    }
-
-    
     // MARK: -
     private func setupMetal() {
         mtkView.sampleCount = 4
@@ -58,6 +43,9 @@ class ViewController: NSViewController {
         mtkView.clearColor = MTLClearColorMake(0.5, 0.5, 0.5, 1)
         
         renderer = Renderer(view: mtkView)
+        renderer.preUpdate = { [weak self] renderer in
+            self?.vertexesLabel.stringValue = "\(renderer.totalVertexCount) Vertexes"
+        }
     }
 
     
@@ -79,24 +67,25 @@ class ViewController: NSViewController {
 //            displacementlMapURL: Bundle.main.url(forResource: "models/ninja/bump", withExtension: "jpg")!,
 //            setupBaseMatrix: { return matrix_multiply($0, Matrix.scale(x: 2.5, y: 2.5, z: 2.5)) })
         
-//        let t = GeometryMesh.meshDisplacementMap(
-//            shapeType: .box(dimensions: vector_float3(1, 1, 1), segments: vector_uint3(1)),
-//            diffuseTextureURL: Bundle.main.url(forResource: "Resources/brick/diffuse", withExtension: "png")!,
-//            normalMapURL: Bundle.main.url(forResource: "Resources/brick/normal", withExtension: "png")!,
-//            displacementlMapURL: Bundle.main.url(forResource: "Resources/brick/bump", withExtension: "png")!,
-//            setupBaseMatrix: { return matrix_multiply(Matrix.scale(x: 2, y: -2, z: 2), $0) })
-        let t = FileMesh.meshDisplacementMap(
-            fileURL: Bundle.main.url(forResource: "Resources/head/head", withExtension: "obj")!,
-            diffuseTextureURL: Bundle.main.url(forResource: "Resources/head/diffuse", withExtension: "jpg")!,
-            displacementlMapURL: Bundle.main.url(forResource: "Resources/head/bump", withExtension: "png")!,
+        let t = GeometryMesh.meshDisplacementMap(
+            shapeType: .box(dimensions: vector_float3(1, 1, 1), segments: vector_uint3(1)),
+            diffuseTextureURL: Bundle.main.url(forResource: "Resources/brick/diffuse", withExtension: "png")!,
+            normalMapURL: Bundle.main.url(forResource: "Resources/brick/normal", withExtension: "png")!,
+            displacementlMapURL: Bundle.main.url(forResource: "Resources/brick/bump", withExtension: "png")!,
             setupBaseMatrix: { return matrix_multiply(Matrix.scale(x: 2, y: -2, z: 2), $0) })
+//        let t = FileMesh.meshDisplacementMap(
+//            fileURL: Bundle.main.url(forResource: "Resources/head/head", withExtension: "obj")!,
+//            diffuseTextureURL: Bundle.main.url(forResource: "Resources/head/diffuse", withExtension: "jpg")!,
+//            displacementlMapURL: Bundle.main.url(forResource: "Resources/head/bump", withExtension: "png")!,
+//            setupBaseMatrix: { return matrix_multiply(Matrix.scale(x: 2, y: -2, z: 2), $0) })
         
-        tessellationBox = TessellationMeshRenderer(renderer: renderer, mesh:t)
-        tessellationBox.displacementFactor = 0
-        tessellationBox.displacementOffset = 0
-        tessellationBox.isTesselasiton = false
-        renderer.targets.append(tessellationBox)
+        let meshRenderer = TessellationMeshRenderer(renderer: renderer, mesh:t)
+        meshRenderer.displacementFactor = 0
+        meshRenderer.displacementOffset = 0
+        meshRenderer.isTesselasiton = true
+        renderer.targets.append(meshRenderer)
         
+        activeMeshRenderer = meshRenderer
         
         
 //        tessellationBox.isActive = false
@@ -112,5 +101,26 @@ class ViewController: NSViewController {
             diffuseTextureURL: Bundle.main.url(forResource: "Resources/earth/diffuse", withExtension: "jpg")!,
             setupBaseMatrix: { return matrix_multiply(Matrix.scale(x: 4, y: 4, z: 4), $0) })
     }
+
+    // MARK: - event
+    @IBAction func toggleTessellation(sender: NSSegmentedCell) {
+        activeMeshRenderer?.isTesselasiton = (sender.selectedSegment == 0)
+    }
+    
+    @IBAction func tapWireFrame(sender: NSButton) {
+        renderer.isWireFrame = (sender.state != 0)
+    }
+    
+    @IBAction func changeTessellationFactor(sender: NSSlider) {
+        activeMeshRenderer?.edgeFactor = sender.floatValue
+        activeMeshRenderer?.insideFactor = sender.floatValue
+        tessellationFactorLabel.stringValue = String(format: "%.02f", sender.floatValue)
+    }
+    
+    @IBAction func changePhongFactor(sender: NSSlider) {
+        activeMeshRenderer?.phongFactor = sender.floatValue
+        phongFactorLabel.stringValue = String(format: "%.02f", sender.floatValue)
+    }
+
 }
 
