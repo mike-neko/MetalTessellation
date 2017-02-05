@@ -71,7 +71,7 @@ class Renderer: NSObject, MTKViewDelegate {
         var farZ: Float
     }
     
-    var camera = CameraParameter(fovY: radians(fromDegrees: 65), nearZ: 0.1, farZ: 100)
+    var camera = CameraParameter(fovY: radians(fromDegrees: 80), nearZ: 0.1, farZ: 100)
     var projectionMatrix = matrix_float4x4()
     var cameraMatrix = Matrix.lookAt(eye: float3(0, 2, 4), center: float3(), up: float3(0, 1, 0))
     

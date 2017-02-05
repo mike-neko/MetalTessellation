@@ -698,8 +698,20 @@
                                             <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                         </textFieldCell>
                                     </textField>
+                                    <slider horizontalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="BDh-ca-QGm">
+                                        <rect key="frame" x="461" y="17" width="19" height="205"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="200" id="yiE-UF-EyX"/>
+                                        </constraints>
+                                        <sliderCell key="cell" continuous="YES" state="on" alignment="left" minValue="-50" maxValue="2.5" doubleValue="1" tickMarkPosition="right" sliderType="linear" id="zLh-G8-cn2"/>
+                                        <connections>
+                                            <action selector="changeZoomWithSender:" target="XfG-lQ-9wD" id="OMU-Nr-b31"/>
+                                        </connections>
+                                    </slider>
                                 </subviews>
                                 <constraints>
+                                    <constraint firstAttribute="bottom" secondItem="BDh-ca-QGm" secondAttribute="bottom" constant="20" id="Vbq-yR-Kgh"/>
+                                    <constraint firstAttribute="trailing" secondItem="BDh-ca-QGm" secondAttribute="trailing" constant="20" id="YXB-8i-OAh"/>
                                     <constraint firstAttribute="bottom" secondItem="c3y-2f-dVJ" secondAttribute="bottom" constant="20" id="odl-Ao-zwS"/>
                                     <constraint firstItem="c3y-2f-dVJ" firstAttribute="leading" secondItem="yAh-37-gi9" secondAttribute="leading" constant="20" id="vHF-dE-GdY"/>
                                 </constraints>

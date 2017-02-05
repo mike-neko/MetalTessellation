@@ -10,6 +10,7 @@ import Cocoa
 import MetalKit
 
 class ViewController: NSViewController {
+    private let defaultCameraMatrix = Matrix.lookAt(eye: float3(0, 2, 4), center: float3(), up: float3(0, 1, 0))
     
     @IBOutlet private weak var mtkView: MTKView!
     @IBOutlet private weak var tessellationFactorLabel: NSTextField!
@@ -43,6 +44,7 @@ class ViewController: NSViewController {
         mtkView.clearColor = MTLClearColorMake(0.5, 0.5, 0.5, 1)
         
         renderer = Renderer(view: mtkView)
+        renderer.cameraMatrix = defaultCameraMatrix
         renderer.preUpdate = { [weak self] renderer in
 //            self?.infoLabel.stringValue = String(format: "%.0f fps", 1 / renderer.deltaTime)
         }
@@ -91,6 +93,7 @@ class ViewController: NSViewController {
         meshRenderer.isTesselasiton = true
         renderer.targets.append(meshRenderer)
         
+        
         activeMeshRenderer = meshRenderer
         
 
@@ -128,5 +131,10 @@ class ViewController: NSViewController {
         phongFactorLabel.stringValue = String(format: "%.02f", sender.floatValue)
     }
 
+    @IBAction func changeZoom(sender: NSSlider) {
+        renderer.cameraMatrix = matrix_multiply(Matrix.translation(x: 0, y: 0, z: sender.floatValue),
+                                                defaultCameraMatrix)
+
+    }
 }
 
