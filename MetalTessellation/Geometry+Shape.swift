@@ -9,21 +9,22 @@
 import MetalKit
 
 extension Geometry {
-//    static func box(withDimensions dimensions: vector_float3, segments: vector_uint3, device: MTLDevice) -> Geometry? {
-//        let mdlMesh = MDLMesh.newBox(withDimensions: vector_float3(1, 1, 1),
-//                                     segments: vector_uint3(1, 1, 1),
-//                                     geometryType: .triangles,
-//                                     inwardNormals: false,
-//                                     allocator: MTKMeshBufferAllocator(device: device))
-//        return Geometry(withMDLMesh: mdlMesh, device: device)
-//    }
-
     static func box(withDimensions dimensions: vector_float3, segments: vector_uint3, device: MTLDevice) -> Geometry? {
-        let mdlMesh = MDLMesh.newBox(withDimensions: vector_float3(1, 1, 1),
-                                     segments: vector_uint3(1, 1, 1),
+        let mdlMesh = MDLMesh.newBox(withDimensions: dimensions,
+                                     segments: segments,
                                      geometryType: .triangles,
                                      inwardNormals: false,
                                      allocator: MTKMeshBufferAllocator(device: device))
+        return Geometry(withMDLMesh: mdlMesh, device: device)
+    }
+
+    static func sphere(withRadii radii: vector_float3, segments: vector_uint2, device: MTLDevice) -> Geometry? {
+        let mdlMesh = MDLMesh.newEllipsoid(withRadii: radii,
+                                           radialSegments: Int(segments.x), verticalSegments: Int(segments.y),
+                                           geometryType: .triangles,
+                                           inwardNormals: false,
+                                           hemisphere: false,
+                                           allocator: MTKMeshBufferAllocator(device: device))
         return Geometry(withMDLMesh: mdlMesh, device: device)
     }
     

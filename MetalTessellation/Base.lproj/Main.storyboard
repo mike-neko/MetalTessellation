@@ -691,8 +691,8 @@
                                 <rect key="frame" x="0.0" y="0.0" width="498" height="653"/>
                                 <subviews>
                                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" allowsCharacterPickerTouchBarItem="NO" translatesAutoresizingMaskIntoConstraints="NO" id="c3y-2f-dVJ">
-                                        <rect key="frame" x="18" y="20" width="412" height="72"/>
-                                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="left" title="1000 Vertexes" placeholderString="" id="R9S-91-VtK">
+                                        <rect key="frame" x="18" y="20" width="4" height="72"/>
+                                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="left" placeholderString="" id="R9S-91-VtK">
                                             <font key="font" metaFont="systemBold" size="60"/>
                                             <color key="textColor" red="1" green="1" blue="0.98431372549999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
@@ -707,13 +707,13 @@
                             <stackView orientation="vertical" alignment="centerX" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ThS-Cw-bWg">
                                 <rect key="frame" x="518" y="20" width="260" height="363"/>
                                 <beginningViews>
-                                    <customView translatesAutoresizingMaskIntoConstraints="NO" id="muA-WS-lbD">
-                                        <rect key="frame" x="0.0" y="363" width="260" height="0.0"/>
+                                    <customView misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="muA-WS-lbD">
+                                        <rect key="frame" x="0.0" y="24" width="260" height="339"/>
                                         <subviews>
                                             <box title="Shape" translatesAutoresizingMaskIntoConstraints="NO" id="Qpe-yN-otn">
-                                                <rect key="frame" x="7" y="-68" width="216" height="58"/>
+                                                <rect key="frame" x="7" y="6" width="246" height="58"/>
                                                 <view key="contentView" id="0pD-RR-h0o">
-                                                    <rect key="frame" x="2" y="2" width="212" height="41"/>
+                                                    <rect key="frame" x="2" y="2" width="242" height="41"/>
                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                     <subviews>
                                                         <segmentedControl verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="14p-0a-A8R">
@@ -742,11 +742,11 @@
                                             <constraint firstAttribute="bottom" secondItem="Qpe-yN-otn" secondAttribute="bottom" constant="10" id="shB-M6-Qvu"/>
                                         </constraints>
                                     </customView>
-                                    <customView translatesAutoresizingMaskIntoConstraints="NO" id="XbE-SI-dgJ">
-                                        <rect key="frame" x="0.0" y="355" width="260" height="0.0"/>
+                                    <customView misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="XbE-SI-dgJ">
+                                        <rect key="frame" x="0.0" y="16" width="260" height="0.0"/>
                                         <subviews>
                                             <button translatesAutoresizingMaskIntoConstraints="NO" id="fLQ-ZJ-m2h">
-                                                <rect key="frame" x="8" y="-174" width="214" height="166"/>
+                                                <rect key="frame" x="8" y="8" width="244" height="18"/>
                                                 <buttonCell key="cell" type="check" title="WireFrame" bezelStyle="regularSquare" imagePosition="left" inset="2" id="b1A-jJ-Frd">
                                                     <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                                     <font key="font" metaFont="system"/>
@@ -763,13 +763,13 @@
                                             <constraint firstAttribute="bottom" secondItem="fLQ-ZJ-m2h" secondAttribute="bottom" constant="10" id="jM6-rG-VP3"/>
                                         </constraints>
                                     </customView>
-                                    <customView translatesAutoresizingMaskIntoConstraints="NO" id="Lx7-yS-I0j">
-                                        <rect key="frame" x="0.0" y="347" width="260" height="0.0"/>
+                                    <customView misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Lx7-yS-I0j">
+                                        <rect key="frame" x="0.0" y="8" width="260" height="0.0"/>
                                         <subviews>
                                             <box title="Tessellation" translatesAutoresizingMaskIntoConstraints="NO" id="dNA-w4-oHJ">
-                                                <rect key="frame" x="7" y="-130" width="216" height="120"/>
+                                                <rect key="frame" x="7" y="6" width="246" height="120"/>
                                                 <view key="contentView" id="OWG-7I-Uaz">
-                                                    <rect key="frame" x="2" y="2" width="212" height="103"/>
+                                                    <rect key="frame" x="2" y="2" width="242" height="103"/>
                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                     <subviews>
                                                         <segmentedControl verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="fdL-bo-vtY">
@@ -786,14 +786,14 @@
                                                             </segmentedCell>
                                                         </segmentedControl>
                                                         <slider verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="BoB-DH-zJb">
-                                                            <rect key="frame" x="18" y="18" width="156" height="24"/>
+                                                            <rect key="frame" x="18" y="18" width="176" height="24"/>
                                                             <sliderCell key="cell" continuous="YES" state="on" alignment="left" minValue="2" maxValue="16" doubleValue="2" tickMarkPosition="above" numberOfTickMarks="4" sliderType="linear" id="Bjt-oZ-Scw"/>
                                                             <connections>
                                                                 <action selector="changeTessellationFactorWithSender:" target="XfG-lQ-9wD" id="420-it-8IG"/>
                                                             </connections>
                                                         </slider>
                                                         <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" allowsCharacterPickerTouchBarItem="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JJs-0O-b1I">
-                                                            <rect key="frame" x="175" y="20" width="29" height="17"/>
+                                                            <rect key="frame" x="195" y="20" width="39" height="17"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="width" constant="35" id="7ZN-jm-iIE"/>
                                                             </constraints>
@@ -824,24 +824,24 @@
                                             <constraint firstAttribute="bottom" secondItem="dNA-w4-oHJ" secondAttribute="bottom" constant="10" id="mKt-BM-AJH"/>
                                         </constraints>
                                     </customView>
-                                    <customView translatesAutoresizingMaskIntoConstraints="NO" id="zNN-LR-Jmd">
-                                        <rect key="frame" x="0.0" y="0.0" width="260" height="339"/>
+                                    <customView misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="zNN-LR-Jmd">
+                                        <rect key="frame" x="0.0" y="0.0" width="260" height="0.0"/>
                                         <subviews>
                                             <box title="Phong Tessellation" translatesAutoresizingMaskIntoConstraints="NO" id="LZB-s9-jc8">
-                                                <rect key="frame" x="7" y="250" width="216" height="79"/>
+                                                <rect key="frame" x="7" y="6" width="246" height="79"/>
                                                 <view key="contentView" id="QMW-A9-5Bt">
-                                                    <rect key="frame" x="2" y="2" width="212" height="62"/>
+                                                    <rect key="frame" x="2" y="2" width="242" height="62"/>
                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                     <subviews>
                                                         <slider verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="xZe-73-6hg">
-                                                            <rect key="frame" x="18" y="18" width="156" height="24"/>
+                                                            <rect key="frame" x="18" y="18" width="186" height="24"/>
                                                             <sliderCell key="cell" continuous="YES" state="on" alignment="left" maxValue="1" tickMarkPosition="above" numberOfTickMarks="5" sliderType="linear" id="szG-M7-NLg"/>
                                                             <connections>
                                                                 <action selector="changePhongFactorWithSender:" target="XfG-lQ-9wD" id="bad-6f-dLr"/>
                                                             </connections>
                                                         </slider>
                                                         <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" allowsCharacterPickerTouchBarItem="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3Je-yL-qAx">
-                                                            <rect key="frame" x="175" y="20" width="29" height="17"/>
+                                                            <rect key="frame" x="205" y="20" width="29" height="17"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="width" constant="25" id="ahd-3R-wRv"/>
                                                             </constraints>
@@ -937,10 +937,10 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="infoLabel" destination="c3y-2f-dVJ" id="QlZ-Bq-ECO"/>
                         <outlet property="mtkView" destination="yAh-37-gi9" id="mVy-WG-Ddn"/>
                         <outlet property="phongFactorLabel" destination="3Je-yL-qAx" id="SNH-wT-Zej"/>
                         <outlet property="tessellationFactorLabel" destination="JJs-0O-b1I" id="jEm-OH-gMe"/>
-                        <outlet property="vertexesLabel" destination="c3y-2f-dVJ" id="VfL-kx-gNL"/>
                     </connections>
                 </viewController>
                 <customObject id="rPt-NT-nkU" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
