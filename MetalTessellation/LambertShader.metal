@@ -26,8 +26,6 @@ fragment half4 lambertFragment(VertexOut in [[ stage_in ]],
     return half4(color * diffuseFactor + 0.1);
 }
 
-#define lightWorldPosition float3(0.1, -0.577, -1)
-#define eyeWorldPosition float3(0.1, -0.577, -1)
 
 
 vertex BumpOut bumpVertex(VertexInput in [[ stage_in ]],
@@ -63,7 +61,7 @@ fragment half4 bumpFragment(BumpOut in [[ stage_in ]],
     auto NH = saturate(dot(N, H));
     
     auto diffuse = decal.rgb * NL;
-    auto specular = pow(NH, 0.5) * 0.5;
+    auto specular = pow(NH, 0.5) * 0.1;
     
     auto color = half3(diffuse + specular);
     return half4(color, 1);

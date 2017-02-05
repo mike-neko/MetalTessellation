@@ -91,7 +91,7 @@ class TessellationMeshRenderer: RenderObject {
         } else {
             self.vertexTexture = nil
         }
-        if let normalMap = mesh.displacementMapURL {
+        if let normalMap = mesh.normalMapURL {
             self.normalMapTexture = try? loader.newTexture(withContentsOf: normalMap, options: nil)
         } else {
             self.normalMapTexture = nil

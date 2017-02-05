@@ -37,3 +37,5 @@ struct BumpOut {
 
 
 #define lightDirection float3(0.1, -0.577, -1)
+#define lightWorldPosition float3(0.1, -0.577, 0)
+#define eyeWorldPosition float3(0.1, 0, 5)
