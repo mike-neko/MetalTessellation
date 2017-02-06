@@ -79,6 +79,7 @@ class Renderer: NSObject, MTKViewDelegate {
     private var lastTime = Date()
     private(set) var deltaTime = TimeInterval(0)
     private(set) var totalTime = TimeInterval(0)
+    private(set) var drawTime = TimeInterval(Double.greatestFiniteMagnitude)
     
     private(set) var totalVertexCount = 0
     
@@ -151,6 +152,7 @@ class Renderer: NSObject, MTKViewDelegate {
             commandBuffer.present(drawable)
             
             commandBuffer.addCompletedHandler { _ in
+                self.drawTime = Date().timeIntervalSince(self.lastTime)
                 self.semaphore.signal()
             }
             

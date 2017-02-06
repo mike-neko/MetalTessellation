@@ -27,11 +27,20 @@ class ViewController: NSViewController {
         setupMetal()
         setupAsset()
         mtkView.draw()
+        
+        checkFPS()
     }
 
     override var representedObject: Any? {
         didSet {
         // Update the view, if already loaded.
+        }
+    }
+    
+    private func checkFPS() {
+        infoLabel.stringValue = String(format: "%.0f fps", 1 / renderer.drawTime)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+            self.checkFPS()
         }
     }
     
