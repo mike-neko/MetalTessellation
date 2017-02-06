@@ -56,6 +56,15 @@ class Geometry {
             if let threshold = addNormalThreshold {
                 mdl.addNormals(withAttributeNamed: MDLVertexAttributeNormal, creaseThreshold: threshold)
             }
+
+            guard let mesh = try? MTKMesh(mesh: mdl, device: device) else { return nil }
+            guard let vertex = Geometry.vertexFromMTK(mesh: mesh, device: device) else { return nil }
+            
+            self.init(vertexBuffer: vertex.buffer,
+                      vertexCount: vertex.count,
+                      vertexDescriptor: vertex.descriptor,
+                      normalizeMatrix: Geometry.calcNormalizeMatrix(withMdlMesh: mdl))
+            return
         } catch {
             print(error)
             return nil

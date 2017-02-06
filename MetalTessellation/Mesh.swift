@@ -59,10 +59,12 @@ struct FileMesh: MeshObject {
                         setupBaseMatrix: setupBaseMatrix)
     }
     
-    static func meshDisplacementMap(fileURL: URL, diffuseTextureURL: URL,
+    static func meshDisplacementMap(fileURL: URL, addNormalThreshold: Float? = nil,
+                                    diffuseTextureURL: URL,
                                     normalMapURL: URL? = nil, displacementlMapURL: URL,
                                     setupBaseMatrix: ((matrix_float4x4) -> matrix_float4x4)?) -> FileTessellationMesh {
         return FileTessellationMesh(fileURL: fileURL,
+                                    addNormalThreshold: addNormalThreshold,
                                     vertexFunctionName: "lambertVertex",
                                     fragmentFunctionName: "lambertFragment",
                                     diffuseTextureURL: diffuseTextureURL,
@@ -77,6 +79,7 @@ struct FileMesh: MeshObject {
 
 struct FileTessellationMesh: TessellationMeshObject {
     let fileURL: URL
+    let addNormalThreshold: Float?
     
     let vertexFunctionName: String
     let fragmentFunctionName: String
@@ -88,7 +91,7 @@ struct FileTessellationMesh: TessellationMeshObject {
     let tessellationFragmentFunctionName: String
     
     func makeGeometory(renderer: Renderer) -> Geometry? {
-        return Geometry(url: fileURL, device: renderer.device)
+        return Geometry(url: fileURL, device: renderer.device, addNormalThreshold: addNormalThreshold)
     }
     
     let setupBaseMatrix: ((matrix_float4x4) -> matrix_float4x4)?

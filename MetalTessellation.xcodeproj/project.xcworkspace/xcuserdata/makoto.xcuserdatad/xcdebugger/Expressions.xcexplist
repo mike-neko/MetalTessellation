@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<VariablesViewState
+   version = "1.0">
+   <ContextStates>
+      <ContextState
+         contextName = "static Geometry.vertexFromMTK(mesh : MTKMesh, device : MTLDevice) -&gt; (buffer : MTLBuffer, count : Int, descriptor : MTLVertexDescriptor)?:Geometry.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "mesh.submeshes">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+   </ContextStates>
+</VariablesViewState>
