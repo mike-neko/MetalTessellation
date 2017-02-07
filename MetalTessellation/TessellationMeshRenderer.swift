@@ -135,9 +135,7 @@ class TessellationMeshRenderer: RenderObject {
     }
     
     func update(renderer: Renderer) {
-        // TODO: 仮
-        let mat = Matrix.rotation(radians: Float(renderer.totalTime) * 0.5, axis: float3(0, 1, 0))
-        modelMatrix = matrix_multiply(mat, baseMatrix)
+        modelMatrix = matrix_multiply(modelMatrix, baseMatrix)
     }
     
     func render(renderer: Renderer, encoder: MTLRenderCommandEncoder) {

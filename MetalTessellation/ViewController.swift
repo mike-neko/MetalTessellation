@@ -31,6 +31,13 @@ class ViewController: NSViewController {
 
     private var renderer: Renderer!
     private var activeMeshRenderer: TessellationMeshRenderer? = nil
+    private var totalTime = TimeInterval(0)
+    
+    var isPlaying = false {
+        didSet {
+            playButton.title = isPlaying ? "■" : "▶︎"
+        }
+    }
     
     enum Demo {
         case demo1(Int)
@@ -52,7 +59,6 @@ class ViewController: NSViewController {
         }
     }
     
-    
     var tessellationFactor = Float(0) {
         didSet {
             activeMeshRenderer?.edgeFactor = tessellationFactor
@@ -69,6 +75,7 @@ class ViewController: NSViewController {
         }
     }
     
+    // MARK: -
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -78,8 +85,6 @@ class ViewController: NSViewController {
         mtkView.draw()
         
         clear()
-        
-        checkFPS()  // TODO:
     }
 
     override var representedObject: Any? {
@@ -110,8 +115,13 @@ class ViewController: NSViewController {
         renderer = Renderer(view: mtkView)
         renderer.cameraMatrix = defaultCameraMatrix
         renderer.preUpdate = { [weak self] renderer in
-            // TODO: -
-//            self?.infoLabel.stringValue = String(format: "%.0f fps", 1 / renderer.deltaTime)
+            guard let `self` = self else { return }
+            guard let active = self.activeMeshRenderer else { return }
+
+            if self.isPlaying {
+                self.totalTime += renderer.deltaTime
+            }
+            active.modelMatrix = Matrix.rotation(radians: Float(self.totalTime) * 0.5, axis: float3(0, 1, 0))
         }
     }
 
@@ -214,6 +224,8 @@ class ViewController: NSViewController {
     }
 
     private func clear() {
+        totalTime = 0
+        isPlaying = false
         renderer.targets.removeAll()
         if let mesh = activeMeshRenderer {
             activeMeshRenderer = nil
@@ -225,24 +237,35 @@ class ViewController: NSViewController {
         }
     }
     
-    private func startDemo(demo: Demo, isWireFrame: Bool, isTessellation: Bool, tessellationFactor: Float, phongFactor: Float) {
+    private func startDemo(demo: Demo, isPlaying: Bool, isWireFrame: Bool, isTessellation: Bool, tessellationFactor: Float, phongFactor: Float) {
+        var isPlaying = isPlaying
+//        var isWireFrame = isWireFrame
+//        var isTessellation = isTessellation
+//        var tessellationFactor = tessellationFactor
+//        var phongFactor = phongFactor
+        
+        totalTime = 0
         activeMeshRenderer?.isActive = false
 
         switch demo {
         case .demo1(let no):
             shapeSegment.selectedSegment = no
             activeMeshRenderer = renderer.targets[no] as? TessellationMeshRenderer
+            isPlaying = (no != 0)
         }
-        activeMeshRenderer?.isActive = true
+        self.isPlaying = isPlaying
         self.isWireFrame = isWireFrame
         self.isTessellation = isTessellation
         self.tessellationFactor = tessellationFactor
         self.phongFactor = phongFactor
+        activeMeshRenderer?.isActive = true
+        checkFPS()
     }
     
     // MARK: - event
     @IBAction private func toggleShape(sender: NSSegmentedControl) {
         startDemo(demo: .demo1(sender.selectedSegment),
+                  isPlaying: isPlaying,
                   isWireFrame: isWireFrame,
                   isTessellation: isTessellation,
                   tessellationFactor: tessellationFactor,
@@ -272,7 +295,8 @@ class ViewController: NSViewController {
     }
     
     @IBAction private func tapPlay(sender: NSButton) {
-        
+        guard activeMeshRenderer != nil else { return }
+        isPlaying = !isPlaying
     }
     
     // MARK: - demo
@@ -305,6 +329,7 @@ class ViewController: NSViewController {
         tessellationPanel.isHidden = false
 
         startDemo(demo: .demo1(0),
+                  isPlaying: false,
                   isWireFrame: true,
                   isTessellation: false,
                   tessellationFactor: Float(tessellationSlider.minValue),
