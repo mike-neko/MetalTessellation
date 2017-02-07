@@ -28,7 +28,17 @@ fragment half4 lambertFragment(VertexOut in [[ stage_in ]],
             * (1 - in.wireColor.a) + half4(in.wireColor * in.wireColor.a);
 }
 
-
+fragment half4 normalMapFragment(VertexOut in [[ stage_in ]],
+                               texture2d<float> texture [[ texture(0) ]],
+                               texture2d<float> normalmap [[ texture(1) ]]) {
+    constexpr sampler defaultSampler;
+    auto color = texture.sample(defaultSampler, in.texcoord);
+    auto normal = normalmap.sample(defaultSampler, in.texcoord).rgb;
+    
+    float diffuseFactor = saturate(dot(normal, -lightDirection));
+    return half4(color * diffuseFactor)
+            * (1 - in.wireColor.a) + half4(in.wireColor * in.wireColor.a);
+}
 
 vertex BumpOut bumpVertex(VertexInput in [[ stage_in ]],
                           constant VertexUniforms& uniforms [[ buffer(1) ]]) {

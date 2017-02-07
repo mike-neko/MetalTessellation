@@ -64,7 +64,7 @@ class ViewController: NSViewController {
         let ea = FileMesh.meshDisplacementMap(
             fileURL: Bundle.main.url(forResource: "Resources/earth/earth", withExtension: "obj")!,
             diffuseTextureURL: Bundle.main.url(forResource: "Resources/earth/diffuse", withExtension: "jpg")!,
-//            normalMapURL: Bundle.main.url(forResource: "models/earth/normal", withExtension: "jpg")!,
+            normalMapURL: Bundle.main.url(forResource: "Resources/earth/normal", withExtension: "jpg")!,
             displacementlMapURL: Bundle.main.url(forResource: "Resources/earth/bump", withExtension: "jpg")!,
             setupBaseMatrix: { return matrix_multiply(Matrix.scale(x: 2.5, y: -2.5, z: 2.5), $0) })
 
@@ -118,7 +118,7 @@ class ViewController: NSViewController {
             displacementlMapURL: Bundle.main.url(forResource: "Resources/brick/bump", withExtension: "png")!,
             setupBaseMatrix: { return $0 })
         
-        let meshRenderer = TessellationMeshRenderer(renderer: renderer, mesh:tt)
+        let meshRenderer = TessellationMeshRenderer(renderer: renderer, mesh:ea)
         meshRenderer.displacementFactor = 0.1
         meshRenderer.displacementOffset = 0
         meshRenderer.isTesselasiton = true
