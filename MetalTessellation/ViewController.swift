@@ -111,8 +111,14 @@ class ViewController: NSViewController {
             //            normalMapURL: Bundle.main.url(forResource: "Resources/metal/normal", withExtension: "png")!,
             displacementlMapURL: Bundle.main.url(forResource: "Resources/moji/bump", withExtension: "jpg")!,
             setupBaseMatrix: { return matrix_multiply(Matrix.scale(x: 2, y: -2, z: 2), $0) })
+        let tt = GeometryMesh.meshDisplacementMap(
+            shapeType: .triangle(dimensions: vector_float3(2)),
+            diffuseTextureURL: Bundle.main.url(forResource: "Resources/brick/diffuse", withExtension: "png")!,
+            normalMapURL: Bundle.main.url(forResource: "Resources/brick/normal", withExtension: "png")!,
+            displacementlMapURL: Bundle.main.url(forResource: "Resources/brick/bump", withExtension: "png")!,
+            setupBaseMatrix: { return $0 })
         
-        let meshRenderer = TessellationMeshRenderer(renderer: renderer, mesh:ea)
+        let meshRenderer = TessellationMeshRenderer(renderer: renderer, mesh:tt)
         meshRenderer.displacementFactor = 0.1
         meshRenderer.displacementOffset = 0
         meshRenderer.isTesselasiton = true

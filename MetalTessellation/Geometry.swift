@@ -42,42 +42,25 @@ class Geometry {
         let asset = MDLAsset(url: url,
                              vertexDescriptor: modelDescriptor,
                              bufferAllocator: MTKMeshBufferAllocator(device: device))
-        let mesh: MTKMesh
-        let normalizeMatrix: matrix_float4x4
         // 0決め打ち
         do {
             var mdlArray: NSArray?
-            let mtkMeshes = try MTKMesh.newMeshes(from: asset, device: device, sourceMeshes: &mdlArray)
-            mesh = mtkMeshes[0]
+            let _ = try MTKMesh.newMeshes(from: asset, device: device, sourceMeshes: &mdlArray)
             
             guard let mdl = mdlArray?[0] as? MDLMesh else { return nil }
-            normalizeMatrix = Geometry.calcNormalizeMatrix(withMdlMesh: mdl)
-            
             if let threshold = addNormalThreshold {
                 mdl.addNormals(withAttributeNamed: MDLVertexAttributeNormal, creaseThreshold: threshold)
             }
-
-            guard let mesh = try? MTKMesh(mesh: mdl, device: device) else { return nil }
-            guard let vertex = Geometry.vertexFromMTK(mesh: mesh, device: device) else { return nil }
             
-            self.init(vertexBuffer: vertex.buffer,
-                      vertexCount: vertex.count,
-                      vertexDescriptor: vertex.descriptor,
-                      normalizeMatrix: Geometry.calcNormalizeMatrix(withMdlMesh: mdl))
-            return
+            guard let geometry = Geometry(withMDLMesh: mdl, device: device) else { return nil }
+            self.init(vertexBuffer: geometry.vertexBuffer,
+                      vertexCount: geometry.vertexCount,
+                      vertexDescriptor: geometry.vertexDescriptor,
+                      normalizeMatrix: geometry.normalizeMatrix)
         } catch {
             print(error)
             return nil
         }
-        
-        guard let vertex = Geometry.vertexFromMTK(mesh: mesh, device: device) else {
-            return nil
-        }
-
-        self.init(vertexBuffer: vertex.buffer,
-                  vertexCount: vertex.count,
-                  vertexDescriptor: vertex.descriptor,
-                  normalizeMatrix: normalizeMatrix)
     }
     
     convenience init?(withMDLMesh mdl: MDLMesh, device: MTLDevice) {
@@ -99,11 +82,11 @@ class Geometry {
     }
     
     private static func vertexFromMTK(mesh: MTKMesh, device: MTLDevice) -> (buffer: MTLBuffer, count: Int, descriptor: MTLVertexDescriptor)? {
-//        for a in mesh.vertexDescriptor.attributes.enumerated() {
-//            let b = a.1 as! MDLVertexAttribute
-//            print("\(a.0): " + b.name + " \(b.offset) \(b.bufferIndex) \(b.format.rawValue)")
-//        }
-
+        //        for a in mesh.vertexDescriptor.attributes.enumerated() {
+        //            let b = a.1 as! MDLVertexAttribute
+        //            print("\(a.0): " + b.name + " \(b.offset) \(b.bufferIndex) \(b.format.rawValue)")
+        //        }
+        
         /*
          pos float3, normal float3, tex float2
          */
@@ -158,5 +141,42 @@ class Geometry {
         return (buffer: device.makeBuffer(bytes: &buf, length: MemoryLayout<Float>.stride * buf.count, options: []),
                 count: count,
                 descriptor: vertexDescriptor)
+    }
+    
+    
+    struct Vertex {
+        let position: float3
+        let normal: float3
+        let texcoord: float2
+        
+        static func vertexDescriptor() -> MTLVertexDescriptor {
+            let vertexDescriptor = MTLVertexDescriptor()
+            vertexDescriptor.attributes[0].format = .float3
+            vertexDescriptor.attributes[0].offset = 0
+            vertexDescriptor.attributes[0].bufferIndex = 0;
+            vertexDescriptor.attributes[1].format = .float3
+            vertexDescriptor.attributes[1].offset = MemoryLayout<float3>.stride
+            vertexDescriptor.attributes[1].bufferIndex = 0;
+            vertexDescriptor.attributes[2].format = .float2
+            vertexDescriptor.attributes[2].offset = MemoryLayout<float3>.stride * 2
+            vertexDescriptor.attributes[2].bufferIndex = 0;
+            vertexDescriptor.layouts[0].stepRate = 1
+            vertexDescriptor.layouts[0].stride = MemoryLayout<Vertex>.stride
+            return vertexDescriptor
+        }
+    }
+    
+    static func makeWith(vertexList: [Vertex], device: MTLDevice) -> Geometry? {
+        let buffer: MTLBuffer? = vertexList.withUnsafeBufferPointer {
+            return device.makeBuffer(bytes: UnsafeRawPointer($0.baseAddress!),
+                                     length: vertexList.count * MemoryLayout<Vertex>.stride,
+                                     options: .storageModeShared)
+        }
+        
+        guard let vertexBuffer = buffer else { return nil }
+        return Geometry(vertexBuffer: vertexBuffer,
+                        vertexCount: vertexList.count,
+                        vertexDescriptor: Vertex.vertexDescriptor(),
+                        normalizeMatrix: matrix_identity_float4x4)
     }
 }

@@ -99,6 +99,7 @@ struct FileTessellationMesh: TessellationMeshObject {
 
 struct GeometryMesh: TessellationMeshObject {
     enum Shape {
+        case triangle(dimensions: vector_float3)
         case box(dimensions: vector_float3, segments: vector_uint3)
         case sphere(radii: vector_float3, segments: vector_uint2)
     }
@@ -116,6 +117,8 @@ struct GeometryMesh: TessellationMeshObject {
 
     func makeGeometory(renderer: Renderer) -> Geometry? {
         switch shapeType {
+        case .triangle(let dimensions):
+            return Geometry.triangle(withDimensions: dimensions, device: renderer.device)
         case .box(let dimensions, let segments):
             return Geometry.box(withDimensions: dimensions, segments: segments, device: renderer.device)
         case .sphere(let radii, let segments):
