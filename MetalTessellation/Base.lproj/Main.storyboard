@@ -5,6 +5,7 @@
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="11762"/>
         <capability name="box content view" minToolsVersion="7.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+        <capability name="stacking Non-gravity area distributions on NSStackView" minToolsVersion="7.0" minSystemVersion="10.11"/>
     </dependencies>
     <scenes>
         <!--Application-->
@@ -684,11 +685,11 @@
             <objects>
                 <viewController id="XfG-lQ-9wD" customClass="ViewController" customModule="MetalTessellation" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" wantsLayer="YES" id="m2S-Jp-Qdl">
-                        <rect key="frame" x="0.0" y="0.0" width="798" height="653"/>
+                        <rect key="frame" x="0.0" y="0.0" width="798" height="773"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
                             <customView translatesAutoresizingMaskIntoConstraints="NO" id="yAh-37-gi9" customClass="MTKView">
-                                <rect key="frame" x="0.0" y="0.0" width="498" height="653"/>
+                                <rect key="frame" x="0.0" y="0.0" width="498" height="773"/>
                                 <subviews>
                                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" allowsCharacterPickerTouchBarItem="NO" translatesAutoresizingMaskIntoConstraints="NO" id="c3y-2f-dVJ">
                                         <rect key="frame" x="18" y="20" width="4" height="48"/>
@@ -708,28 +709,101 @@
                                             <action selector="changeZoomWithSender:" target="XfG-lQ-9wD" id="OMU-Nr-b31"/>
                                         </connections>
                                     </slider>
+                                    <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="zao-Xe-szY">
+                                        <rect key="frame" x="403" y="693" width="75" height="60"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="60" id="G3l-Qe-2Im"/>
+                                            <constraint firstAttribute="width" constant="75" id="YCm-RI-gpR"/>
+                                        </constraints>
+                                        <buttonCell key="cell" type="square" title="▶︎" bezelStyle="shadowlessSquare" alignment="center" allowsMixedState="YES" imageScaling="proportionallyDown" inset="2" id="ee7-fY-2cv">
+                                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                            <font key="font" size="40" name=".SFNSText"/>
+                                        </buttonCell>
+                                        <connections>
+                                            <action selector="tapPlayWithSender:" target="XfG-lQ-9wD" id="QR2-hY-7Qi"/>
+                                        </connections>
+                                    </button>
                                 </subviews>
                                 <constraints>
+                                    <constraint firstAttribute="trailing" secondItem="zao-Xe-szY" secondAttribute="trailing" constant="20" id="2ur-GP-fcf"/>
+                                    <constraint firstItem="zao-Xe-szY" firstAttribute="top" secondItem="yAh-37-gi9" secondAttribute="top" constant="20" id="D2H-1z-AH6"/>
                                     <constraint firstAttribute="bottom" secondItem="BDh-ca-QGm" secondAttribute="bottom" constant="20" id="Vbq-yR-Kgh"/>
                                     <constraint firstAttribute="trailing" secondItem="BDh-ca-QGm" secondAttribute="trailing" constant="20" id="YXB-8i-OAh"/>
                                     <constraint firstAttribute="bottom" secondItem="c3y-2f-dVJ" secondAttribute="bottom" constant="20" id="odl-Ao-zwS"/>
                                     <constraint firstItem="c3y-2f-dVJ" firstAttribute="leading" secondItem="yAh-37-gi9" secondAttribute="leading" constant="20" id="vHF-dE-GdY"/>
                                 </constraints>
                             </customView>
-                            <stackView orientation="vertical" alignment="centerX" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ThS-Cw-bWg">
-                                <rect key="frame" x="518" y="20" width="260" height="363"/>
-                                <beginningViews>
-                                    <customView misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="muA-WS-lbD">
-                                        <rect key="frame" x="0.0" y="24" width="260" height="339"/>
+                            <customView translatesAutoresizingMaskIntoConstraints="NO" id="YAl-bJ-jMY">
+                                <rect key="frame" x="518" y="589" width="260" height="164"/>
+                                <subviews>
+                                    <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="cGP-1B-Dq3">
+                                        <rect key="frame" x="14" y="136" width="232" height="32"/>
+                                        <buttonCell key="cell" type="push" title="Demo1 - Simple Tessellation" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="hti-hJ-xIT">
+                                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                            <font key="font" metaFont="system"/>
+                                        </buttonCell>
+                                        <connections>
+                                            <action selector="tapDemo1WithSender:" target="XfG-lQ-9wD" id="mul-1c-4qU"/>
+                                        </connections>
+                                    </button>
+                                    <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="mEz-39-TrM">
+                                        <rect key="frame" x="14" y="95" width="232" height="32"/>
+                                        <buttonCell key="cell" type="push" title="Demo2 - Phong Tessellation" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="8gd-bf-Llb">
+                                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                            <font key="font" metaFont="system"/>
+                                        </buttonCell>
+                                        <connections>
+                                            <action selector="tapDemo2WithSender:" target="XfG-lQ-9wD" id="9MG-FL-DJt"/>
+                                        </connections>
+                                    </button>
+                                    <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="ZSB-nT-Iss">
+                                        <rect key="frame" x="14" y="-7" width="232" height="32"/>
+                                        <buttonCell key="cell" type="push" title="Stop" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="yxE-if-6gc">
+                                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                            <font key="font" metaFont="system"/>
+                                        </buttonCell>
+                                        <connections>
+                                            <action selector="tapDemoStopWithSender:" target="XfG-lQ-9wD" id="Tfj-2E-vnj"/>
+                                        </connections>
+                                    </button>
+                                    <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="eqk-d2-lqb">
+                                        <rect key="frame" x="14" y="54" width="232" height="32"/>
+                                        <buttonCell key="cell" type="push" title="Demo2 - Phong Tessellation" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="pPj-9T-H91">
+                                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                            <font key="font" metaFont="system"/>
+                                        </buttonCell>
+                                    </button>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstAttribute="trailing" secondItem="cGP-1B-Dq3" secondAttribute="trailing" constant="20" id="47S-NG-gzF"/>
+                                    <constraint firstItem="cGP-1B-Dq3" firstAttribute="top" secondItem="YAl-bJ-jMY" secondAttribute="top" id="7YB-Vl-KWU"/>
+                                    <constraint firstAttribute="trailing" secondItem="mEz-39-TrM" secondAttribute="trailing" constant="20" id="7dM-dQ-Opm"/>
+                                    <constraint firstItem="mEz-39-TrM" firstAttribute="top" secondItem="cGP-1B-Dq3" secondAttribute="bottom" constant="20" id="GBg-fQ-Sqq"/>
+                                    <constraint firstAttribute="bottom" secondItem="ZSB-nT-Iss" secondAttribute="bottom" id="QbI-RV-EG3"/>
+                                    <constraint firstAttribute="trailing" secondItem="eqk-d2-lqb" secondAttribute="trailing" constant="20" id="Syg-1c-3tB"/>
+                                    <constraint firstItem="ZSB-nT-Iss" firstAttribute="top" secondItem="eqk-d2-lqb" secondAttribute="bottom" constant="40" id="Vqa-3O-3II"/>
+                                    <constraint firstItem="cGP-1B-Dq3" firstAttribute="leading" secondItem="YAl-bJ-jMY" secondAttribute="leading" constant="20" id="YjO-j8-Iuw"/>
+                                    <constraint firstAttribute="trailing" secondItem="ZSB-nT-Iss" secondAttribute="trailing" constant="20" id="f34-rV-mnl"/>
+                                    <constraint firstItem="mEz-39-TrM" firstAttribute="leading" secondItem="YAl-bJ-jMY" secondAttribute="leading" constant="20" id="gTB-XO-pDL"/>
+                                    <constraint firstItem="eqk-d2-lqb" firstAttribute="top" secondItem="mEz-39-TrM" secondAttribute="bottom" constant="20" id="m7X-Xk-NAU"/>
+                                    <constraint firstItem="ZSB-nT-Iss" firstAttribute="leading" secondItem="YAl-bJ-jMY" secondAttribute="leading" constant="20" id="nYN-CR-s4t"/>
+                                    <constraint firstItem="eqk-d2-lqb" firstAttribute="leading" secondItem="YAl-bJ-jMY" secondAttribute="leading" constant="20" id="pIJ-MU-mqB"/>
+                                </constraints>
+                            </customView>
+                            <stackView distribution="fill" orientation="vertical" alignment="centerX" spacing="0.0" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ThS-Cw-bWg">
+                                <rect key="frame" x="518" y="164" width="260" height="385"/>
+                                <subviews>
+                                    <customView translatesAutoresizingMaskIntoConstraints="NO" id="muA-WS-lbD">
+                                        <rect key="frame" x="0.0" y="281" width="260" height="104"/>
                                         <subviews>
                                             <box title="Shape" translatesAutoresizingMaskIntoConstraints="NO" id="Qpe-yN-otn">
-                                                <rect key="frame" x="7" y="6" width="246" height="58"/>
+                                                <rect key="frame" x="7" y="36" width="246" height="58"/>
                                                 <view key="contentView" id="0pD-RR-h0o">
                                                     <rect key="frame" x="2" y="2" width="242" height="41"/>
                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                     <subviews>
                                                         <segmentedControl verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="14p-0a-A8R">
-                                                            <rect key="frame" x="8" y="8" width="129" height="24"/>
+                                                            <rect key="frame" x="56.5" y="8" width="129" height="24"/>
                                                             <segmentedCell key="cell" borderStyle="border" alignment="left" style="rounded" trackingMode="selectOne" id="Spq-W3-A53">
                                                                 <font key="font" metaFont="system"/>
                                                                 <segments>
@@ -737,11 +811,14 @@
                                                                     <segment label="Cube" tag="1"/>
                                                                 </segments>
                                                             </segmentedCell>
+                                                            <connections>
+                                                                <action selector="toggleShapeWithSender:" target="XfG-lQ-9wD" id="6uS-En-i25"/>
+                                                            </connections>
                                                         </segmentedControl>
                                                     </subviews>
                                                     <constraints>
+                                                        <constraint firstItem="14p-0a-A8R" firstAttribute="centerX" secondItem="0pD-RR-h0o" secondAttribute="centerX" id="8k2-MQ-n5k"/>
                                                         <constraint firstItem="14p-0a-A8R" firstAttribute="top" secondItem="0pD-RR-h0o" secondAttribute="top" constant="10" id="QQJ-mz-oUN"/>
-                                                        <constraint firstItem="14p-0a-A8R" firstAttribute="leading" secondItem="0pD-RR-h0o" secondAttribute="leading" constant="10" id="UIr-Jw-v37"/>
                                                         <constraint firstAttribute="bottom" secondItem="14p-0a-A8R" secondAttribute="bottom" constant="10" id="XE5-4P-eke"/>
                                                     </constraints>
                                                 </view>
@@ -749,16 +826,17 @@
                                         </subviews>
                                         <constraints>
                                             <constraint firstItem="Qpe-yN-otn" firstAttribute="top" secondItem="muA-WS-lbD" secondAttribute="top" constant="10" id="ATd-jE-cGA"/>
+                                            <constraint firstAttribute="height" constant="104" id="JYZ-2H-qim"/>
                                             <constraint firstItem="Qpe-yN-otn" firstAttribute="leading" secondItem="muA-WS-lbD" secondAttribute="leading" constant="10" id="QKb-7n-n2S"/>
                                             <constraint firstAttribute="trailing" secondItem="Qpe-yN-otn" secondAttribute="trailing" constant="10" id="VJt-GV-G3A"/>
-                                            <constraint firstAttribute="bottom" secondItem="Qpe-yN-otn" secondAttribute="bottom" constant="10" id="shB-M6-Qvu"/>
+                                            <constraint firstAttribute="bottom" secondItem="Qpe-yN-otn" secondAttribute="bottom" constant="40" id="shB-M6-Qvu"/>
                                         </constraints>
                                     </customView>
-                                    <customView misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="XbE-SI-dgJ">
-                                        <rect key="frame" x="0.0" y="16" width="260" height="0.0"/>
+                                    <customView translatesAutoresizingMaskIntoConstraints="NO" id="XbE-SI-dgJ">
+                                        <rect key="frame" x="0.0" y="231" width="260" height="50"/>
                                         <subviews>
                                             <button translatesAutoresizingMaskIntoConstraints="NO" id="fLQ-ZJ-m2h">
-                                                <rect key="frame" x="8" y="8" width="244" height="18"/>
+                                                <rect key="frame" x="8" y="8" width="244" height="34"/>
                                                 <buttonCell key="cell" type="check" title="WireFrame" bezelStyle="regularSquare" imagePosition="left" inset="2" id="b1A-jJ-Frd">
                                                     <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                                     <font key="font" metaFont="system"/>
@@ -773,10 +851,11 @@
                                             <constraint firstItem="fLQ-ZJ-m2h" firstAttribute="leading" secondItem="XbE-SI-dgJ" secondAttribute="leading" constant="10" id="Nb6-a5-0QA"/>
                                             <constraint firstAttribute="trailing" secondItem="fLQ-ZJ-m2h" secondAttribute="trailing" constant="10" id="fEx-ug-Dy6"/>
                                             <constraint firstAttribute="bottom" secondItem="fLQ-ZJ-m2h" secondAttribute="bottom" constant="10" id="jM6-rG-VP3"/>
+                                            <constraint firstAttribute="height" constant="50" id="usk-MA-E8C"/>
                                         </constraints>
                                     </customView>
-                                    <customView misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Lx7-yS-I0j">
-                                        <rect key="frame" x="0.0" y="8" width="260" height="0.0"/>
+                                    <customView translatesAutoresizingMaskIntoConstraints="NO" id="Lx7-yS-I0j">
+                                        <rect key="frame" x="0.0" y="95" width="260" height="136"/>
                                         <subviews>
                                             <box title="Tessellation" translatesAutoresizingMaskIntoConstraints="NO" id="dNA-w4-oHJ">
                                                 <rect key="frame" x="7" y="6" width="246" height="120"/>
@@ -831,13 +910,14 @@
                                         </subviews>
                                         <constraints>
                                             <constraint firstItem="dNA-w4-oHJ" firstAttribute="top" secondItem="Lx7-yS-I0j" secondAttribute="top" constant="10" id="CRk-Lr-6lF"/>
+                                            <constraint firstAttribute="height" constant="136" id="V5a-NU-U20"/>
                                             <constraint firstAttribute="trailing" secondItem="dNA-w4-oHJ" secondAttribute="trailing" constant="10" id="dOI-hr-Re7"/>
                                             <constraint firstItem="dNA-w4-oHJ" firstAttribute="leading" secondItem="Lx7-yS-I0j" secondAttribute="leading" constant="10" id="eEp-P3-ca2"/>
                                             <constraint firstAttribute="bottom" secondItem="dNA-w4-oHJ" secondAttribute="bottom" constant="10" id="mKt-BM-AJH"/>
                                         </constraints>
                                     </customView>
-                                    <customView misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="zNN-LR-Jmd">
-                                        <rect key="frame" x="0.0" y="0.0" width="260" height="0.0"/>
+                                    <customView translatesAutoresizingMaskIntoConstraints="NO" id="zNN-LR-Jmd">
+                                        <rect key="frame" x="0.0" y="0.0" width="260" height="95"/>
                                         <subviews>
                                             <box title="Phong Tessellation" translatesAutoresizingMaskIntoConstraints="NO" id="LZB-s9-jc8">
                                                 <rect key="frame" x="7" y="6" width="246" height="79"/>
@@ -878,20 +958,21 @@
                                         <constraints>
                                             <constraint firstItem="LZB-s9-jc8" firstAttribute="leading" secondItem="zNN-LR-Jmd" secondAttribute="leading" constant="10" id="R6R-DO-5N8"/>
                                             <constraint firstItem="LZB-s9-jc8" firstAttribute="top" secondItem="zNN-LR-Jmd" secondAttribute="top" constant="10" id="XpU-6X-9F6"/>
+                                            <constraint firstAttribute="height" constant="95" id="lGF-qk-Zec"/>
                                             <constraint firstAttribute="bottom" secondItem="LZB-s9-jc8" secondAttribute="bottom" constant="10" id="lKJ-SR-erk"/>
                                             <constraint firstAttribute="trailing" secondItem="LZB-s9-jc8" secondAttribute="trailing" constant="10" id="vZp-yu-wjm"/>
                                         </constraints>
                                     </customView>
-                                </beginningViews>
+                                </subviews>
                                 <constraints>
-                                    <constraint firstAttribute="trailing" secondItem="Lx7-yS-I0j" secondAttribute="trailing" id="TrT-O6-nvY"/>
-                                    <constraint firstAttribute="trailing" secondItem="XbE-SI-dgJ" secondAttribute="trailing" id="XIh-m0-FtP"/>
-                                    <constraint firstAttribute="trailing" secondItem="muA-WS-lbD" secondAttribute="trailing" id="csa-t3-gsB"/>
-                                    <constraint firstItem="XbE-SI-dgJ" firstAttribute="leading" secondItem="ThS-Cw-bWg" secondAttribute="leading" id="fq1-gA-acq"/>
-                                    <constraint firstItem="muA-WS-lbD" firstAttribute="leading" secondItem="ThS-Cw-bWg" secondAttribute="leading" id="fwO-g3-VT2"/>
-                                    <constraint firstItem="Lx7-yS-I0j" firstAttribute="leading" secondItem="ThS-Cw-bWg" secondAttribute="leading" id="jMV-ID-wiv"/>
-                                    <constraint firstAttribute="trailing" secondItem="zNN-LR-Jmd" secondAttribute="trailing" id="svc-ix-EG8"/>
-                                    <constraint firstItem="zNN-LR-Jmd" firstAttribute="leading" secondItem="ThS-Cw-bWg" secondAttribute="leading" id="uo3-kM-M5p"/>
+                                    <constraint firstItem="XbE-SI-dgJ" firstAttribute="leading" secondItem="ThS-Cw-bWg" secondAttribute="leading" id="2wk-DP-dij"/>
+                                    <constraint firstAttribute="trailing" secondItem="muA-WS-lbD" secondAttribute="trailing" id="APw-Oo-MSo"/>
+                                    <constraint firstAttribute="trailing" secondItem="XbE-SI-dgJ" secondAttribute="trailing" id="FKI-5s-enL"/>
+                                    <constraint firstItem="Lx7-yS-I0j" firstAttribute="leading" secondItem="ThS-Cw-bWg" secondAttribute="leading" id="Jv9-AQ-0jX"/>
+                                    <constraint firstItem="zNN-LR-Jmd" firstAttribute="leading" secondItem="ThS-Cw-bWg" secondAttribute="leading" id="WrV-tN-u6g"/>
+                                    <constraint firstAttribute="trailing" secondItem="zNN-LR-Jmd" secondAttribute="trailing" id="osO-ud-aae"/>
+                                    <constraint firstAttribute="trailing" secondItem="Lx7-yS-I0j" secondAttribute="trailing" id="qIK-pm-2T7"/>
+                                    <constraint firstItem="muA-WS-lbD" firstAttribute="leading" secondItem="ThS-Cw-bWg" secondAttribute="leading" id="uxe-aA-rt0"/>
                                 </constraints>
                                 <visibilityPriorities>
                                     <integer value="1000"/>
@@ -906,41 +987,13 @@
                                     <real value="3.4028234663852886e+38"/>
                                 </customSpacing>
                             </stackView>
-                            <customView translatesAutoresizingMaskIntoConstraints="NO" id="YAl-bJ-jMY">
-                                <rect key="frame" x="518" y="551" width="260" height="82"/>
-                                <subviews>
-                                    <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="cGP-1B-Dq3">
-                                        <rect key="frame" x="14" y="54" width="232" height="32"/>
-                                        <buttonCell key="cell" type="push" title="Demo1 - Simple Tessellation" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="hti-hJ-xIT">
-                                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                            <font key="font" metaFont="system"/>
-                                        </buttonCell>
-                                    </button>
-                                    <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="mEz-39-TrM">
-                                        <rect key="frame" x="14" y="13" width="232" height="32"/>
-                                        <buttonCell key="cell" type="push" title="Demo2 - Phong Tessellation" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="8gd-bf-Llb">
-                                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                            <font key="font" metaFont="system"/>
-                                        </buttonCell>
-                                    </button>
-                                </subviews>
-                                <constraints>
-                                    <constraint firstAttribute="trailing" secondItem="cGP-1B-Dq3" secondAttribute="trailing" constant="20" id="47S-NG-gzF"/>
-                                    <constraint firstItem="cGP-1B-Dq3" firstAttribute="top" secondItem="YAl-bJ-jMY" secondAttribute="top" id="7YB-Vl-KWU"/>
-                                    <constraint firstAttribute="trailing" secondItem="mEz-39-TrM" secondAttribute="trailing" constant="20" id="7dM-dQ-Opm"/>
-                                    <constraint firstItem="mEz-39-TrM" firstAttribute="top" secondItem="cGP-1B-Dq3" secondAttribute="bottom" constant="20" id="GBg-fQ-Sqq"/>
-                                    <constraint firstAttribute="bottom" secondItem="mEz-39-TrM" secondAttribute="bottom" constant="20" id="WZL-oc-sN7"/>
-                                    <constraint firstItem="cGP-1B-Dq3" firstAttribute="leading" secondItem="YAl-bJ-jMY" secondAttribute="leading" constant="20" id="YjO-j8-Iuw"/>
-                                    <constraint firstItem="mEz-39-TrM" firstAttribute="leading" secondItem="YAl-bJ-jMY" secondAttribute="leading" constant="20" id="gTB-XO-pDL"/>
-                                </constraints>
-                            </customView>
                         </subviews>
                         <constraints>
                             <constraint firstItem="ThS-Cw-bWg" firstAttribute="leading" secondItem="yAh-37-gi9" secondAttribute="trailing" constant="20" id="FBu-B5-6Er"/>
                             <constraint firstItem="yAh-37-gi9" firstAttribute="leading" secondItem="m2S-Jp-Qdl" secondAttribute="leading" id="Kcj-at-yFc"/>
                             <constraint firstItem="YAl-bJ-jMY" firstAttribute="leading" secondItem="yAh-37-gi9" secondAttribute="trailing" constant="20" id="Knx-nL-tHO"/>
+                            <constraint firstItem="ThS-Cw-bWg" firstAttribute="top" secondItem="YAl-bJ-jMY" secondAttribute="bottom" constant="40" id="RE1-Vl-B2z"/>
                             <constraint firstAttribute="trailing" secondItem="YAl-bJ-jMY" secondAttribute="trailing" constant="20" id="Szf-YF-VQP"/>
-                            <constraint firstAttribute="bottom" secondItem="ThS-Cw-bWg" secondAttribute="bottom" constant="20" id="UaQ-Ru-ldE"/>
                             <constraint firstAttribute="trailing" secondItem="yAh-37-gi9" secondAttribute="trailing" constant="300" id="agx-Td-3t6"/>
                             <constraint firstAttribute="bottom" secondItem="yAh-37-gi9" secondAttribute="bottom" id="dji-Tl-F7R"/>
                             <constraint firstAttribute="trailing" secondItem="ThS-Cw-bWg" secondAttribute="trailing" constant="20" id="pAz-mo-moa"/>
@@ -952,12 +1005,22 @@
                         <outlet property="infoLabel" destination="c3y-2f-dVJ" id="QlZ-Bq-ECO"/>
                         <outlet property="mtkView" destination="yAh-37-gi9" id="mVy-WG-Ddn"/>
                         <outlet property="phongFactorLabel" destination="3Je-yL-qAx" id="SNH-wT-Zej"/>
+                        <outlet property="phongPanel" destination="zNN-LR-Jmd" id="1Jh-Bg-TIN"/>
+                        <outlet property="phongSlider" destination="xZe-73-6hg" id="Uxn-Zl-mJ0"/>
+                        <outlet property="playButton" destination="zao-Xe-szY" id="4Yr-6U-7PD"/>
+                        <outlet property="shapePanel" destination="muA-WS-lbD" id="l4w-PJ-nd8"/>
+                        <outlet property="shapeSegment" destination="14p-0a-A8R" id="Mdz-nu-0ad"/>
+                        <outlet property="tessellationButton" destination="fdL-bo-vtY" id="Gxc-ES-Q5t"/>
                         <outlet property="tessellationFactorLabel" destination="JJs-0O-b1I" id="jEm-OH-gMe"/>
+                        <outlet property="tessellationPanel" destination="Lx7-yS-I0j" id="AUA-b0-OSU"/>
+                        <outlet property="tessellationSlider" destination="BoB-DH-zJb" id="c1U-CS-pje"/>
+                        <outlet property="wireCheckButton" destination="fLQ-ZJ-m2h" id="A1f-u6-hOu"/>
+                        <outlet property="wirePanel" destination="XbE-SI-dgJ" id="og3-Hc-y96"/>
                     </connections>
                 </viewController>
                 <customObject id="rPt-NT-nkU" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="234" y="846.5"/>
+            <point key="canvasLocation" x="234" y="906.5"/>
         </scene>
     </scenes>
 </document>

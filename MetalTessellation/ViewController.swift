@@ -10,16 +10,65 @@ import Cocoa
 import MetalKit
 
 class ViewController: NSViewController {
-    private let defaultCameraMatrix = Matrix.lookAt(eye: float3(0, 2, 4), center: float3(), up: float3(0, 1, 0))
+    // TODO: ??
+    private let defaultCameraMatrix = Matrix.lookAt(eye: float3(0, 2, 6), center: float3(), up: float3(0, 1, 0))
+    
+    @IBOutlet private weak var shapePanel: NSView!
+    @IBOutlet private weak var shapeSegment: NSSegmentedControl!
+    @IBOutlet private weak var wirePanel: NSView!
+    @IBOutlet private weak var wireCheckButton: NSButton!
+    @IBOutlet private weak var tessellationPanel: NSView!
+    @IBOutlet private weak var tessellationButton: NSSegmentedControl!
+    @IBOutlet private weak var tessellationSlider: NSSlider!
+    @IBOutlet private weak var tessellationFactorLabel: NSTextField!
+    @IBOutlet private weak var phongPanel: NSView!
+    @IBOutlet private weak var phongSlider: NSSlider!
+    @IBOutlet private weak var phongFactorLabel: NSTextField!
     
     @IBOutlet private weak var mtkView: MTKView!
-    @IBOutlet private weak var tessellationFactorLabel: NSTextField!
-    @IBOutlet private weak var phongFactorLabel: NSTextField!
     @IBOutlet private weak var infoLabel: NSTextField!
+    @IBOutlet private weak var playButton: NSButton!
 
     private var renderer: Renderer!
     private var activeMeshRenderer: TessellationMeshRenderer? = nil
+    
+    enum Demo {
+        case demo1(Int)
+    }
+    
+    var isWireFrame = false {
+        didSet {
+            renderer.isWireFrame = isWireFrame
+            wireCheckButton.state = isWireFrame ? NSOnState : NSOffState
+        }
+    }
 
+    var isTessellation = false {
+        didSet {
+            activeMeshRenderer?.isTesselasiton = isTessellation
+            tessellationButton.selectedSegment = isTessellation ? 0 : 1
+            tessellationSlider.isHidden = !isTessellation
+            tessellationFactorLabel.isHidden = !isTessellation
+        }
+    }
+    
+    
+    var tessellationFactor = Float(0) {
+        didSet {
+            activeMeshRenderer?.edgeFactor = tessellationFactor
+            activeMeshRenderer?.insideFactor = tessellationFactor
+            tessellationSlider.floatValue = tessellationFactor
+            tessellationFactorLabel.stringValue = String(format: "%.02f", tessellationFactor)
+        }
+    }
+    
+    var phongFactor = Float(0) {
+        didSet {
+            phongSlider.floatValue = phongFactor
+            phongFactorLabel.stringValue = String(format: "%.02f", phongFactor)
+        }
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -28,7 +77,9 @@ class ViewController: NSViewController {
         setupAsset()
         mtkView.draw()
         
-        checkFPS()
+        clear()
+        
+        checkFPS()  // TODO:
     }
 
     override var representedObject: Any? {
@@ -38,9 +89,13 @@ class ViewController: NSViewController {
     }
     
     private func checkFPS() {
-        infoLabel.stringValue = String(format: "%.0f fps", 1 / renderer.drawTime)
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-            self.checkFPS()
+        if activeMeshRenderer == nil {
+            infoLabel.stringValue = ""
+        } else {
+            infoLabel.stringValue = String(format: "%.0f fps", 1 / renderer.drawTime)
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                self.checkFPS()
+            }
         }
     }
     
@@ -50,17 +105,33 @@ class ViewController: NSViewController {
         mtkView.depthStencilPixelFormat = .depth32Float_stencil8
         
         mtkView.colorPixelFormat = .bgra8Unorm
-        mtkView.clearColor = MTLClearColorMake(0.5, 0.5, 0.5, 1)
+        mtkView.clearColor = MTLClearColorMake(0.3, 0.3, 0.3, 1)
         
         renderer = Renderer(view: mtkView)
         renderer.cameraMatrix = defaultCameraMatrix
         renderer.preUpdate = { [weak self] renderer in
+            // TODO: -
 //            self?.infoLabel.stringValue = String(format: "%.0f fps", 1 / renderer.deltaTime)
         }
     }
 
     
     private func setupAsset() {
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        // TODO:
         let ea = FileMesh.meshDisplacementMap(
             fileURL: Bundle.main.url(forResource: "Resources/earth/earth", withExtension: "obj")!,
             diffuseTextureURL: Bundle.main.url(forResource: "Resources/earth/diffuse", withExtension: "jpg")!,
@@ -142,30 +213,110 @@ class ViewController: NSViewController {
             setupBaseMatrix: { return matrix_multiply(Matrix.scale(x: 4, y: 4, z: 4), $0) })
     }
 
+    private func clear() {
+        renderer.targets.removeAll()
+        if let mesh = activeMeshRenderer {
+            activeMeshRenderer = nil
+            mesh.isActive = false
+        }
+        
+        for panel in [shapePanel, wirePanel, tessellationPanel, phongPanel] {
+            panel?.isHidden = true
+        }
+    }
+    
+    private func startDemo(demo: Demo, isWireFrame: Bool, isTessellation: Bool, tessellationFactor: Float, phongFactor: Float) {
+        activeMeshRenderer?.isActive = false
+
+        switch demo {
+        case .demo1(let no):
+            shapeSegment.selectedSegment = no
+            activeMeshRenderer = renderer.targets[no] as? TessellationMeshRenderer
+        }
+        activeMeshRenderer?.isActive = true
+        self.isWireFrame = isWireFrame
+        self.isTessellation = isTessellation
+        self.tessellationFactor = tessellationFactor
+        self.phongFactor = phongFactor
+    }
+    
     // MARK: - event
-    @IBAction func toggleTessellation(sender: NSSegmentedCell) {
-        activeMeshRenderer?.isTesselasiton = (sender.selectedSegment == 0)
+    @IBAction private func toggleShape(sender: NSSegmentedControl) {
+        startDemo(demo: .demo1(sender.selectedSegment),
+                  isWireFrame: isWireFrame,
+                  isTessellation: isTessellation,
+                  tessellationFactor: tessellationFactor,
+                  phongFactor: phongFactor)
     }
     
-    @IBAction func tapWireFrame(sender: NSButton) {
-        renderer.isWireFrame = (sender.state != 0)
+    @IBAction private func toggleTessellation(sender: NSSegmentedControl) {
+        isTessellation = (sender.selectedSegment == 0)
     }
     
-    @IBAction func changeTessellationFactor(sender: NSSlider) {
-        activeMeshRenderer?.edgeFactor = sender.floatValue
-        activeMeshRenderer?.insideFactor = sender.floatValue
-        tessellationFactorLabel.stringValue = String(format: "%.02f", sender.floatValue)
+    @IBAction private func tapWireFrame(sender: NSButton) {
+        isWireFrame = (sender.state != 0)
     }
     
-    @IBAction func changePhongFactor(sender: NSSlider) {
-        activeMeshRenderer?.phongFactor = sender.floatValue
-        phongFactorLabel.stringValue = String(format: "%.02f", sender.floatValue)
+    @IBAction private func changeTessellationFactor(sender: NSSlider) {
+        tessellationFactor = sender.floatValue
+    }
+    
+    @IBAction private func changePhongFactor(sender: NSSlider) {
+        phongFactor = sender.floatValue
     }
 
-    @IBAction func changeZoom(sender: NSSlider) {
+    @IBAction private func changeZoom(sender: NSSlider) {
         renderer.cameraMatrix = matrix_multiply(Matrix.translation(x: 0, y: 0, z: sender.floatValue),
                                                 defaultCameraMatrix)
 
+    }
+    
+    @IBAction private func tapPlay(sender: NSButton) {
+        
+    }
+    
+    // MARK: - demo
+    @IBAction private func tapDemo1(sender: NSButton) {
+        clear()
+        
+        // 三角形
+        let triangle = GeometryMesh.meshDisplacementMap(
+            shapeType: .triangle(dimensions: vector_float3(2)),
+            diffuseTextureURL: Bundle.main.url(forResource: "Resources/white", withExtension: "png")!,
+            displacementlMapURL: Bundle.main.url(forResource: "Resources/white", withExtension: "png")!,
+            setupBaseMatrix: { return $0 })
+        let box = GeometryMesh.meshDisplacementMap(
+            shapeType: .box(dimensions: vector_float3(1), segments: vector_uint3(1)),
+            diffuseTextureURL: Bundle.main.url(forResource: "Resources/white", withExtension: "png")!,
+            displacementlMapURL: Bundle.main.url(forResource: "Resources/white", withExtension: "png")!,
+            setupBaseMatrix: { return matrix_multiply(Matrix.scale(x: 3, y: 3, z: 3), $0) })
+
+        for mesh in [triangle, box] {
+            let meshRenderer = TessellationMeshRenderer(renderer: renderer, mesh: mesh)
+            meshRenderer.displacementFactor = 0
+            meshRenderer.displacementOffset = 0
+            meshRenderer.phongFactor = 0
+            meshRenderer.isActive = false
+            renderer.targets.append(meshRenderer)
+        }
+
+        shapePanel.isHidden = false
+        wirePanel.isHidden = false
+        tessellationPanel.isHidden = false
+
+        startDemo(demo: .demo1(0),
+                  isWireFrame: true,
+                  isTessellation: false,
+                  tessellationFactor: Float(tessellationSlider.minValue),
+                  phongFactor: 0)
+    }
+    
+    @IBAction private func tapDemo2(sender: NSButton) {
+        
+    }
+
+    @IBAction private func tapDemoStop(sender: NSButton) {
+        clear()
     }
 }
 
