@@ -40,7 +40,7 @@ class ViewController: NSViewController {
     }
     
     enum Demo {
-        case demo1(Int)
+        case demo1(Int), demo2, demo3
     }
     
     var isWireFrame = false {
@@ -70,6 +70,7 @@ class ViewController: NSViewController {
     
     var phongFactor = Float(0) {
         didSet {
+            activeMeshRenderer?.phongFactor = phongFactor
             phongSlider.floatValue = phongFactor
             phongFactorLabel.stringValue = String(format: "%.02f", phongFactor)
         }
@@ -252,6 +253,8 @@ class ViewController: NSViewController {
             shapeSegment.selectedSegment = no
             activeMeshRenderer = renderer.targets[no] as? TessellationMeshRenderer
             isPlaying = (no != 0)
+        case .demo2, .demo3:
+            activeMeshRenderer = renderer.targets.first as? TessellationMeshRenderer
         }
         self.isPlaying = isPlaying
         self.isWireFrame = isWireFrame
@@ -303,7 +306,6 @@ class ViewController: NSViewController {
     @IBAction private func tapDemo1(sender: NSButton) {
         clear()
         
-        // 三角形
         let triangle = GeometryMesh.meshDisplacementMap(
             shapeType: .triangle(dimensions: vector_float3(2)),
             diffuseTextureURL: Bundle.main.url(forResource: "Resources/white", withExtension: "png")!,
@@ -337,9 +339,38 @@ class ViewController: NSViewController {
     }
     
     @IBAction private func tapDemo2(sender: NSButton) {
+        clear()
+       
+        let sphere = GeometryMesh.meshDisplacementMap(
+//            shapeType: .sphere(radii: vector_float3(1), segments: vector_uint2(32)),
+            shapeType: .sphere(radii: vector_float3(1), segments: vector_uint2(6)),
+            diffuseTextureURL: Bundle.main.url(forResource: "Resources/brick/diffuse", withExtension: "png")!,
+            displacementlMapURL: Bundle.main.url(forResource: "Resources/checkerboard", withExtension: "png")!,
+            setupBaseMatrix: { return matrix_multiply(Matrix.scale(x: 4, y: 4, z: 4), $0) })
+        let meshRenderer = TessellationMeshRenderer(renderer: renderer, mesh: sphere)
+        meshRenderer.displacementFactor = 0
+        meshRenderer.displacementOffset = 0
+        meshRenderer.phongFactor = 0
+        meshRenderer.isActive = false
+        renderer.targets.append(meshRenderer)
         
+        wirePanel.isHidden = false
+        tessellationPanel.isHidden = false
+        phongPanel.isHidden = false
+        
+        startDemo(demo: .demo2,
+                  isPlaying: true,
+                  isWireFrame: true,
+                  isTessellation: false,
+                  tessellationFactor: Float(tessellationSlider.minValue),
+                  phongFactor: 0)
     }
 
+    @IBAction private func tapDemo3(sender: NSButton) {
+        clear()
+
+    }
+    
     @IBAction private func tapDemoStop(sender: NSButton) {
         clear()
     }
