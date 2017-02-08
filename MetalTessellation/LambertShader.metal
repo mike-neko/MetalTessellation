@@ -32,7 +32,7 @@ fragment half4 normalMapFragment(VertexOut in [[ stage_in ]],
                                texture2d<float> texture [[ texture(0) ]],
                                texture2d<float> normalmap [[ texture(1) ]]) {
     constexpr sampler defaultSampler;
-    auto color = texture.sample(defaultSampler, in.texcoord);
+    auto color = texture.sample(defaultSampler, in.texcoord) + 0.1;
     auto normal = normalmap.sample(defaultSampler, in.texcoord).rgb;
     
     float diffuseFactor = saturate(dot(normal, -lightDirection));

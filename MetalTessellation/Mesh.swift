@@ -138,7 +138,7 @@ struct GeometryMesh: TessellationMeshObject {
                             normalMapURL: normalMapURL,
                             displacementMapURL: displacementlMapURL,
                             tessellationVertexFunctionName: "tessellationTriangleVertex",
-                            tessellationFragmentFunctionName: "lambertFragment",
+                            tessellationFragmentFunctionName: "normalMapFragment",
                             setupBaseMatrix: setupBaseMatrix)
     }
 }

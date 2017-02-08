@@ -82,7 +82,6 @@ class ViewController: NSViewController {
 
         // Do any additional setup after loading the view.
         setupMetal()
-        setupAsset()
         mtkView.draw()
         
         clear()
@@ -127,104 +126,6 @@ class ViewController: NSViewController {
             active.modelMatrix = matrix_multiply(Matrix.scale(x: scale, y: scale, z: scale),
                                                  Matrix.rotation(radians: Float(self.totalTime) * 0.5, axis: float3(0, 1, 0)))
         }
-    }
-
-    
-    private func setupAsset() {
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        // TODO:
-        let ea = FileMesh.meshDisplacementMap(
-            fileURL: Bundle.main.url(forResource: "Resources/earth/earth", withExtension: "obj")!,
-            diffuseTextureURL: Bundle.main.url(forResource: "Resources/earth/diffuse", withExtension: "jpg")!,
-            normalMapURL: Bundle.main.url(forResource: "Resources/earth/normal", withExtension: "jpg")!,
-            displacementlMapURL: Bundle.main.url(forResource: "Resources/earth/bump", withExtension: "jpg")!,
-            setupBaseMatrix: { return matrix_multiply(Matrix.scale(x: 2.5, y: -2.5, z: 2.5), $0) })
-
-        
-//        let t = FileMesh.meshDisplacementMapWithFileURL(
-//            Bundle.main.url(forResource: "models/ninja/ninja", withExtension: "obj")!,
-//            diffuseTextureURL: Bundle.main.url(forResource: "models/ninja/ao", withExtension: "jpg")!,
-////            normalMapURL: Bundle.main.url(forResource: "models/earth/normal", withExtension: "jpg")!,
-//            displacementlMapURL: Bundle.main.url(forResource: "models/ninja/bump", withExtension: "jpg")!,
-//            setupBaseMatrix: { return matrix_multiply($0, Matrix.scale(x: 2.5, y: 2.5, z: 2.5)) })
-        
-        let t = GeometryMesh.meshDisplacementMap(
-            shapeType: .box(dimensions: vector_float3(1), segments: vector_uint3(4)),
-            diffuseTextureURL: Bundle.main.url(forResource: "Resources/metal/diffuse", withExtension: "png")!,
-//            normalMapURL: Bundle.main.url(forResource: "Resources/metal/normal", withExtension: "png")!,
-            displacementlMapURL: Bundle.main.url(forResource: "Resources/metal/bump", withExtension: "png")!,
-            setupBaseMatrix: { return matrix_multiply(Matrix.scale(x: 2, y: -2, z: 2), $0) })
-
-//        let h = FileMesh.meshDisplacementMap(
-//            fileURL: Bundle.main.url(forResource: "Resources/head/head", withExtension: "obj")!,
-//            addNormalThreshold: 0.5,
-//            diffuseTextureURL: Bundle.main.url(forResource: "Resources/head/diffuse", withExtension: "jpg")!,
-//            displacementlMapURL: Bundle.main.url(forResource: "Resources/head/bump", withExtension: "png")!,
-//            setupBaseMatrix: { return matrix_multiply(Matrix.scale(x: 4, y: 4, z: 4), $0) })
-
-        
-        let fr = FileMesh.meshDisplacementMap(
-            fileURL: Bundle.main.url(forResource: "Resources/frog/frog", withExtension: "obj")!,
-            addNormalThreshold: 0.5,
-            diffuseTextureURL: Bundle.main.url(forResource: "Resources/white", withExtension: "png")!,
-            displacementlMapURL: Bundle.main.url(forResource: "Resources/frog/diffuse", withExtension: "bmp")!,
-            setupBaseMatrix: { return matrix_multiply(Matrix.scale(x: 4, y: 4, z: 4), $0) })
-        
-        let sphere = GeometryMesh.meshDisplacementMap(
-            shapeType: .sphere(radii: vector_float3(1), segments: vector_uint2(4)),
-            diffuseTextureURL: Bundle.main.url(forResource: "Resources/brick/diffuse", withExtension: "png")!,
-//            normalMapURL: Bundle.main.url(forResource: "Resources/brick/normal", withExtension: "png")!,
-            displacementlMapURL: Bundle.main.url(forResource: "Resources/checkerboard", withExtension: "png")!,
-            setupBaseMatrix: { return matrix_multiply(Matrix.scale(x: 2, y: -2, z: 2), $0) })
-        
-        let t2 = GeometryMesh.meshDisplacementMap(
-            shapeType: .box(dimensions: vector_float3(1), segments: vector_uint3(16)),
-            diffuseTextureURL: Bundle.main.url(forResource: "Resources/moji/diffuse", withExtension: "png")!,
-            //            normalMapURL: Bundle.main.url(forResource: "Resources/metal/normal", withExtension: "png")!,
-            displacementlMapURL: Bundle.main.url(forResource: "Resources/moji/bump", withExtension: "jpg")!,
-            setupBaseMatrix: { return matrix_multiply(Matrix.scale(x: 2, y: -2, z: 2), $0) })
-        let tt = GeometryMesh.meshDisplacementMap(
-            shapeType: .triangle(dimensions: vector_float3(2)),
-            diffuseTextureURL: Bundle.main.url(forResource: "Resources/brick/diffuse", withExtension: "png")!,
-            normalMapURL: Bundle.main.url(forResource: "Resources/brick/normal", withExtension: "png")!,
-            displacementlMapURL: Bundle.main.url(forResource: "Resources/brick/bump", withExtension: "png")!,
-            setupBaseMatrix: { return $0 })
-        
-        let meshRenderer = TessellationMeshRenderer(renderer: renderer, mesh:ea)
-        meshRenderer.displacementFactor = 0.1
-        meshRenderer.displacementOffset = 0
-        meshRenderer.isTesselasiton = true
-        renderer.targets.append(meshRenderer)
-        
-        
-        activeMeshRenderer = meshRenderer
-        
-
-//        tessellationBox.isActive = false
-        
-//        let a = MeshRenderer(renderer: renderer)
-//        renderer.targets.append(a)
-//        let earth = FileMesh.meshLambertWithFileURL(
-//            Bundle.main.url(forResource: "models/head/head", withExtension: "obj")!,
-//            diffuseTextureURL: Bundle.main.url(forResource: "models/head/diffuse", withExtension: "jpg")!,
-//            setupBaseMatrix: { return matrix_multiply(Matrix.scale(x: 4, y: 4, z: 4), $0) })
-        let earth = FileMesh.meshLambert(
-            fileURL: Bundle.main.url(forResource: "Resources/earth/earth", withExtension: "obj")!,
-            diffuseTextureURL: Bundle.main.url(forResource: "Resources/earth/diffuse", withExtension: "jpg")!,
-            setupBaseMatrix: { return matrix_multiply(Matrix.scale(x: 4, y: 4, z: 4), $0) })
     }
 
     private func clear() {
@@ -306,11 +207,13 @@ class ViewController: NSViewController {
         let triangle = GeometryMesh.meshDisplacementMap(
             shapeType: .triangle(dimensions: vector_float3(2)),
             diffuseTextureURL: Bundle.main.url(forResource: "Resources/white", withExtension: "png")!,
+            normalMapURL: Bundle.main.url(forResource: "Resources/white", withExtension: "png")!,
             displacementlMapURL: Bundle.main.url(forResource: "Resources/white", withExtension: "png")!,
             setupBaseMatrix: { return $0 })
         let box = GeometryMesh.meshDisplacementMap(
             shapeType: .box(dimensions: vector_float3(1), segments: vector_uint3(1)),
             diffuseTextureURL: Bundle.main.url(forResource: "Resources/white", withExtension: "png")!,
+            normalMapURL: Bundle.main.url(forResource: "Resources/white", withExtension: "png")!,
             displacementlMapURL: Bundle.main.url(forResource: "Resources/white", withExtension: "png")!,
             setupBaseMatrix: { return matrix_multiply(Matrix.scale(x: 3, y: 3, z: 3), $0) })
 
@@ -342,6 +245,7 @@ class ViewController: NSViewController {
 //            shapeType: .sphere(radii: vector_float3(1), segments: vector_uint2(32)),
             shapeType: .sphere(radii: vector_float3(1), segments: vector_uint2(6)),
             diffuseTextureURL: Bundle.main.url(forResource: "Resources/brick/diffuse", withExtension: "png")!,
+            normalMapURL: Bundle.main.url(forResource: "Resources/white", withExtension: "png")!,
             displacementlMapURL: Bundle.main.url(forResource: "Resources/checkerboard", withExtension: "png")!,
             setupBaseMatrix: { return matrix_multiply(Matrix.scale(x: 4, y: 4, z: 4), $0) })
         let meshRenderer = TessellationMeshRenderer(renderer: renderer, mesh: sphere)
@@ -366,6 +270,29 @@ class ViewController: NSViewController {
     @IBAction private func tapDemo3(sender: NSButton) {
         clear()
 
+        let sphere = GeometryMesh.meshDisplacementMap(
+            shapeType: .sphere(radii: vector_float3(1), segments: vector_uint2(12)),
+            diffuseTextureURL: Bundle.main.url(forResource: "Resources/earth/diffuse", withExtension: "jpg")!,
+            normalMapURL: Bundle.main.url(forResource: "Resources/earth/normal", withExtension: "jpg")!,
+            displacementlMapURL: Bundle.main.url(forResource: "Resources/earth/bump", withExtension: "jpg")!,
+            setupBaseMatrix: { return matrix_multiply(Matrix.scale(x: 4, y: 4, z: -4), $0) })
+        let meshRenderer = TessellationMeshRenderer(renderer: renderer, mesh: sphere)
+        meshRenderer.displacementFactor = 0.04
+        meshRenderer.displacementOffset = 0
+        meshRenderer.phongFactor = 0
+        meshRenderer.isActive = false
+        renderer.targets.append(meshRenderer)
+        
+        wirePanel.isHidden = false
+        tessellationPanel.isHidden = false
+        phongPanel.isHidden = false
+        
+        startDemo(demo: .demo3,
+                  isPlaying: true,
+                  isWireFrame: false,
+                  isTessellation: true,
+                  tessellationFactor: Float(tessellationSlider.maxValue),
+                  phongFactor: 0.5)
     }
     
     @IBAction private func tapDemoStop(sender: NSButton) {
