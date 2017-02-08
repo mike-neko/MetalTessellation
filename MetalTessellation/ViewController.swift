@@ -10,7 +10,6 @@ import Cocoa
 import MetalKit
 
 class ViewController: NSViewController {
-    // TODO: ??
     private let defaultCameraMatrix = Matrix.lookAt(eye: float3(0, 2, 6), center: float3(), up: float3(0, 1, 0))
     
     @IBOutlet private weak var shapePanel: NSView!
@@ -28,6 +27,7 @@ class ViewController: NSViewController {
     @IBOutlet private weak var mtkView: MTKView!
     @IBOutlet private weak var infoLabel: NSTextField!
     @IBOutlet private weak var playButton: NSButton!
+    @IBOutlet private weak var zoomSlider: NSSlider!
 
     private var renderer: Renderer!
     private var activeMeshRenderer: TessellationMeshRenderer? = nil
@@ -122,7 +122,10 @@ class ViewController: NSViewController {
             if self.isPlaying {
                 self.totalTime += renderer.deltaTime
             }
-            active.modelMatrix = Matrix.rotation(radians: Float(self.totalTime) * 0.5, axis: float3(0, 1, 0))
+
+            let scale = self.zoomSlider.floatValue
+            active.modelMatrix = matrix_multiply(Matrix.scale(x: scale, y: scale, z: scale),
+                                                 Matrix.rotation(radians: Float(self.totalTime) * 0.5, axis: float3(0, 1, 0)))
         }
     }
 
@@ -289,12 +292,6 @@ class ViewController: NSViewController {
     
     @IBAction private func changePhongFactor(sender: NSSlider) {
         phongFactor = sender.floatValue
-    }
-
-    @IBAction private func changeZoom(sender: NSSlider) {
-        renderer.cameraMatrix = matrix_multiply(Matrix.translation(x: 0, y: 0, z: sender.floatValue),
-                                                defaultCameraMatrix)
-
     }
     
     @IBAction private func tapPlay(sender: NSButton) {

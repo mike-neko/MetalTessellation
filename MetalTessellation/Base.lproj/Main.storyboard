@@ -704,10 +704,7 @@
                                         <constraints>
                                             <constraint firstAttribute="height" constant="300" id="yiE-UF-EyX"/>
                                         </constraints>
-                                        <sliderCell key="cell" continuous="YES" state="on" alignment="left" minValue="-50" maxValue="2.5" doubleValue="1" tickMarkPosition="right" sliderType="linear" id="zLh-G8-cn2"/>
-                                        <connections>
-                                            <action selector="changeZoomWithSender:" target="XfG-lQ-9wD" id="OMU-Nr-b31"/>
-                                        </connections>
+                                        <sliderCell key="cell" continuous="YES" state="on" alignment="left" minValue="0.20000000000000001" maxValue="2.5" doubleValue="1" tickMarkPosition="right" sliderType="linear" id="zLh-G8-cn2"/>
                                     </slider>
                                     <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="zao-Xe-szY">
                                         <rect key="frame" x="403" y="693" width="75" height="60"/>
@@ -806,7 +803,7 @@
                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                     <subviews>
                                                         <segmentedControl verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="14p-0a-A8R">
-                                                            <rect key="frame" x="56.5" y="8" width="129" height="24"/>
+                                                            <rect key="frame" x="56" y="8" width="129" height="24"/>
                                                             <segmentedCell key="cell" borderStyle="border" alignment="left" style="rounded" trackingMode="selectOne" id="Spq-W3-A53">
                                                                 <font key="font" metaFont="system"/>
                                                                 <segments>
@@ -1019,6 +1016,7 @@
                         <outlet property="tessellationSlider" destination="BoB-DH-zJb" id="c1U-CS-pje"/>
                         <outlet property="wireCheckButton" destination="fLQ-ZJ-m2h" id="A1f-u6-hOu"/>
                         <outlet property="wirePanel" destination="XbE-SI-dgJ" id="og3-Hc-y96"/>
+                        <outlet property="zoomSlider" destination="BDh-ca-QGm" id="qnC-xX-1AV"/>
                     </connections>
                 </viewController>
                 <customObject id="rPt-NT-nkU" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
