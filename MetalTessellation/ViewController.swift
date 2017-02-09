@@ -23,6 +23,10 @@ class ViewController: NSViewController {
     @IBOutlet private weak var phongPanel: NSView!
     @IBOutlet private weak var phongSlider: NSSlider!
     @IBOutlet private weak var phongFactorLabel: NSTextField!
+    @IBOutlet private weak var displacementPanel: NSView!
+    @IBOutlet private weak var displacementButton: NSSegmentedControl!
+    @IBOutlet private weak var displacementSlider: NSSlider!
+    @IBOutlet private weak var displacementLabel: NSTextField!
     
     @IBOutlet private weak var mtkView: MTKView!
     @IBOutlet private weak var infoLabel: NSTextField!
@@ -40,7 +44,7 @@ class ViewController: NSViewController {
     }
     
     enum Demo {
-        case demo1(Int), demo2, demo3
+        case demo1(Int), demo2, demo3(Int)
     }
     
     var isWireFrame = false {
@@ -73,6 +77,14 @@ class ViewController: NSViewController {
             activeMeshRenderer?.phongFactor = phongFactor
             phongSlider.floatValue = phongFactor
             phongFactorLabel.stringValue = String(format: "%.02f", phongFactor)
+        }
+    }
+    
+    var displacementFactor = Float(0) {
+        didSet {
+            activeMeshRenderer?.displacementFactor = displacementFactor
+            displacementSlider.floatValue = displacementFactor
+            displacementLabel.stringValue = String(format: "%.02f", displacementFactor)
         }
     }
     
@@ -137,7 +149,7 @@ class ViewController: NSViewController {
             mesh.isActive = false
         }
         
-        for panel in [shapePanel, wirePanel, tessellationPanel, phongPanel] {
+        for panel in [shapePanel, wirePanel, tessellationPanel, phongPanel, displacementPanel] {
             panel?.isHidden = true
         }
     }
@@ -157,8 +169,13 @@ class ViewController: NSViewController {
             shapeSegment.selectedSegment = no
             activeMeshRenderer = renderer.targets[no] as? TessellationMeshRenderer
             isPlaying = (no != 0)
-        case .demo2, .demo3:
+        case .demo2:
             activeMeshRenderer = renderer.targets.first as? TessellationMeshRenderer
+        case .demo3(let no):
+            displacementButton.selectedSegment = no
+            activeMeshRenderer = renderer.targets[no] as? TessellationMeshRenderer
+            displacementFactor = activeMeshRenderer?.displacementFactor ?? 0
+            displacementSlider.isEnabled = (no == 0)
         }
         self.isPlaying = isPlaying
         self.isWireFrame = isWireFrame
@@ -195,6 +212,19 @@ class ViewController: NSViewController {
         phongFactor = sender.floatValue
     }
     
+    @IBAction private func toggleDisplacementType(sender: NSSegmentedControl) {
+        startDemo(demo: .demo3(sender.selectedSegment),
+                  isPlaying: isPlaying,
+                  isWireFrame: isWireFrame,
+                  isTessellation: isTessellation,
+                  tessellationFactor: tessellationFactor,
+                  phongFactor: phongFactor)
+    }
+    
+    @IBAction private func changeDisplacement(sender: NSSlider) {
+        displacementFactor = sender.floatValue
+    }
+
     @IBAction private func tapPlay(sender: NSButton) {
         guard activeMeshRenderer != nil else { return }
         isPlaying = !isPlaying
@@ -244,7 +274,7 @@ class ViewController: NSViewController {
         let sphere = GeometryMesh.meshDisplacementMap(
 //            shapeType: .sphere(radii: vector_float3(1), segments: vector_uint2(32)),
             shapeType: .sphere(radii: vector_float3(1), segments: vector_uint2(6)),
-            diffuseTextureURL: Bundle.main.url(forResource: "Resources/brick/diffuse", withExtension: "png")!,
+            diffuseTextureURL: Bundle.main.url(forResource: "Resources/checkerboard", withExtension: "png")!,
             normalMapURL: Bundle.main.url(forResource: "Resources/white", withExtension: "png")!,
             displacementlMapURL: Bundle.main.url(forResource: "Resources/checkerboard", withExtension: "png")!,
             setupBaseMatrix: { return matrix_multiply(Matrix.scale(x: 4, y: 4, z: 4), $0) })
@@ -272,11 +302,24 @@ class ViewController: NSViewController {
 
         let sphere = GeometryMesh.meshDisplacementMap(
             shapeType: .sphere(radii: vector_float3(1), segments: vector_uint2(12)),
+            diffuseTextureURL: Bundle.main.url(forResource: "Resources/metal/diffuse", withExtension: "png")!,
+            normalMapURL: Bundle.main.url(forResource: "Resources/metal/normal", withExtension: "png")!,
+            displacementlMapURL: Bundle.main.url(forResource: "Resources/metal/bump", withExtension: "png")!,
+            setupBaseMatrix: { return matrix_multiply(Matrix.scale(x: 4, y: 4, z: 4), $0) })
+        let sphereRenderer = TessellationMeshRenderer(renderer: renderer, mesh: sphere)
+        sphereRenderer.displacementFactor = 1.04
+        sphereRenderer.displacementOffset = 0
+        sphereRenderer.phongFactor = 0
+        sphereRenderer.isActive = false
+        renderer.targets.append(sphereRenderer)
+        
+        let earth = GeometryMesh.meshDisplacementMap(
+            shapeType: .sphere(radii: vector_float3(1), segments: vector_uint2(12)),
             diffuseTextureURL: Bundle.main.url(forResource: "Resources/earth/diffuse", withExtension: "jpg")!,
             normalMapURL: Bundle.main.url(forResource: "Resources/earth/normal", withExtension: "jpg")!,
             displacementlMapURL: Bundle.main.url(forResource: "Resources/earth/bump", withExtension: "jpg")!,
             setupBaseMatrix: { return matrix_multiply(Matrix.scale(x: 4, y: 4, z: -4), $0) })
-        let meshRenderer = TessellationMeshRenderer(renderer: renderer, mesh: sphere)
+        let meshRenderer = TessellationMeshRenderer(renderer: renderer, mesh: earth)
         meshRenderer.displacementFactor = 0.04
         meshRenderer.displacementOffset = 0
         meshRenderer.phongFactor = 0
@@ -285,9 +328,10 @@ class ViewController: NSViewController {
         
         wirePanel.isHidden = false
         tessellationPanel.isHidden = false
-        phongPanel.isHidden = false
+//        phongPanel.isHidden = false
+        displacementPanel.isHidden = false
         
-        startDemo(demo: .demo3,
+        startDemo(demo: .demo3(1),
                   isPlaying: true,
                   isWireFrame: false,
                   isTessellation: true,

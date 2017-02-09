@@ -685,11 +685,11 @@
             <objects>
                 <viewController id="XfG-lQ-9wD" customClass="ViewController" customModule="MetalTessellation" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" wantsLayer="YES" id="m2S-Jp-Qdl">
-                        <rect key="frame" x="0.0" y="0.0" width="798" height="773"/>
+                        <rect key="frame" x="0.0" y="0.0" width="851" height="956"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
                             <customView translatesAutoresizingMaskIntoConstraints="NO" id="yAh-37-gi9" customClass="MTKView">
-                                <rect key="frame" x="0.0" y="0.0" width="498" height="773"/>
+                                <rect key="frame" x="0.0" y="0.0" width="551" height="956"/>
                                 <subviews>
                                     <textField hidden="YES" horizontalHuggingPriority="251" verticalHuggingPriority="750" allowsCharacterPickerTouchBarItem="NO" translatesAutoresizingMaskIntoConstraints="NO" id="c3y-2f-dVJ">
                                         <rect key="frame" x="18" y="20" width="4" height="48"/>
@@ -700,14 +700,14 @@
                                         </textFieldCell>
                                     </textField>
                                     <slider horizontalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="BDh-ca-QGm">
-                                        <rect key="frame" x="461" y="17" width="19" height="305"/>
+                                        <rect key="frame" x="514" y="17" width="19" height="305"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="300" id="yiE-UF-EyX"/>
                                         </constraints>
                                         <sliderCell key="cell" continuous="YES" state="on" alignment="left" minValue="0.20000000000000001" maxValue="2.5" doubleValue="1" tickMarkPosition="right" sliderType="linear" id="zLh-G8-cn2"/>
                                     </slider>
                                     <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="zao-Xe-szY">
-                                        <rect key="frame" x="403" y="693" width="75" height="60"/>
+                                        <rect key="frame" x="456" y="876" width="75" height="60"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="60" id="G3l-Qe-2Im"/>
                                             <constraint firstAttribute="width" constant="75" id="YCm-RI-gpR"/>
@@ -731,7 +731,7 @@
                                 </constraints>
                             </customView>
                             <customView translatesAutoresizingMaskIntoConstraints="NO" id="YAl-bJ-jMY">
-                                <rect key="frame" x="518" y="589" width="260" height="164"/>
+                                <rect key="frame" x="571" y="772" width="260" height="164"/>
                                 <subviews>
                                     <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="cGP-1B-Dq3">
                                         <rect key="frame" x="14" y="136" width="232" height="32"/>
@@ -791,10 +791,10 @@
                                 </constraints>
                             </customView>
                             <stackView distribution="fill" orientation="vertical" alignment="centerX" spacing="0.0" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ThS-Cw-bWg">
-                                <rect key="frame" x="518" y="164" width="260" height="385"/>
+                                <rect key="frame" x="571" y="211" width="260" height="521"/>
                                 <subviews>
                                     <customView translatesAutoresizingMaskIntoConstraints="NO" id="muA-WS-lbD">
-                                        <rect key="frame" x="0.0" y="281" width="260" height="104"/>
+                                        <rect key="frame" x="0.0" y="417" width="260" height="104"/>
                                         <subviews>
                                             <box title="Shape" translatesAutoresizingMaskIntoConstraints="NO" id="Qpe-yN-otn">
                                                 <rect key="frame" x="7" y="36" width="246" height="58"/>
@@ -833,7 +833,7 @@
                                         </constraints>
                                     </customView>
                                     <customView translatesAutoresizingMaskIntoConstraints="NO" id="XbE-SI-dgJ">
-                                        <rect key="frame" x="0.0" y="231" width="260" height="50"/>
+                                        <rect key="frame" x="0.0" y="367" width="260" height="50"/>
                                         <subviews>
                                             <button translatesAutoresizingMaskIntoConstraints="NO" id="fLQ-ZJ-m2h">
                                                 <rect key="frame" x="8" y="8" width="244" height="34"/>
@@ -855,7 +855,7 @@
                                         </constraints>
                                     </customView>
                                     <customView translatesAutoresizingMaskIntoConstraints="NO" id="Lx7-yS-I0j">
-                                        <rect key="frame" x="0.0" y="95" width="260" height="136"/>
+                                        <rect key="frame" x="0.0" y="231" width="260" height="136"/>
                                         <subviews>
                                             <box title="Tessellation" translatesAutoresizingMaskIntoConstraints="NO" id="dNA-w4-oHJ">
                                                 <rect key="frame" x="7" y="6" width="246" height="120"/>
@@ -878,7 +878,7 @@
                                                         </segmentedControl>
                                                         <slider verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="BoB-DH-zJb">
                                                             <rect key="frame" x="18" y="18" width="176" height="24"/>
-                                                            <sliderCell key="cell" continuous="YES" state="on" alignment="left" minValue="2" maxValue="16" doubleValue="2" tickMarkPosition="above" numberOfTickMarks="4" sliderType="linear" id="Bjt-oZ-Scw"/>
+                                                            <sliderCell key="cell" continuous="YES" state="on" alignment="left" minValue="2" maxValue="16" doubleValue="2" tickMarkPosition="above" numberOfTickMarks="7" sliderType="linear" id="Bjt-oZ-Scw"/>
                                                             <connections>
                                                                 <action selector="changeTessellationFactorWithSender:" target="XfG-lQ-9wD" id="420-it-8IG"/>
                                                             </connections>
@@ -917,7 +917,7 @@
                                         </constraints>
                                     </customView>
                                     <customView translatesAutoresizingMaskIntoConstraints="NO" id="zNN-LR-Jmd">
-                                        <rect key="frame" x="0.0" y="0.0" width="260" height="95"/>
+                                        <rect key="frame" x="0.0" y="136" width="260" height="95"/>
                                         <subviews>
                                             <box title="Phong Tessellation" translatesAutoresizingMaskIntoConstraints="NO" id="LZB-s9-jc8">
                                                 <rect key="frame" x="7" y="6" width="246" height="79"/>
@@ -927,7 +927,7 @@
                                                     <subviews>
                                                         <slider verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="xZe-73-6hg">
                                                             <rect key="frame" x="18" y="18" width="186" height="24"/>
-                                                            <sliderCell key="cell" continuous="YES" state="on" alignment="left" maxValue="1" tickMarkPosition="above" numberOfTickMarks="5" sliderType="linear" id="szG-M7-NLg"/>
+                                                            <sliderCell key="cell" continuous="YES" state="on" alignment="left" maxValue="1" tickMarkPosition="above" numberOfTickMarks="11" sliderType="linear" id="szG-M7-NLg"/>
                                                             <connections>
                                                                 <action selector="changePhongFactorWithSender:" target="XfG-lQ-9wD" id="bad-6f-dLr"/>
                                                             </connections>
@@ -963,13 +963,77 @@
                                             <constraint firstAttribute="trailing" secondItem="LZB-s9-jc8" secondAttribute="trailing" constant="10" id="vZp-yu-wjm"/>
                                         </constraints>
                                     </customView>
+                                    <customView translatesAutoresizingMaskIntoConstraints="NO" id="pWk-vK-LBP">
+                                        <rect key="frame" x="0.0" y="0.0" width="260" height="136"/>
+                                        <subviews>
+                                            <box title="Displacement mapping" translatesAutoresizingMaskIntoConstraints="NO" id="iI3-gl-a0w">
+                                                <rect key="frame" x="7" y="6" width="246" height="120"/>
+                                                <view key="contentView" id="yKj-Qr-uY2">
+                                                    <rect key="frame" x="2" y="2" width="242" height="103"/>
+                                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                                    <subviews>
+                                                        <segmentedControl verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="lDh-DW-72d">
+                                                            <rect key="frame" x="64.5" y="60" width="113" height="24"/>
+                                                            <segmentedCell key="cell" borderStyle="border" alignment="left" style="rounded" trackingMode="selectOne" id="gRU-ov-aIy">
+                                                                <font key="font" metaFont="system"/>
+                                                                <segments>
+                                                                    <segment label="Wave"/>
+                                                                    <segment label="Earth" selected="YES" tag="1"/>
+                                                                </segments>
+                                                            </segmentedCell>
+                                                            <connections>
+                                                                <action selector="toggleDisplacementTypeWithSender:" target="XfG-lQ-9wD" id="beh-gY-jkT"/>
+                                                            </connections>
+                                                        </segmentedControl>
+                                                        <slider verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="6lx-LB-F6a">
+                                                            <rect key="frame" x="18" y="18" width="176" height="24"/>
+                                                            <sliderCell key="cell" continuous="YES" state="on" alignment="left" maxValue="1" doubleValue="0.040000000000000001" tickMarkPosition="above" numberOfTickMarks="10" sliderType="linear" id="BAM-PM-N61"/>
+                                                            <connections>
+                                                                <action selector="changeDisplacementWithSender:" target="XfG-lQ-9wD" id="dCA-9Y-OU4"/>
+                                                            </connections>
+                                                        </slider>
+                                                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" allowsCharacterPickerTouchBarItem="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6XP-vM-bPM">
+                                                            <rect key="frame" x="195" y="20" width="39" height="17"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="width" constant="35" id="hN3-zm-npU"/>
+                                                            </constraints>
+                                                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="2.00" id="el6-d1-LHa">
+                                                                <font key="font" metaFont="system"/>
+                                                                <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                                                <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                                            </textFieldCell>
+                                                        </textField>
+                                                    </subviews>
+                                                    <constraints>
+                                                        <constraint firstAttribute="trailing" secondItem="6XP-vM-bPM" secondAttribute="trailing" constant="10" id="3PV-Ep-LNN"/>
+                                                        <constraint firstItem="lDh-DW-72d" firstAttribute="centerX" secondItem="yKj-Qr-uY2" secondAttribute="centerX" id="4Zh-48-MM6"/>
+                                                        <constraint firstItem="6lx-LB-F6a" firstAttribute="leading" secondItem="yKj-Qr-uY2" secondAttribute="leading" constant="20" id="GNc-FD-Zwb"/>
+                                                        <constraint firstItem="6XP-vM-bPM" firstAttribute="baseline" secondItem="6lx-LB-F6a" secondAttribute="baseline" id="JbU-pe-orf"/>
+                                                        <constraint firstItem="6lx-LB-F6a" firstAttribute="top" secondItem="lDh-DW-72d" secondAttribute="bottom" constant="20" id="Z5O-6e-lP9"/>
+                                                        <constraint firstItem="lDh-DW-72d" firstAttribute="top" secondItem="yKj-Qr-uY2" secondAttribute="top" constant="20" id="dCr-mv-KwP"/>
+                                                        <constraint firstItem="6XP-vM-bPM" firstAttribute="leading" secondItem="6lx-LB-F6a" secondAttribute="trailing" constant="5" id="gYq-1D-kmt"/>
+                                                        <constraint firstAttribute="bottom" secondItem="6lx-LB-F6a" secondAttribute="bottom" constant="20" id="vOH-Jy-E7g"/>
+                                                    </constraints>
+                                                </view>
+                                            </box>
+                                        </subviews>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="136" id="HJl-sA-s7e"/>
+                                            <constraint firstItem="iI3-gl-a0w" firstAttribute="top" secondItem="pWk-vK-LBP" secondAttribute="top" constant="10" id="Jlh-W0-ihj"/>
+                                            <constraint firstAttribute="bottom" secondItem="iI3-gl-a0w" secondAttribute="bottom" constant="10" id="LoZ-e7-DQ1"/>
+                                            <constraint firstAttribute="trailing" secondItem="iI3-gl-a0w" secondAttribute="trailing" constant="10" id="sFm-S3-jOd"/>
+                                            <constraint firstItem="iI3-gl-a0w" firstAttribute="leading" secondItem="pWk-vK-LBP" secondAttribute="leading" constant="10" id="xgC-DT-iyz"/>
+                                        </constraints>
+                                    </customView>
                                 </subviews>
                                 <constraints>
+                                    <constraint firstAttribute="trailing" secondItem="pWk-vK-LBP" secondAttribute="trailing" id="0qV-Ff-3Rx"/>
                                     <constraint firstItem="XbE-SI-dgJ" firstAttribute="leading" secondItem="ThS-Cw-bWg" secondAttribute="leading" id="2wk-DP-dij"/>
                                     <constraint firstAttribute="trailing" secondItem="muA-WS-lbD" secondAttribute="trailing" id="APw-Oo-MSo"/>
                                     <constraint firstAttribute="trailing" secondItem="XbE-SI-dgJ" secondAttribute="trailing" id="FKI-5s-enL"/>
                                     <constraint firstItem="Lx7-yS-I0j" firstAttribute="leading" secondItem="ThS-Cw-bWg" secondAttribute="leading" id="Jv9-AQ-0jX"/>
                                     <constraint firstItem="zNN-LR-Jmd" firstAttribute="leading" secondItem="ThS-Cw-bWg" secondAttribute="leading" id="WrV-tN-u6g"/>
+                                    <constraint firstItem="pWk-vK-LBP" firstAttribute="leading" secondItem="ThS-Cw-bWg" secondAttribute="leading" id="fH7-WY-ju4"/>
                                     <constraint firstAttribute="trailing" secondItem="zNN-LR-Jmd" secondAttribute="trailing" id="osO-ud-aae"/>
                                     <constraint firstAttribute="trailing" secondItem="Lx7-yS-I0j" secondAttribute="trailing" id="qIK-pm-2T7"/>
                                     <constraint firstItem="muA-WS-lbD" firstAttribute="leading" secondItem="ThS-Cw-bWg" secondAttribute="leading" id="uxe-aA-rt0"/>
@@ -979,8 +1043,10 @@
                                     <integer value="1000"/>
                                     <integer value="1000"/>
                                     <integer value="1000"/>
+                                    <integer value="1000"/>
                                 </visibilityPriorities>
                                 <customSpacing>
+                                    <real value="3.4028234663852886e+38"/>
                                     <real value="3.4028234663852886e+38"/>
                                     <real value="3.4028234663852886e+38"/>
                                     <real value="3.4028234663852886e+38"/>
@@ -1002,6 +1068,10 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="displacementButton" destination="lDh-DW-72d" id="U4o-V8-Gd7"/>
+                        <outlet property="displacementLabel" destination="6XP-vM-bPM" id="xsy-bj-TlG"/>
+                        <outlet property="displacementPanel" destination="pWk-vK-LBP" id="ie7-yb-wnY"/>
+                        <outlet property="displacementSlider" destination="6lx-LB-F6a" id="a59-Bm-q8D"/>
                         <outlet property="infoLabel" destination="c3y-2f-dVJ" id="QlZ-Bq-ECO"/>
                         <outlet property="mtkView" destination="yAh-37-gi9" id="mVy-WG-Ddn"/>
                         <outlet property="phongFactorLabel" destination="3Je-yL-qAx" id="SNH-wT-Zej"/>
@@ -1021,7 +1091,7 @@
                 </viewController>
                 <customObject id="rPt-NT-nkU" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="234" y="906.5"/>
+            <point key="canvasLocation" x="260.5" y="998"/>
         </scene>
     </scenes>
 </document>

@@ -128,6 +128,19 @@ struct GeometryMesh: TessellationMeshObject {
     
     let setupBaseMatrix: ((matrix_float4x4) -> matrix_float4x4)?
 
+    static func meshLambert(shapeType: Shape, diffuseTextureURL: URL,
+                            setupBaseMatrix: ((matrix_float4x4) -> matrix_float4x4)?) -> GeometryMesh {
+        return GeometryMesh(shapeType: shapeType,
+                            vertexFunctionName: "lambertVertex",
+                            fragmentFunctionName: "lambertFragment",
+                            diffuseTextureURL: diffuseTextureURL,
+                            normalMapURL: nil,
+                            displacementMapURL: nil,
+                            tessellationVertexFunctionName: "tessellationTriangleVertex",
+                            tessellationFragmentFunctionName: "normalMapFragment",
+                            setupBaseMatrix: setupBaseMatrix)
+    }
+
     static func meshDisplacementMap(shapeType: Shape, diffuseTextureURL: URL,
                                     normalMapURL: URL? = nil, displacementlMapURL: URL,
                                     setupBaseMatrix: ((matrix_float4x4) -> matrix_float4x4)?) -> GeometryMesh {

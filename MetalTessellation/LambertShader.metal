@@ -21,7 +21,7 @@ vertex VertexOut lambertVertex(VertexInput in [[ stage_in ]],
 fragment half4 lambertFragment(VertexOut in [[ stage_in ]],
                                texture2d<float> texture [[ texture(0) ]]) {
     constexpr sampler defaultSampler;
-    auto color = texture.sample(defaultSampler, in.texcoord);
+    auto color = texture.sample(defaultSampler, in.texcoord) + 0.1;
     
     float diffuseFactor = saturate(dot(in.normal, -lightDirection));
     return half4(color * diffuseFactor)
