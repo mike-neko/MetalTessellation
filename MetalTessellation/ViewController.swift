@@ -274,9 +274,9 @@ class ViewController: NSViewController {
         let sphere = GeometryMesh.meshDisplacementMap(
 //            shapeType: .sphere(radii: vector_float3(1), segments: vector_uint2(32)),
             shapeType: .sphere(radii: vector_float3(1), segments: vector_uint2(6)),
-            diffuseTextureURL: Bundle.main.url(forResource: "Resources/checkerboard", withExtension: "png")!,
+            diffuseTextureURL: Bundle.main.url(forResource: "Resources/sand", withExtension: "png")!,
             normalMapURL: Bundle.main.url(forResource: "Resources/white", withExtension: "png")!,
-            displacementlMapURL: Bundle.main.url(forResource: "Resources/checkerboard", withExtension: "png")!,
+            displacementlMapURL: Bundle.main.url(forResource: "Resources/white", withExtension: "png")!,
             setupBaseMatrix: { return matrix_multiply(Matrix.scale(x: 4, y: 4, z: 4), $0) })
         let meshRenderer = TessellationMeshRenderer(renderer: renderer, mesh: sphere)
         meshRenderer.displacementFactor = 0
@@ -301,20 +301,20 @@ class ViewController: NSViewController {
         clear()
 
         let sphere = GeometryMesh.meshDisplacementMap(
-            shapeType: .sphere(radii: vector_float3(1), segments: vector_uint2(12)),
+            shapeType: .sphere(radii: vector_float3(1), segments: vector_uint2(16)),
             diffuseTextureURL: Bundle.main.url(forResource: "Resources/metal/diffuse", withExtension: "png")!,
             normalMapURL: Bundle.main.url(forResource: "Resources/metal/normal", withExtension: "png")!,
             displacementlMapURL: Bundle.main.url(forResource: "Resources/metal/bump", withExtension: "png")!,
             setupBaseMatrix: { return matrix_multiply(Matrix.scale(x: 4, y: 4, z: 4), $0) })
         let sphereRenderer = TessellationMeshRenderer(renderer: renderer, mesh: sphere)
-        sphereRenderer.displacementFactor = 1.04
+        sphereRenderer.displacementFactor = 0
         sphereRenderer.displacementOffset = 0
         sphereRenderer.phongFactor = 0
         sphereRenderer.isActive = false
         renderer.targets.append(sphereRenderer)
         
         let earth = GeometryMesh.meshDisplacementMap(
-            shapeType: .sphere(radii: vector_float3(1), segments: vector_uint2(12)),
+            shapeType: .sphere(radii: vector_float3(1), segments: vector_uint2(16)),
             diffuseTextureURL: Bundle.main.url(forResource: "Resources/earth/diffuse", withExtension: "jpg")!,
             normalMapURL: Bundle.main.url(forResource: "Resources/earth/normal", withExtension: "jpg")!,
             displacementlMapURL: Bundle.main.url(forResource: "Resources/earth/bump", withExtension: "jpg")!,

@@ -66,7 +66,7 @@ struct FileMesh: MeshObject {
         return FileTessellationMesh(fileURL: fileURL,
                                     addNormalThreshold: addNormalThreshold,
                                     vertexFunctionName: "lambertVertex",
-                                    fragmentFunctionName: "normalMapFragment",
+                                    fragmentFunctionName: "lambertFragment",
                                     diffuseTextureURL: diffuseTextureURL,
                                     normalMapURL: normalMapURL,
                                     displacementMapURL: displacementlMapURL,
@@ -146,7 +146,7 @@ struct GeometryMesh: TessellationMeshObject {
                                     setupBaseMatrix: ((matrix_float4x4) -> matrix_float4x4)?) -> GeometryMesh {
         return GeometryMesh(shapeType: shapeType,
                             vertexFunctionName: "lambertVertex",
-                            fragmentFunctionName: "lambertFragment",
+                            fragmentFunctionName: "normalMapFragment",
                             diffuseTextureURL: diffuseTextureURL,
                             normalMapURL: normalMapURL,
                             displacementMapURL: displacementlMapURL,
