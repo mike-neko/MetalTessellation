@@ -17,7 +17,6 @@
 		0E45AB691E3D05F5000AA11D /* Common.metal in Sources */ = {isa = PBXBuildFile; fileRef = 0E45AB681E3D05F5000AA11D /* Common.metal */; };
 		0E45AB6B1E3D0763000AA11D /* LambertShader.metal in Sources */ = {isa = PBXBuildFile; fileRef = 0E45AB6A1E3D0763000AA11D /* LambertShader.metal */; };
 		0E45AB6F1E3D0B94000AA11D /* TessellationShader.metal in Sources */ = {isa = PBXBuildFile; fileRef = 0E45AB6E1E3D0B94000AA11D /* TessellationShader.metal */; };
-		0E45AB711E3D0F07000AA11D /* TessellationRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E45AB701E3D0F07000AA11D /* TessellationRenderer.swift */; };
 		0E45AB731E3E01FF000AA11D /* TessellationMeshRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E45AB721E3E01FF000AA11D /* TessellationMeshRenderer.swift */; };
 		0E80C3051E3FA43100D5F859 /* Geometry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E80C3041E3FA43100D5F859 /* Geometry.swift */; };
 		0EA8F5BC1E45D1C0003E2D61 /* Geometry+Shape.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EA8F5BB1E45D1C0003E2D61 /* Geometry+Shape.swift */; };
@@ -37,7 +36,6 @@
 		0E45AB681E3D05F5000AA11D /* Common.metal */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.metal; path = Common.metal; sourceTree = "<group>"; };
 		0E45AB6A1E3D0763000AA11D /* LambertShader.metal */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.metal; path = LambertShader.metal; sourceTree = "<group>"; };
 		0E45AB6E1E3D0B94000AA11D /* TessellationShader.metal */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.metal; path = TessellationShader.metal; sourceTree = "<group>"; };
-		0E45AB701E3D0F07000AA11D /* TessellationRenderer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TessellationRenderer.swift; sourceTree = "<group>"; };
 		0E45AB721E3E01FF000AA11D /* TessellationMeshRenderer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TessellationMeshRenderer.swift; sourceTree = "<group>"; };
 		0E80C3041E3FA43100D5F859 /* Geometry.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Geometry.swift; sourceTree = "<group>"; };
 		0EA8F5BB1E45D1C0003E2D61 /* Geometry+Shape.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Geometry+Shape.swift"; sourceTree = "<group>"; };
@@ -79,7 +77,6 @@
 				0E45AB5C1E3CD5A2000AA11D /* Renderer.swift */,
 				0E45AB5E1E3CD716000AA11D /* Matrix.swift */,
 				0E14BAD91E437D7F009C4110 /* Mesh.swift */,
-				0E45AB701E3D0F07000AA11D /* TessellationRenderer.swift */,
 				0E45AB721E3E01FF000AA11D /* TessellationMeshRenderer.swift */,
 				0E80C3041E3FA43100D5F859 /* Geometry.swift */,
 				0EA8F5BB1E45D1C0003E2D61 /* Geometry+Shape.swift */,
@@ -176,7 +173,6 @@
 				0E45AB5D1E3CD5A2000AA11D /* Renderer.swift in Sources */,
 				0E45AB4E1E3CAF09000AA11D /* AppDelegate.swift in Sources */,
 				0E45AB6F1E3D0B94000AA11D /* TessellationShader.metal in Sources */,
-				0E45AB711E3D0F07000AA11D /* TessellationRenderer.swift in Sources */,
 				0EA8F5BC1E45D1C0003E2D61 /* Geometry+Shape.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -704,7 +704,7 @@
                                         <constraints>
                                             <constraint firstAttribute="height" constant="300" id="yiE-UF-EyX"/>
                                         </constraints>
-                                        <sliderCell key="cell" continuous="YES" state="on" alignment="left" minValue="0.20000000000000001" maxValue="2.5" doubleValue="1" tickMarkPosition="right" sliderType="linear" id="zLh-G8-cn2"/>
+                                        <sliderCell key="cell" continuous="YES" state="on" alignment="left" minValue="0.050000000000000003" maxValue="2" doubleValue="1" tickMarkPosition="right" sliderType="linear" id="zLh-G8-cn2"/>
                                     </slider>
                                     <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="zao-Xe-szY">
                                         <rect key="frame" x="456" y="876" width="75" height="60"/>
@@ -973,7 +973,7 @@
                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                     <subviews>
                                                         <segmentedControl verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="lDh-DW-72d">
-                                                            <rect key="frame" x="64.5" y="60" width="113" height="24"/>
+                                                            <rect key="frame" x="64" y="60" width="113" height="24"/>
                                                             <segmentedCell key="cell" borderStyle="border" alignment="left" style="rounded" trackingMode="selectOne" id="gRU-ov-aIy">
                                                                 <font key="font" metaFont="system"/>
                                                                 <segments>

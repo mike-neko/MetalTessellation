@@ -70,7 +70,7 @@ struct FileMesh: MeshObject {
                                     diffuseTextureURL: diffuseTextureURL,
                                     normalMapURL: normalMapURL,
                                     displacementMapURL: displacementlMapURL,
-                                    tessellationVertexFunctionName: "tessellationTriangleVertex",
+                                    tessellationVertexFunctionName: "displacementTriangleVertex",
                                     tessellationFragmentFunctionName: "lambertFragment",
                                     setupBaseMatrix: setupBaseMatrix)
     }
@@ -137,7 +137,7 @@ struct GeometryMesh: TessellationMeshObject {
                             normalMapURL: nil,
                             displacementMapURL: nil,
                             tessellationVertexFunctionName: "tessellationTriangleVertex",
-                            tessellationFragmentFunctionName: "normalMapFragment",
+                            tessellationFragmentFunctionName: "lambertFragment",
                             setupBaseMatrix: setupBaseMatrix)
     }
 
@@ -150,7 +150,7 @@ struct GeometryMesh: TessellationMeshObject {
                             diffuseTextureURL: diffuseTextureURL,
                             normalMapURL: normalMapURL,
                             displacementMapURL: displacementlMapURL,
-                            tessellationVertexFunctionName: "tessellationTriangleVertex",
+                            tessellationVertexFunctionName: "displacementTriangleVertex",
                             tessellationFragmentFunctionName: "normalMapFragment",
                             setupBaseMatrix: setupBaseMatrix)
     }

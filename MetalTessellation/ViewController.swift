@@ -234,17 +234,13 @@ class ViewController: NSViewController {
     @IBAction private func tapDemo1(sender: NSButton) {
         clear()
         
-        let triangle = GeometryMesh.meshDisplacementMap(
+        let triangle = GeometryMesh.meshLambert(
             shapeType: .triangle(dimensions: vector_float3(2)),
             diffuseTextureURL: Bundle.main.url(forResource: "Resources/white", withExtension: "png")!,
-            normalMapURL: Bundle.main.url(forResource: "Resources/white", withExtension: "png")!,
-            displacementlMapURL: Bundle.main.url(forResource: "Resources/white", withExtension: "png")!,
             setupBaseMatrix: { return $0 })
-        let box = GeometryMesh.meshDisplacementMap(
+        let box = GeometryMesh.meshLambert(
             shapeType: .box(dimensions: vector_float3(1), segments: vector_uint3(1)),
             diffuseTextureURL: Bundle.main.url(forResource: "Resources/white", withExtension: "png")!,
-            normalMapURL: Bundle.main.url(forResource: "Resources/white", withExtension: "png")!,
-            displacementlMapURL: Bundle.main.url(forResource: "Resources/white", withExtension: "png")!,
             setupBaseMatrix: { return matrix_multiply(Matrix.scale(x: 3, y: 3, z: 3), $0) })
 
         for mesh in [triangle, box] {
